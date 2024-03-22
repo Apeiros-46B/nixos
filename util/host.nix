@@ -37,14 +37,14 @@ let lib = inputs.nixpkgs.lib; in
 				hostPlatform = system;
 			};
 
-			hardware.enableRedistributableFirmware = true;
-			networking.useDHCP = lib.mkDefault true;
+			networking.hostName = name;
 
 			# home-manager
 			home-manager = {
 				useGlobalPkgs = true;
 				useUserPackages = true;
 			};
+
 			my = {
 				# TODO: fix news still showing errors despite being slienced?
 				news = {

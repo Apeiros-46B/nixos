@@ -42,6 +42,6 @@
 		device = "/dev/disk/by-uuid/8d1f6e55-db2d-43ad-b7b4-a0799e8d27e5";
 	}];
 
-	networking.hostName = "atlas";
-	networking.useDHCP = lib.mkDefault true;
+	hardware.enableRedistributableFirmware = true;
+	networking.useDHCP = true;
 }
