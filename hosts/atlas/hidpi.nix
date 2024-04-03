@@ -10,7 +10,7 @@
 		};
 	};
 
-	my.home.pointerCursor.size = lib.mkForce 128;
+	my.home.pointerCursor.size = lib.mkForce 64;
 
 	environment.variables = {
 		GDK_SCALE = "2";

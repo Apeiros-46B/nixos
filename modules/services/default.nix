@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
 	imports = [
@@ -11,7 +11,7 @@
 	programs.gnupg.agent = {
 		enable = true;
 		enableSSHSupport = true;
-		pinentryFlavor = "tty";
+		pinentryPackage = pkgs.pinentry-curses;
 	};
 
 	services = {

@@ -28,7 +28,7 @@ in {
 
 		# NixOS
 		reb   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
-		upd   = "reb --upgrade";
+		upd   = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
 		hm    = "home-manager";
 		hmreb = "home-manager switch --flake '${cfg}#${name}'";
 	};

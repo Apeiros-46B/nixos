@@ -43,5 +43,5 @@
 	}];
 
 	hardware.enableRedistributableFirmware = true;
-	networking.useDHCP = true;
+	networking.useDHCP = lib.mkDefault true;
 }
