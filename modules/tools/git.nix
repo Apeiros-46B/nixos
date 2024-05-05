@@ -1,11 +1,11 @@
-{ config, pkgs, globals, ... }:
+{ globals, ... }:
 
 {
-	my.programs.git = rec {
+	my.programs.git = {
 		enable = true;
 
-		userName = "Apeiros-46B";
-		userEmail = "${userName}@users.noreply.github.com";
+		userName = globals.gitName;
+		userEmail = globals.gitEmail;
 		
 		aliases = {
 			a  = "add";

@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 
 {
 	services.keyd = {
@@ -12,6 +12,7 @@
 				settings = {
 					main = {
 						capslock = "esc";
+						esc = "capslock";
 					};
 				};
 			};

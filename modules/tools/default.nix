@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 	imports = [
@@ -6,6 +6,7 @@
 		./flameshot.nix
 		./foot.nix
 		./git.nix
+		./st.nix
 		./zsh.nix
 	];
 

@@ -1,4 +1,4 @@
-{ config, pkgs, globals, functions, ... }:
+{ pkgs, globals, functions, ... }:
 
 functions.linkDots "awesome" {
 	# X session software

@@ -1,4 +1,4 @@
-{ config, pkgs, theme, ... }:
+{ pkgs, ... }:
 
 {
 	fonts.packages = [ pkgs.tewi-font ];

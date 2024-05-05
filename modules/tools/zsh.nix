@@ -2,9 +2,9 @@
 
 let
 	# make prompts with the specified accent color
-	mkPS1 = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.& .)%K{8}%f %~ %k%b ";
-	mkPS2 = color: "%K{${color}} %K{8}%B + %b%k ";
-	mkPS3 = color: "%K{${color}} %K{8}%B > %b%k ";
+	mkPS1 = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.& .)%K{0}%f %~ %k%b ";
+	mkPS2 = color: "%K{${color}} %K{0}%B + %b%k ";
+	mkPS3 = color: "%K{${color}} %K{0}%B > %b%k ";
 in {
 	# make zsh the default shell system-wide
 	users.defaultUserShell = pkgs.zsh;
@@ -14,7 +14,6 @@ in {
 	environment.shellAliases =
 		let
 			cfg = globals.dir.nix;
-			home = globals.home;
 			name = globals.hostname;
 		in
 	{
@@ -31,6 +30,8 @@ in {
 		upd   = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
 		hm    = "home-manager";
 		hmreb = "home-manager switch --flake '${cfg}#${name}'";
+
+		vmv = "${pkgs.vimv}/bin/vimv";
 	};
 	# }}}
 
@@ -71,6 +72,95 @@ in {
 			"PROMPT_SUBST"
 			# }}}
 		];
+
+		shellInit = ''
+			# {{{ better history navigation using beginning-search
+			autoload -U up-line-or-beginning-search
+			autoload -U down-line-or-beginning-search
+			zle -N up-line-or-beginning-search
+			zle -N down-line-or-beginning-search
+
+			bindkey -- '^k'   up-line-or-beginning-search
+			bindkey -- '^j'   down-line-or-beginning-search
+			bindkey -- '^p'   up-line-or-beginning-search
+			bindkey -- '^n'   down-line-or-beginning-search
+			bindkey -- '^[^M' self-insert-unmeta
+			bindkey -s '^z'   'fg^M'
+			# }}}
+
+			# {{{ completion style settings
+			zstyle ':completion:*' use-cache on
+			zstyle ':completion:*' cache-path "$comppath"
+			zstyle ':completion:*' rehash true
+			zstyle ':completion:*' verbose true
+			zstyle ':completion:*' insert-tab false
+			zstyle ':completion:*' accept-exact '*(N)'
+			zstyle ':completion:*' squeeze-slashes true
+			zstyle ':completion:*:*:*:*:*' menu select
+			zstyle ':completion:*:match:*' original only
+			zstyle ':completion:*:-command-:*:' verbose false
+			zstyle ':completion::complete:*' gain-privileges 1
+			zstyle ':completion:*:manuals.*' insert-sections true
+			zstyle ':completion:*:manuals' separate-sections true
+			zstyle ':completion:*' completer _complete _match _approximate _ignored
+			zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+			zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+			zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+			zstyle ':completion:*:options' list-colors '=^(-- *)=34'
+			zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=36=0=01'
+
+			# format
+			zstyle ':completion:*' group-name ""
+			zstyle ':completion:*:matches' group 'yes'
+			zstyle ':completion:*:options' description 'yes'
+			zstyle ':completion:*:options' auto-description '%d'
+			zstyle ':completion:*:default' list-prompt '%K{4}%F{0}%B %M matches %k%f%b'
+			zstyle ':completion:*' format '%K{2}%F{0}%B %d %k%f%b'
+			zstyle ':completion:*:messages' format '%K{5}%F{0}%B %d %k%f%b'
+			zstyle ':completion:*:descriptions' format '%K{0}%B %d %k%b'
+			zstyle ':completion:*:warnings' format '%K{1}%F{0}%B %d %k%f%b'
+			zstyle ':completion:*:corrections' format '%K{6}%F{0}%B %d %k%f%b'
+
+			# {{{ completors
+			zstyle ':completion:*:functions' ignored-patterns '(prompt*|_*|*precmd*|*preexec*)'
+			zstyle ':completion::*:(-command-|export):*' fake-parameters ''${''${''${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+			zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+			zstyle ':completion:*:processes-names' command 'ps c -u ''${USER} -o command | uniq'
+			zstyle ':completion:*:(vim|nvim|vi|nano|micro|emacs|neovide):*' ignored-patterns '*.(wav|mp3|flac|ogg|mp4|mov|avi|mkv|webm|iso|so|o|7z|zip|tar|gz|bz2|rar|deb|pkg|gzip|pdf|png|jpeg|jpg|jfif|gif)'
+			zstyle ':completion:*:ne:*' ignored-patterns '^(*.norg)'
+			zstyle ':completion:*:oe:*' ignored-patterns '^(*.org)'
+			zstyle ':completion:*:(sy|sioyek|za|zathura):*' ignored-patterns '^(*.(pdf|epub|mobi))'
+
+			# hostnames and addresses
+			zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+			zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host users hosts-ipaddr
+			zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+			zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
+			zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+			zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
+			zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+
+			# beware: a lot of escaped dollar signs
+			zstyle -e ':completion:*:hosts' hosts 'reply=( ''${=''${=''${=''${''${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ } ''${=''${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*} ''${=''${''${''${''${(@M)''${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}})'
+			# }}}
+			# }}}
+		'';
+
+		autosuggestions = {
+			enable = true;
+			strategy = [
+				"completion"
+				"history"
+			];
+		};
+
+		syntaxHighlighting = {
+			enable = true;
+			highlighters = [
+				"main"
+				"brackets"
+			];
+		};
 	};
 	# }}}
 
@@ -106,20 +196,6 @@ in {
 			PS3 = mkPS3 "4";
 			ZLE_RPROMPT_INDENT = "0";
 		};
-
-		# {{{ plugins
-		plugins = [
-			{
-				name = "zsh-syntax-highlighting";
-				src = pkgs.fetchFromGitHub {
-					owner = "zsh-users";
-					repo = "zsh-syntax-highlighting";
-					rev = "e0165eaa730dd0fa321a6a6de74f092fe87630b0";
-					sha256 = "4rW2N+ankAH4sA6Sa5mr9IKsdAg7WTgrmyqJ2V1vygQ=";
-				};
-			}
-		];
-		# }}}
 	};
 	# }}}
 
@@ -127,6 +203,10 @@ in {
 	my.programs.direnv = {
 		enable = true;
 		enableZshIntegration = true;
+		config = {
+			global.hide_env_diff = true;
+		};
+
 		nix-direnv.enable = true;
 	};
 

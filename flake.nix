@@ -8,6 +8,7 @@
 
 		nvim.url = "github:nix-community/neovim-nightly-overlay";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
+		st.url = "github:Apeiros-46B/st"; # fork from siduck's st
 	};
 
 	outputs = { self, nixpkgs, home-manager, ... }@inputs:

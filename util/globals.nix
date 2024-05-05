@@ -3,6 +3,7 @@ rec {
 	user = "apeiros";
 	name = "Apeiros";
 	home = "/home/${user}";
+	gitName = "Apeiros-46B";
 	gitEmail = "Apeiros-46B@users.noreply.github.com";
 
 	dir = rec {

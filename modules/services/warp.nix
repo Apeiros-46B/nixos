@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
 	environment.systemPackages = with pkgs; [ cloudflare-warp ];

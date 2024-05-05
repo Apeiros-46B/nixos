@@ -1,4 +1,4 @@
-{ config, pkgs, globals, functions, ... }:
+{ pkgs, functions, ... }:
 
 functions.linkDots "nvim" {
 	programs.neovim = {
@@ -11,5 +11,6 @@ functions.linkDots "nvim" {
 		xclip
 		gcc
 		gnumake
+		nil # make nix language server available system-wide
 	];
 }

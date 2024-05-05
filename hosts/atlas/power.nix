@@ -54,5 +54,6 @@
 	fileSystems."/".options = [ "commit=60" ];
 
 	boot.initrd.availableKernelModules = [ "thinkpad_acpi" ];
-	boot.kernelParams = [ "ahci.mobile_lpm_policy=3" ];
+	# TODO: investigate resume-from-suspend kernel panic issue. maybe this is the culprit?
+	# boot.kernelParams = [ "ahci.mobile_lpm_policy=3" ];
 }

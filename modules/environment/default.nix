@@ -1,4 +1,4 @@
-{ config, globals, ... }:
+{ ... }:
 
 {
 	environment.variables = rec {

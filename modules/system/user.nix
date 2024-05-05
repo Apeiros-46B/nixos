@@ -1,4 +1,4 @@
-{ config, pkgs, globals, ... }:
+{ globals, ... }:
 
 {
 	users.users.${globals.user} = {

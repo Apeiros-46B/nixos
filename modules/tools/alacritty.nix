@@ -1,4 +1,4 @@
-{ config, globals, theme, ... }:
+{ theme, ... }:
 
 let
 	colors = builtins.mapAttrs (k: v: "#${v}") theme.colors;

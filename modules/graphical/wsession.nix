@@ -1,4 +1,4 @@
-{ config, pkgs, globals, functions, ... }:
+{ functions, ... }:
 
 functions.linkDots "river" {
 	programs.river.enable = true;

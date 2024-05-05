@@ -1,4 +1,4 @@
-{ config, lib, pkgs, functions, globals, theme, ... }:
+{ config, functions, theme, ... }:
 
 {
 	my.programs.sioyek = {

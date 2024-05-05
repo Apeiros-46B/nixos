@@ -1,4 +1,4 @@
-{ config, globals, ... }:
+{ globals, ... }:
 
 {
 	services.syncthing = {

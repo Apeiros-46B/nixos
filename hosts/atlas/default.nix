@@ -5,9 +5,9 @@
 	imports = [
 		./backlight.nix
 		./bluetooth.nix
+		./display.nix
 		./fingerprint.nix
 		./gpu.nix
-		./hidpi.nix
 		./keyd.nix
 		./power.nix
 		./wifi.nix

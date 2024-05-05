@@ -1,8 +1,16 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
+	programs.java.enable = true;
+
+	environment.systemPackages = with pkgs; [
+		# jdk8
+		# jdk11
+		jdk17
+		# jdk21
+	];
+
 	my.home.packages = with pkgs; [
-		zulu17
 		ferium
 		prismlauncher
 		fabric-installer

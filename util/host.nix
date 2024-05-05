@@ -16,7 +16,7 @@ let lib = inputs.nixpkgs.lib; in
 {
 	inherit system;
 	specialArgs = {
-		inherit overlays functions theme;
+		inherit system inputs overlays functions theme;
 		globals = globals // { hostname = name; };
 	};
 	modules = [
