@@ -25,13 +25,13 @@ in {
 		la = "ls -A";
 		cx = "chmod +x";
 
-		# NixOS
-		reb   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
-		upd   = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
-		hm    = "home-manager";
-		hmreb = "home-manager switch --flake '${cfg}#${name}'";
+		vmv = "vimv";
 
-		vmv = "${pkgs.vimv}/bin/vimv";
+		# NixOS
+		rebuild    = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
+		update     = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
+		hm         = "home-manager";
+		rebuild-hm = "home-manager switch --flake '${cfg}#${name}'";
 	};
 	# }}}
 
@@ -144,6 +144,9 @@ in {
 			zstyle -e ':completion:*:hosts' hosts 'reply=( ''${=''${=''${=''${''${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ } ''${=''${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*} ''${=''${''${''${''${(@M)''${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}})'
 			# }}}
 			# }}}
+
+		# accept autosuggestion
+		bindkey -- '^ ' forward-char
 		'';
 
 		autosuggestions = {
@@ -215,4 +218,11 @@ in {
 		enable = true;
 		enableZshIntegration = true;
 	};
+
+	# sudo messages
+	security.sudo.extraConfig = ''
+		Defaults passprompt="[sudo] authenticating as %p: "
+		Defaults badpass_message="[sudo] wrong, dumbass"
+		Defaults authfail_message="[sudo] %d incorrect attempts"
+	'';
 }

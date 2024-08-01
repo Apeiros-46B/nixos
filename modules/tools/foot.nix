@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 {
-	fonts.packages = [ pkgs.tewi-font ];
-
 	# TODO:
 	my.programs.foot = {
 		enable = true;

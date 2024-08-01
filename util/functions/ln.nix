@@ -23,4 +23,17 @@ in {
 			};
 		})
 	];
+	linkAwesomeLib = pkg: opts: lib.mkMerge [
+		opts
+		({
+			my = { config, ... }: {
+				# link lib so lua ls can provide diagnostics for the lib
+				home.activation.linkAwesomeLib
+					= config.lib.dag.entryAfter [ "writeBoundary" ]
+				''
+					ln -sf '${pkg}/share/awesome/lib' '${globals.dir.cfg}/awesome_lib'
+				'';
+			};
+		})
+	];
 }

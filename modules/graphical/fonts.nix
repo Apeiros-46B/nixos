@@ -19,9 +19,15 @@
 
 			# Twemoji
 			twitter-color-emoji
+
+			# Tewi
+			tewi-font
 		];
 
+		fontDir.enable = true;
 		fontconfig = {
+			allowBitmaps = true;
+			useEmbeddedBitmaps = true;
 			defaultFonts = {
 				serif     = [ theme.font.serif ];
 				sansSerif = [ theme.font.sans  ];

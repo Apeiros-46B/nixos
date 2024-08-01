@@ -1,27 +1,29 @@
 { pkgs, ... }:
 
 {
-	services.xserver = {
-		enable = true;
-
-		dpi = 96;
+	services = {
+		xserver = {
+			enable = true;
+			dpi = 96;
+			exportConfiguration = true;
+		};
 
 		libinput = {
 			enable = true;
 			mouse = {
-				accelSpeed = "0.8";
+				accelSpeed = "0.0";
 				accelProfile = "flat";
+				middleEmulation = false;
 			};
 			touchpad = {
 				accelSpeed = "0.8";
 				accelProfile = "flat";
+				middleEmulation = false;
 				tappingDragLock = false;
 				tappingButtonMap = "lrm";
 				clickMethod = "clickfinger";
 			};
 		};
-
-		exportConfiguration = true;
 	};
 
 	my.xsession.profileExtra = ''

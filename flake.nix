@@ -14,13 +14,12 @@
 	outputs = { self, nixpkgs, home-manager, ... }@inputs:
 		let
 			system = "x86_64-linux";
-			pkgs = nixpkgs.legacyPackages.${system};
 			util = import ./util { inherit inputs system; };
 		in rec {
 			nixosConfigurations = {
 				atlas = util.mkHost {
 					name = "atlas";
-					stateVersion = "23.11"; # don't touch
+					stateVersion = "23.11"; # don't touch, even if updated beyond 23.11
 					theme = import ./theme/everforest.nix;
 					hostDefinition = ./hosts/atlas;
 				};

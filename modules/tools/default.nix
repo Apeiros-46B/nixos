@@ -6,8 +6,9 @@
 		./flameshot.nix
 		./foot.nix
 		./git.nix
+		./shells.nix
 		./st.nix
-		./zsh.nix
+		./urxvt.nix
 	];
 
 	environment.systemPackages = with pkgs; [
@@ -17,12 +18,15 @@
 		inotify-tools
 		zip
 		unzip
+		xdragon
+		vimv
+
+		# devices
+		util-linux
+		pciutils
 
 		# misc
 		fzf
-		xdragon
 		killall
-		util-linux
-		pciutils
 	];
 }
