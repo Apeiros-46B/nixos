@@ -1,12 +1,10 @@
 { pkgs, ... }:
 
 {
-	services = {
-		xserver = {
-			enable = true;
-			dpi = 96;
-			exportConfiguration = true;
-		};
+	services.xserver = {
+		enable = true;
+		dpi = 96;
+		exportConfiguration = true;
 
 		libinput = {
 			enable = true;

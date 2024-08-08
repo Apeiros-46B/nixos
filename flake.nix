@@ -19,7 +19,7 @@
 			nixosConfigurations = {
 				atlas = util.mkHost {
 					name = "atlas";
-					stateVersion = "23.11"; # don't touch, even if updated beyond 23.11
+					stateVersion = "23.11"; # don't touch
 					theme = import ./theme/everforest.nix;
 					hostDefinition = ./hosts/atlas;
 				};

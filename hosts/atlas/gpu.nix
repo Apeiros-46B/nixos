@@ -1,14 +1,14 @@
-{ config, pkgs, ... }:
+{ config, pkgs, globals, ... }:
 
 {
 	services.xserver.videoDrivers = [ "nvidia" ];
-	# boot.initrd.kernelModules = [ "nvidia" ];
-	# boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+	users.users.${globals.user}.extraGroups = [ "video" "render" ];
 
 	hardware = {
-		graphics = {
+		opengl = {
 			enable = true;
-			enable32Bit = true;
+			driSupport = true;
+			driSupport32Bit = true;
 			extraPackages = with pkgs; [
 				rocmPackages.clr.icd
 				intel-compute-runtime
@@ -16,7 +16,7 @@
 		};
 
 		nvidia = {
-			package = config.boot.kernelPackages.nvidiaPackages.stable;
+			package = config.boot.kernelPackages.nvidiaPackages.production;
 			open = false;
 
 			# this doesn't work; nvidia-powerd fails with
@@ -28,8 +28,8 @@
 			nvidiaSettings = true;
 
 			# might cause suspend panic, idk
-			powerManagement.enable = false;
-			powerManagement.finegrained = false;
+			powerManagement.enable = true;
+			powerManagement.finegrained = true;
 
 			prime = {
 				offload = {

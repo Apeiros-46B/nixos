@@ -1,7 +1,7 @@
 { lib, pkgs, globals, functions, ... }:
 
 let
-	awesome = pkgs.awesome-luajit-git;
+	awesome = pkgs.awesome-git;
 	path = lib.makeBinPath (with pkgs; [ awesome coreutils dbus libnotify ]);
 
 	# {{{ make suspend/resume signalling service for awesomewm service
@@ -23,8 +23,6 @@ let
 			'';
 		};
 	} opts;
-	# }}}
-
 	signalSuspend = mkAwesomeSignalService "suspend" {
 		before = [ "suspend.target" ];
 	};
@@ -32,6 +30,7 @@ let
 		after = [ "suspend.target" ];
 		serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
 	};
+	# }}}
 in
 	functions.linkDots "awesome"
 {
@@ -54,6 +53,14 @@ in
 		};
 	};
 
+	xdg.portal = {
+		enable = true;
+		extraPortals = with pkgs; [
+			xdg-desktop-portal-gtk
+			xdg-desktop-portal-gnome # for gnome-network-displays
+		];
+	};
+
 	# {{{ startx
 	# initialize dbus, then call home-manager's xsession file
 	my.home.file.".xinitrc".text = ''
@@ -71,6 +78,6 @@ in
 	'';
 	# }}}
 
-	systemd.services.awesome-signal-suspend = signalSuspend;
-	systemd.services.awesome-signal-resume = signalResume;
+	# systemd.services.awesome-signal-suspend = signalSuspend;
+	# systemd.services.awesome-signal-resume = signalResume;
 }

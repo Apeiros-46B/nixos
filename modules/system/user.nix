@@ -5,7 +5,6 @@
 		isNormalUser = true;
 		extraGroups = [
 			"networkmanager" # allow configuring networks through NM
-			"video"          # allow brightnessctl
 			"wheel"          # allow sudo
 		];
 	};
