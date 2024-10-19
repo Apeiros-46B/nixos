@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
 	services.tlp = {
@@ -32,7 +32,7 @@
 	services.thinkfan.enable = true;
 
 	# utils
-	environment.systemPackages = [ pkgs.acpi ];
+	environment.systemPackages = with pkgs; [ acpi powertop ];
 	powerManagement.powertop.enable = true;
 
 	# disable integrated camera

@@ -4,7 +4,7 @@ functions.linkDots "nvim" {
 	programs.neovim = {
 		enable = true;
 		defaultEditor = true;
-		vimAlias = true;
+		vimAlias = false;
 	};
 
 	my.home.packages = with pkgs; [

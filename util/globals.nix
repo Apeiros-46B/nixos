@@ -1,5 +1,6 @@
 # shared globals used on every system
 rec {
+	uid = 1000;
 	user = "apeiros";
 	name = "Apeiros";
 	home = "/home/${user}";
@@ -14,6 +15,7 @@ rec {
 		mus  = "${home}/mus";
 		pic  = "${home}/pic";
 		pub  = "${home}/pub";
+		temp = "${home}/tmp";
 		tmpl = "${home}/tmpl";
 		vid  = "${home}/vid";
 

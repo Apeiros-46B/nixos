@@ -11,6 +11,7 @@
 				fonts = [
 					"JetBrainsMono"
 					"Iosevka"
+					"DejaVuSansMono"
 				];
 			})
 
@@ -22,6 +23,9 @@
 
 			# Tewi
 			tewi-font
+
+			# Uiua
+			uiua386
 		];
 
 		fontDir.enable = true;

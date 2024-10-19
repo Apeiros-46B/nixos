@@ -2,6 +2,7 @@
 
 {
 	users.users.${globals.user} = {
+		uid = globals.uid;
 		isNormalUser = true;
 		extraGroups = [
 			"networkmanager" # allow configuring networks through NM
@@ -9,7 +10,7 @@
 		];
 	};
 
-	home-manager.users.${globals.user}.xdg.userDirs = {
+	my.xdg.userDirs = {
 		enable = true;
 		createDirectories = false;
 

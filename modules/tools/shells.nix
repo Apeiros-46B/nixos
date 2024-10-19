@@ -26,12 +26,13 @@ in {
 		cx = "chmod +x";
 
 		vmv = "vimv";
+		nmt = "TERM=xterm-old nmtui";
 
 		# NixOS
-		rebuild    = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
-		update     = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
-		hm         = "home-manager";
-		rebuild-hm = "home-manager switch --flake '${cfg}#${name}'";
+		rebuild   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
+		update    = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
+		hm        = "home-manager";
+		hmrebuild = "home-manager switch --flake '${cfg}#${name}'";
 	};
 	# }}}
 
@@ -39,12 +40,13 @@ in {
 	programs.zsh = {
 		enable = true;
 
-		# prompt for root user
+		# {{{ prompt for root user
 		promptInit = ''
 			PS1='${mkPS1 "5"}'
 			PS2='${mkPS2 "5"}'
 			PS3='${mkPS3 "5"}'
 		'';
+		# }}}
 
 		setOptions = [
 			# {{{ options
@@ -73,21 +75,24 @@ in {
 			# }}}
 		];
 
-		shellInit = ''
-			# {{{ better history navigation using beginning-search
-			autoload -U up-line-or-beginning-search
-			autoload -U down-line-or-beginning-search
-			zle -N up-line-or-beginning-search
-			zle -N down-line-or-beginning-search
+		shellAliases = {
+			# {{{
+			# cd to directory stack
+			"1" = "cd -1";
+			"2" = "cd -2";
+			"3" = "cd -3";
+			"4" = "cd -4";
+			"5" = "cd -5";
+			"6" = "cd -6";
+			"7" = "cd -7";
+			"8" = "cd -8";
+			"9" = "cd -9";
 
-			bindkey -- '^k'   up-line-or-beginning-search
-			bindkey -- '^j'   down-line-or-beginning-search
-			bindkey -- '^p'   up-line-or-beginning-search
-			bindkey -- '^n'   down-line-or-beginning-search
-			bindkey -- '^[^M' self-insert-unmeta
-			bindkey -s '^z'   'fg^M'
+			"new" = "nvim +enew";
 			# }}}
+		};
 
+		shellInit = ''
 			# {{{ completion style settings
 			zstyle ':completion:*' use-cache on
 			zstyle ':completion:*' cache-path "$comppath"
@@ -145,10 +150,40 @@ in {
 			# }}}
 			# }}}
 
-		# accept autosuggestion
-		bindkey -- '^ ' forward-char
+      # {{{ shell functions
+			fork() {
+				"$@" > /dev/null 2>&1 & disown;
+			}
+
+			launch() {
+				fork "$@"; exit;
+			}
+			# }}}
+
+			# {{{ keybinds
+			# accept autosuggestion
+			bindkey -- '^ ' forward-char
+			bindkey -s '^f' '^[Ifork ^M'
+			bindkey -s '^g' '^[Ilaunch ^M'
+			# }}}
+
+			# {{{ better history navigation using beginning-search
+			autoload -U up-line-or-beginning-search
+			autoload -U down-line-or-beginning-search
+			zle -N up-line-or-beginning-search
+			zle -N down-line-or-beginning-search
+
+			bindkey -- '^k'   up-line-or-beginning-search
+			bindkey -- '^j'   down-line-or-beginning-search
+			bindkey -- '^p'   up-line-or-beginning-search
+			bindkey -- '^n'   down-line-or-beginning-search
+			bindkey -- '^[^M' self-insert-unmeta
+			bindkey -- '^[[Z' reverse-menu-complete
+			bindkey -s '^z'   'fg^M'
+			# }}}
 		'';
 
+		# {{{ plugins
 		autosuggestions = {
 			enable = true;
 			strategy = [
@@ -164,6 +199,7 @@ in {
 				"brackets"
 			];
 		};
+		# }}}
 	};
 	# }}}
 
@@ -171,26 +207,7 @@ in {
 	my.programs.zsh = {
 		enable = true;
 		defaultKeymap = "viins";
-
 		history.path = "${config.my.xdg.dataHome}/zsh/zsh_history";
-
-		# {{{ aliases
-		shellAliases = {
-			# source rc
-			re = "source ${globals.home}/.zshrc";
-
-			# cd to directory stack
-			"1" = "cd -1";
-			"2" = "cd -2";
-			"3" = "cd -3";
-			"4" = "cd -4";
-			"5" = "cd -5";
-			"6" = "cd -6";
-			"7" = "cd -7";
-			"8" = "cd -8";
-			"9" = "cd -9";
-		};
-		# }}}
 
 		localVariables = {
 			# prompt for regular user
@@ -198,6 +215,12 @@ in {
 			PS2 = mkPS2 "4";
 			PS3 = mkPS3 "4";
 			ZLE_RPROMPT_INDENT = "0";
+		};
+
+		shellAliases = {
+			re = "source ${globals.home}/.zshrc";
+			ec = "fork emacsclient -a '' -c";
+			tdy = "ec $(date +%Y.%m.%d).org";
 		};
 	};
 	# }}}
@@ -222,7 +245,7 @@ in {
 	# sudo messages
 	security.sudo.extraConfig = ''
 		Defaults passprompt="[sudo] authenticating as %p: "
-		Defaults badpass_message="[sudo] wrong, dumbass"
+		Defaults badpass_message="[sudo] incorrect password"
 		Defaults authfail_message="[sudo] %d incorrect attempts"
 	'';
 }

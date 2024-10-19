@@ -8,4 +8,6 @@
 		./env.nix
 		./tty.nix
 	];
+
+	networking.firewall.enable = false;
 }
