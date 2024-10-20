@@ -1,4 +1,4 @@
-{ pkgs, globals, ... }:
+{ pkgs, config, globals, ... }:
 
 let
 	mpdAddress = "127.0.0.1";
@@ -18,7 +18,7 @@ in {
 		};
 
 		dataDir = mpdDataDir;
-		musicDirectory = "${globals.dir.mus}";
+		musicDirectory = globals.dir.mus;
 
 		extraConfig = ''
 			audio_output {
@@ -63,6 +63,8 @@ in {
 		};
 	};
 
+	my.home.packages = [ pkgs.mpc-cli ];
+
 	my.programs.ncmpcpp = {
 		enable = true;
 		settings = {
@@ -99,11 +101,27 @@ in {
 	my.programs.beets = {
 		enable = true;
 		mpdIntegration = {
-			enableStats = true;
+			enableStats = false;
 			enableUpdate = true;
 			host = mpdAddress;
 			port = mpdPort;
 		};
-		# settings = {}; # TODO
+		settings = {
+			directory = globals.dir.mus;
+			mpd.music_directory = globals.dir.mus;
+
+			plugins = [ "play" "playlist" ];
+
+			play = {
+				relative_to = globals.dir.mus;
+				command = "${pkgs.mpc-cli}/bin/mpc add";
+			};
+
+			playlist = {
+				auto = "yes";
+				relative_to = globals.dir.mus;
+				playlist_dir = config.my.services.mpd.playlistDirectory;
+			};
+		};
 	};
 }
