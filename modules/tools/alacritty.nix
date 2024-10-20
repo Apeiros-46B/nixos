@@ -3,7 +3,7 @@
 let
 	colors = builtins.mapAttrs (k: v: "#${v}") theme.colors;
 in {
-	my.programs.alacritty = {
+	hm.programs.alacritty = {
 		enable = true;
 		settings = {
 			window.padding = {

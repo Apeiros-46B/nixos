@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-	my.home.packages = with pkgs; [ libqalculate qalculate-gtk ];
+	hm.home.packages = with pkgs; [ libqalculate qalculate-gtk ];
 }

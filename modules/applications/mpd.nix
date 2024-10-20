@@ -9,7 +9,7 @@ let
 	visPath = "${mpdDataDir}/visualizer.fifo";
 	visStereo = true;
 in {
-	my.services.mpd = {
+	hm.services.mpd = {
 		enable = true;
 		network = {
 			startWhenNeeded = false;
@@ -35,12 +35,12 @@ in {
 		'';
 	};
 
-	my.services.mpd-mpris = {
+	hm.services.mpd-mpris = {
 		enable = true;
 		mpd.useLocal = true;
 	};
 
-	my.services.mpd-discord-rpc = {
+	hm.services.mpd-discord-rpc = {
 		enable = true;
 		settings = {
 			hosts = [ "${mpdAddress}:${toString mpdPort}" ];
@@ -63,9 +63,9 @@ in {
 		};
 	};
 
-	my.home.packages = [ pkgs.mpc-cli ];
+	hm.home.packages = [ pkgs.mpc-cli ];
 
-	my.programs.ncmpcpp = {
+	hm.programs.ncmpcpp = {
 		enable = true;
 		package = pkgs.ncmpcpp.override {
 			visualizerSupport = true;
@@ -102,7 +102,7 @@ in {
 		# bindings = {}; # TODO
 	};
 
-	my.programs.beets = {
+	hm.programs.beets = {
 		enable = true;
 		mpdIntegration = {
 			enableStats = false;
@@ -124,7 +124,7 @@ in {
 			playlist = {
 				auto = "yes";
 				relative_to = globals.dir.mus;
-				playlist_dir = config.my.services.mpd.playlistDirectory;
+				playlist_dir = config.hm.services.mpd.playlistDirectory;
 			};
 		};
 	};

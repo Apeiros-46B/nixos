@@ -1,7 +1,7 @@
 { ... }:
 
 {
-	my.programs.urxvt = {
+	hm.programs.urxvt = {
 		enable = true;
 		fonts = [ "xft:tewi:pixelsize=22" ];
 		scroll = {

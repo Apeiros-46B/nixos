@@ -27,7 +27,7 @@ let lib = inputs.nixpkgs.lib; in
 		inputs.home-manager.nixosModules.home-manager
 
 		# create an alias for home-manager configuration
-		(lib.mkAliasOptionModule [ "my" ] [ "home-manager" "users" globals.user ])
+		(lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" globals.user ])
 
 		{
 			nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -45,7 +45,7 @@ let lib = inputs.nixpkgs.lib; in
 				useUserPackages = true;
 			};
 
-			my = {
+			hm = {
 				# TODO: fix news still showing errors despite being slienced?
 				news = {
 					display = "silent";
@@ -62,7 +62,7 @@ let lib = inputs.nixpkgs.lib; in
 			};
 
 			system.stateVersion  = stateVersion;
-			my.home.stateVersion = stateVersion;
+			hm.home.stateVersion = stateVersion;
 		}
 	];
 }

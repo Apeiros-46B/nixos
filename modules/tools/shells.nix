@@ -204,10 +204,10 @@ in {
 	# }}}
 
 	# {{{ user-specific configuration
-	my.programs.zsh = {
+	hm.programs.zsh = {
 		enable = true;
 		defaultKeymap = "viins";
-		history.path = "${config.my.xdg.dataHome}/zsh/zsh_history";
+		history.path = "${config.hm.xdg.dataHome}/zsh/zsh_history";
 
 		localVariables = {
 			# prompt for regular user
@@ -226,7 +226,7 @@ in {
 	# }}}
 
 	# direnv
-	my.programs.direnv = {
+	hm.programs.direnv = {
 		enable = true;
 		enableZshIntegration = true;
 		config = {
@@ -237,7 +237,7 @@ in {
 	};
 
 	# zoxide
-	my.programs.zoxide = {
+	hm.programs.zoxide = {
 		enable = true;
 		enableZshIntegration = true;
 	};

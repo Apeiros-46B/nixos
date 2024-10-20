@@ -8,7 +8,7 @@ in {
 	linkDots = name: opts: lib.mkMerge [
 		opts
 		({
-			my = { config, ... }:
+			hm = { config, ... }:
 				let
 					target = "${globals.dir.nix}/dots/${name}";
 				in
@@ -26,7 +26,7 @@ in {
 	linkAwesomeLib = pkg: opts: lib.mkMerge [
 		opts
 		({
-			my = { config, ... }: {
+			hm = { config, ... }: {
 				# link lib so lua ls can provide diagnostics for the lib
 				home.activation.linkAwesomeLib
 					= config.lib.dag.entryAfter [ "writeBoundary" ]

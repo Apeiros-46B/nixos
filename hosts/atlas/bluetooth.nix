@@ -11,7 +11,7 @@
 
 	services.blueman.enable = true;
 
-	my.home.packages = [
+	hm.home.packages = [
 		(with pkgs; writeShellScriptBin "blue" ''
 			case "$1" in
 				on)

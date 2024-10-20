@@ -2,7 +2,7 @@
 
 functions.linkDots "river" {
 	programs.river.enable = true;
-	my.xdg.configFile."river/scale".text = ''
+	hm.xdg.configFile."river/scale".text = ''
 		scale=1
 	'';
 }

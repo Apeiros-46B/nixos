@@ -6,7 +6,7 @@
 		./steam.nix
 	];
 
-	my.home.packages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		mangohud
 	];
 }

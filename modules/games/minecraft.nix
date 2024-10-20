@@ -10,7 +10,7 @@
 		# jdk21
 	];
 
-	my.home.packages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		ferium
 		prismlauncher
 		fabric-installer

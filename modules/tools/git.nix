@@ -1,7 +1,7 @@
 { globals, ... }:
 
 {
-	my.programs.git = {
+	hm.programs.git = {
 		enable = true;
 
 		userName = globals.gitName;
@@ -46,7 +46,7 @@
 		};
 	};
 		
-	my.programs.gh = {
+	hm.programs.gh = {
 		enable = true;
 		gitCredentialHelper = {
 			enable = true;

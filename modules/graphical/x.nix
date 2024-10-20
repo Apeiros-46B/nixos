@@ -24,7 +24,7 @@
 		};
 	};
 
-	my.xsession.profileExtra = ''
+	hm.xsession.profileExtra = ''
 		${pkgs.xorg.xset}/bin/xset r rate 350 75
 	'';
 }

@@ -3,7 +3,7 @@
 {
 	environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-	my.home.pointerCursor = {
+	hm.home.pointerCursor = {
 		name = "phinger-cursors-light";
 		package = pkgs.phinger-cursors;
 		size = 32;

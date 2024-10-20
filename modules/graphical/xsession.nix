@@ -37,7 +37,7 @@ in
 	services.xserver.displayManager.startx.enable = true;
 
 	# install packages
-	my.home.packages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		rofi
 		picom
 		libnotify
@@ -45,7 +45,7 @@ in
 	];
 
 	# home-manager xsession allows home-manager user services to work
-	my.xsession = {
+	hm.xsession = {
 		enable = true;
 		windowManager.awesome = {
 			enable = true;
@@ -63,7 +63,7 @@ in
 
 	# {{{ startx
 	# initialize dbus, then call home-manager's xsession file
-	my.home.file.".xinitrc".text = ''
+	hm.home.file.".xinitrc".text = ''
 		if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
 			eval $(dbus-launch --exit-with-session --sh-syntax)
 		fi

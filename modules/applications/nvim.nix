@@ -7,7 +7,7 @@ functions.linkDots "nvim" {
 		vimAlias = false;
 	};
 
-	my.home.packages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		xclip
 		gcc
 		gnumake

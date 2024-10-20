@@ -1,5 +1,5 @@
 { ... }:
 
 {
-	my.programs.firefox.enable = true;
+	hm.programs.firefox.enable = true;
 }

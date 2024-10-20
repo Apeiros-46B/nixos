@@ -3,7 +3,7 @@
 {
 	# apparently not needed for network connectivity
 	services.gnome.gnome-keyring.enable = true;
-	my.xsession.profileExtra = ''
+	hm.xsession.profileExtra = ''
 		eval $(${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon \
 				 --daemonize \
 				 --components=ssh,secrets)

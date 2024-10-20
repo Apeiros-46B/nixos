@@ -1,7 +1,7 @@
 { ... }:
 
 {
-	my.services.flameshot = {
+	hm.services.flameshot = {
 		enable = true;
 		settings = {
 			General = {

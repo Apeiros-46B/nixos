@@ -1,7 +1,7 @@
 { config, pkgs, globals, ... }:
 
 {
-	my.programs.brave = {
+	hm.programs.brave = {
 		enable = true;
 	};
 }

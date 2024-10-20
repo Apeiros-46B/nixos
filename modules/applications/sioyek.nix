@@ -1,7 +1,7 @@
 { config, functions, theme, ... }:
 
 {
-	my.programs.sioyek = {
+	hm.programs.sioyek = {
 		enable = true;
 
 		bindings = {

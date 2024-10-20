@@ -25,6 +25,6 @@
 				};
 			};
 
-			homeConfigurations.atlas = nixosConfigurations.atlas.config.my.home;
+			homeConfigurations.atlas = nixosConfigurations.atlas.config.hm.home;
 		};
 }
