@@ -67,6 +67,10 @@ in {
 
 	my.programs.ncmpcpp = {
 		enable = true;
+		package = pkgs.ncmpcpp.override {
+			visualizerSupport = true;
+		};
+
 		settings = {
 			mpd_host = mpdAddress;
 			mpd_port = mpdPort;
@@ -75,7 +79,7 @@ in {
 			visualizer_output_name = visName;
 			visualizer_data_source = visPath;
 			visualizer_in_stereo = if visStereo then "yes" else "no";
-			visualizer_type = "wave";
+			visualizer_type = "spectrum";
 			visualizer_look = "●▮";
 
 			# TODO: this doesn't work
