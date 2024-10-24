@@ -19,6 +19,15 @@
 						j = "down";
 						k = "up";
 						l = "right";
+
+						g = "home";
+						p = "pageup";
+						n = "pagedown";
+
+						backspace = "delete";
+					};
+					"altgr+shift" = {
+						G = "end";
 					};
 				};
 			};

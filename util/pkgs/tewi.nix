@@ -4,7 +4,7 @@ pkgs.tewi-font.overrideAttrs (prev: {
 	nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.bdfresize ];
 
 	postBuild = ''
-		# upscale bdf fonts
+		# upscale bdf fonts by a factor of 2
 		for f in ./*.bdf; do
 			bdfresize "$f" -f 2 > "$(echo "$f" | sed 's/11/22/')"
 		done
