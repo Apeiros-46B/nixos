@@ -1,14 +1,29 @@
 { pkgs, config, globals, ... }:
 
 let
+	lfmUser = "Apeiros-46B";
+
 	mpdAddress = "127.0.0.1";
 	mpdPort = 6600;
-	mpdDataDir = "${globals.dir.mus}/mpd";
+	mpdDataDir = "${globals.dir.mus}/.mpd";
 
 	visName = "ncmpcpp visualizer feed";
 	visPath = "${mpdDataDir}/visualizer.fifo";
 	visStereo = true;
 in {
+	hm.home.packages = with pkgs; [
+		mpc-cli
+		yt-dlp
+
+		ffmpeg
+		chromaprint
+
+		python312Packages.pyacoustid
+		python312Packages.requests
+		python312Packages.beautifulsoup4
+		python312Packages.pylast
+	];
+
 	hm.services.mpd = {
 		enable = true;
 		network = {
@@ -45,8 +60,9 @@ in {
 		settings = {
 			hosts = [ "${mpdAddress}:${toString mpdPort}" ];
 			format = {
-				details = "$title";
-				state = "on \"$album\" by $artist";
+				details = "$title [$duration]";
+				state = "$artist / $album";
+				small_image = "";
 			};
 		};
 	};
@@ -57,13 +73,11 @@ in {
 		port = mpdPort;
 		endpoints = {
 			"last.fm" = {
-				username = "Apeiros-46B";
+				username = lfmUser;
 				passwordFile = "${globals.home}/auth/.lfm.pw"; # TODO use sops-nix
 			};
 		};
 	};
-
-	hm.home.packages = [ pkgs.mpc-cli ];
 
 	hm.programs.ncmpcpp = {
 		enable = true;
@@ -79,25 +93,23 @@ in {
 			visualizer_output_name = visName;
 			visualizer_data_source = visPath;
 			visualizer_in_stereo = if visStereo then "yes" else "no";
-			visualizer_type = "spectrum";
-			visualizer_look = "●▮";
+			visualizer_type = "wave_filled";
+			visualizer_look = "●█";
 
-			# TODO: this doesn't work
-			execute_on_song_change = "${pkgs.writeShellScriptBin "songinfo" ''
+			# TODO: move this into a separate service (a shell script) separate from ncmpcpp
+			execute_on_song_change = "${pkgs.writeShellScriptBin "ncmpcpp-notify-songinfo" ''
 				mpc='${pkgs.mpc-cli}/bin/mpc'
-				ffmpeg='${pkgs.ffmpeg}/bin/ffmpeg'
+				notify='${pkgs.libnotify}/bin/notify-send'
 
-				previewdir='${globals.dir.cfg}/ncmpcpp/previews/'
-				fname="$($mpc --format '${globals.dir.mus}/%file%' current)"}
-				preview="$previewdir/$($mpc --format '%album%' current | base64).png"
+				# find first image
+				album_dir="${globals.dir.mus}/$(dirname "$($mpc -f '%file%' current)")"
+				cover="$(find "$album_dir" -type f | awk '/jpg|png|webp$/ { print $0; exit }')"
 
-				[ -e "$preview" ] || $ffmpeg -y -i "$fname" -an -vf scale=128:128 "$preview" > /dev/null 2>&1
-
-				notify-send \
-					-i "$previewname" \
-					"$($mpc --format '%artist% - %title%' current)" \
-					"$($mpc --format 'on %album% [mpd]' current)"
-			''}/bin/songinfo";
+				$notify \
+					-i "$cover" \
+					"$($mpc -f '%artist% - %title%' current)" \
+					"$($mpc -f 'on %album% [mpd]' current)"
+			''}/bin/ncmpcpp-notify-songinfo";
 		};
 		# bindings = {}; # TODO
 	};
@@ -114,18 +126,67 @@ in {
 			directory = globals.dir.mus;
 			mpd.music_directory = globals.dir.mus;
 
-			plugins = [ "play" "playlist" ];
+			paths = {
+				default   = "$albumartist/$atypes$album%aunique{}/$track.$title";
+				comp      = "Various Artists/$atypes$album%aunique{}/$track.$title";
+				singleton = "$artist/_Singleton%aunique{}/$title";
+			};
+
+			plugins = [
+				"play"
+				"playlist"
+
+				# metadata
+				"fromfilename"
+				"albumtypes"
+				"lastimport"
+				"lastgenre"
+				"fetchart"
+				"lyrics"
+				"edit"
+
+				# audio analysis
+				"bpm"
+				# "chroma" # need to install dependencies first
+				"replaygain"
+
+				# searching
+				"fuzzy"
+				"types"
+				"missing"
+			];
 
 			play = {
 				relative_to = globals.dir.mus;
-				command = "${pkgs.mpc-cli}/bin/mpc add";
+				command = "bash -c 'cat $0 | ${pkgs.mpc-cli}/bin/mpc add'";
 			};
-
 			playlist = {
 				auto = "yes";
 				relative_to = globals.dir.mus;
 				playlist_dir = config.hm.services.mpd.playlistDirectory;
 			};
+
+			albumtypes = {
+        ep          = "EP";
+        single      = "Single";
+        soundtrack  = "OST";
+        live        = "Live";
+        compilation = "Compilation";
+        remix       = "Remix";
+			};
+			lastfm.user = lfmUser;
+			lastgenre = {
+				force = "no";
+				min_weight = 2;
+				title_case = "no";
+			};
+
+			bpm.max_strokes = 10;
+			replaygain = {
+				backend = "ffmpeg";
+			};
+
+			types.rating = "int";
 		};
 	};
 }
