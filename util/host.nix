@@ -23,8 +23,9 @@ let lib = inputs.nixpkgs.lib; in
 		# include the provided host
 		hostDefinition
 
-		# include home-manager's flake input
+		# include home-manager and sops-nix's flake inputs
 		inputs.home-manager.nixosModules.home-manager
+		inputs.sops-nix.nixosModules.sops
 
 		# create an alias for home-manager configuration
 		(lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" globals.user ])

@@ -14,6 +14,12 @@
 						capslock = "esc";
 						esc = "capslock";
 					};
+					altgr = {
+						h = "left";
+						j = "down";
+						k = "up";
+						l = "right";
+					};
 				};
 			};
 		};
