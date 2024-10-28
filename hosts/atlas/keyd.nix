@@ -27,7 +27,7 @@
 						backspace = "delete";
 					};
 					"altgr+shift" = {
-						G = "end";
+						g = "end";
 					};
 				};
 			};

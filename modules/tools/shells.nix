@@ -2,7 +2,7 @@
 
 let
 	# make prompts with the specified accent color
-	mkPS1 = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.& .)%K{0}%f %~ %k%b ";
+	mkPS1 = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{0}%f %~ %k%b ";
 	mkPS2 = color: "%K{${color}} %K{0}%B + %b%k ";
 	mkPS3 = color: "%K{${color}} %K{0}%B > %b%k ";
 in {
