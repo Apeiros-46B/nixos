@@ -5,7 +5,8 @@
 		./fonts.nix
 		./wayland.nix
 		./wsession.nix
-		./x.nix
+		./xdg.nix
+		./xserver.nix
 		./xsession.nix
 	];
 }

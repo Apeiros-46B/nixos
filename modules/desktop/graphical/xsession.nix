@@ -38,7 +38,6 @@ in
 
 	# install packages
 	hm.home.packages = with pkgs; [
-		rofi
 		picom
 		libnotify
 		i3lock-color

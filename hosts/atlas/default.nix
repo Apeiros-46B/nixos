@@ -1,4 +1,4 @@
-# Thinkpad
+# Thinkpad p15v gen 2
 { config, lib, ... }:
 
 {
@@ -11,8 +11,6 @@
 		./keyd.nix
 		./power.nix
 		./wifi.nix
-
-		../../modules
 	];
 
 	boot.initrd.availableKernelModules = [

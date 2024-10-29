@@ -24,12 +24,14 @@
 			nixosConfigurations = {
 				atlas = util.mkHost {
 					name = "atlas";
-					stateVersion = "23.11"; # don't touch
+					type = "desktop";
 					theme = import ./theme/everforest.nix;
-					hostDefinition = ./hosts/atlas;
+					modules = ./hosts/atlas;
+					stateVersion = "23.11"; # don't touch
 				};
 			};
 
+			# TODO: do this with a map instead of hardcoded for each host
 			homeConfigurations.atlas = nixosConfigurations.atlas.config.hm.home;
 		};
 }

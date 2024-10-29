@@ -8,7 +8,8 @@
 	globals,
 	theme,
 	stateVersion,
-	hostDefinition
+	modules,
+	type, # "desktop" or "server"
 }:
 
 let lib = inputs.nixpkgs.lib; in
@@ -20,8 +21,12 @@ let lib = inputs.nixpkgs.lib; in
 		globals = globals // { hostname = name; };
 	};
 	modules = [
-		# include the provided host
-		hostDefinition
+		# common modules
+		../modules/common
+		(if type == "desktop" then ../modules/desktop else ../modules/server)
+
+		# host-specific modules
+		modules
 
 		# include home-manager and sops-nix's flake inputs
 		inputs.home-manager.nixosModules.home-manager

@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+	programs.gnupg.agent = {
+		enable = true;
+		enableSSHSupport = true;
+		pinentryPackage = pkgs.pinentry-curses;
+	};
+
 	# apparently not needed for network connectivity
 	services.gnome.gnome-keyring.enable = true;
 	hm.xsession.profileExtra = ''

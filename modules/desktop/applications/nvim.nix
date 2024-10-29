@@ -13,4 +13,9 @@ functions.linkDots "nvim" {
 		gnumake
 		nil # make nix language server available system-wide
 	];
+
+	environment.variables = rec {
+		EDITOR = "nvim";
+		VISUAL = EDITOR;
+	};
 }

@@ -1,6 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, globals, ... }:
 
 {
+	users.users.${globals.user}.extraGroups = [
+		"networkmanager"
+	];
+
 	networking = {
 		# I only have one network card
 		usePredictableInterfaceNames = false;
@@ -25,7 +29,10 @@
 
 	# GUI frontend
 	programs.nm-applet.enable = true;
-	environment.systemPackages = [ pkgs.networkmanagerapplet ];
+	environment = {
+		systemPackages = [ pkgs.networkmanagerapplet ];
+		shellAliases.nmt = "TERM=xterm-old nmtui";
+	};
 
 	# power off eth0 on boot
 	systemd.services.link-down-eth0 = {

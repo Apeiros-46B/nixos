@@ -1,15 +1,6 @@
 { config, globals, ... }:
 
 {
-	users.users.${globals.user} = {
-		uid = globals.uid;
-		isNormalUser = true;
-		extraGroups = [
-			"networkmanager" # allow configuring networks through NM
-			"wheel"          # allow sudo
-		];
-	};
-
 	hm.xdg = {
 		configHome = "${globals.home}/.config";
 		userDirs = {

@@ -4,10 +4,7 @@
 	imports = [
 		./boot.nix
 		./locale.nix
-		./user.nix
-		./env.nix
 		./tty.nix
+		./user.nix
 	];
-
-	networking.firewall.enable = false;
 }

@@ -45,12 +45,6 @@
 			pull.rebase = false;
 		};
 	};
-		
-	hm.programs.gh = {
-		enable = true;
-		gitCredentialHelper = {
-			enable = true;
-			hosts = [ "https://github.com" "https://gist.github.com" ];
-		};
-	};
+
+	hm.programs.gh.enable = true;
 }

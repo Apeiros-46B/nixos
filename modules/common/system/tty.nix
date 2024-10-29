@@ -4,7 +4,7 @@ let
 	colors = lib.concatStrings (lib.mapAttrsToList
 		(k: v: "[2J[H]${k}${v}")
 	{
-		# {{{ set TTY colors
+		# {{{ theme the tty
 		P0 = theme.colors.bg1;
 		P8 = theme.colors.bg3;
 		P1 = theme.colors.red;
@@ -30,6 +30,7 @@ in {
 		useXkbConfig = true;
 	};
 
+	# black NixOS text on green background
 	services.getty.greetingLine =
 		''[1m[42;30m NixOS [0m \l'';
 

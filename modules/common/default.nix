@@ -2,13 +2,9 @@
 
 {
 	imports = [
-		./applications
-		./environment
-		./games
-		./graphical
-		./tools
 		./services
 		./system
+		./tools
 	];
 
 	programs.nix-ld.enable = true;

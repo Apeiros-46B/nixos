@@ -8,7 +8,7 @@
 	boot.kernelPackages = pkgs.linuxPackages_zen;
 	
 	boot.kernelParams = [
-		# these will mess with battery life, don't use unless on desktop
+		# these will mess with battery life, don't use on laptop
 		# "intel_idle.max_cstate=1"
 		# "rcupdate.rcu_expedited=1"
 

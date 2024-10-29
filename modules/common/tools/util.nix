@@ -2,20 +2,25 @@
 
 {
 	environment.systemPackages = with pkgs; [
-		inotify-tools
+		# files
+		file
 		tree
 		zip
 		unzip
-		xdragon
+		inotify-tools
 
-		vimv
-		fzf
-		ripgrep
-
-		util-linux
-		pciutils
-
+		# process
 		killall
 		btop
+
+		# interactive
+		vim
+		vimv
+		ripgrep
+		fzf # TODO: move to separate file
+
+		# misc
+		util-linux
+		pciutils
 	];
 }

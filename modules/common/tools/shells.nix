@@ -21,12 +21,12 @@ in {
 		q = "exit";
 		s = "sudo ";
 
-		l  = "ls -lAh";
+		l  = "ls -lh";
+		ll = "ls -lAh";
 		la = "ls -A";
 		cx = "chmod +x";
 
-		vmv = "vimv";
-		nmt = "TERM=xterm-old nmtui";
+		re = "exec \"$0\"";
 
 		# NixOS
 		rebuild   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
@@ -218,7 +218,6 @@ in {
 		};
 
 		shellAliases = {
-			re = "source ${globals.home}/.zshrc";
 			ec = "fork emacsclient -a '' -c";
 			tdy = "ec $(date +%Y.%m.%d).org";
 		};
