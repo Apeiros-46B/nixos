@@ -1,9 +1,9 @@
-[submodule "dots/nvim"]
-	path = dots/nvim
+[submodule "impure/nvim"]
+	path = impure/nvim
 	url = https://github.com/Apeiros-46B/nvim
-[submodule "dots/emacs"]
-	path = dots/emacs
+[submodule "impure/emacs"]
+	path = impure/emacs
 	url = https://github.com/Apeiros-46B/emacs
-[submodule "dots/awesome"]
-	path = dots/awesome
+[submodule "impure/awesome"]
+	path = impure/awesome
 	url = https://github.com/Apeiros-46B/awesome-dots

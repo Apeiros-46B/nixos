@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ system, overlays, ... }:
 
 {
 	imports = [
@@ -7,6 +7,11 @@
 		./tools
 	];
 
+	nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	nixpkgs = {
+		inherit overlays;
+		config.allowUnfree = true;
+		hostPlatform = system;
+	};
 	programs.nix-ld.enable = true;
-	environment.systemPackages = [ pkgs.home-manager ];
 }

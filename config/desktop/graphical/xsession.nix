@@ -32,7 +32,7 @@ let
 	};
 	# }}}
 in
-	functions.linkDots "awesome"
+	functions.linkImpure "awesome"
 {
 	services.xserver.displayManager.startx.enable = true;
 

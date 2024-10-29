@@ -5,12 +5,12 @@ let
 	capFirst = str: lib.strings.toUpper (builtins.substring 0 1 str)
 									+ builtins.substring 1 (-1) str;
 in {
-	linkDots = name: opts: lib.mkMerge [
+	linkImpure = name: opts: lib.mkMerge [
 		opts
 		({
 			hm = { config, ... }:
 				let
-					target = "${globals.dir.nix}/dots/${name}";
+					target = "${globals.dir.nix}/impure/${name}";
 				in
 			{
 				home.activation.${"link" + capFirst name}

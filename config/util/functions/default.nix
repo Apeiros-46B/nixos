@@ -1,8 +1,7 @@
 { inputs, globals }:
 
 let
-	pkgs = inputs.nixpkgs;
-	lib = pkgs.lib;
+	lib = inputs.nixpkgs.lib;
 in
 	import ./hex.nix { inherit lib globals; } //
 	import ./ln.nix { inherit lib globals; } //

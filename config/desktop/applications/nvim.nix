@@ -1,6 +1,6 @@
 { pkgs, functions, ... }:
 
-functions.linkDots "nvim" {
+functions.linkImpure "nvim" {
 	programs.neovim = {
 		enable = true;
 		defaultEditor = true;

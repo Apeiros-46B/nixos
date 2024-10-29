@@ -1,5 +1,8 @@
-# shared globals used on every system
+hostname:
+
 rec {
+	inherit hostname;
+
 	uid = 1000;
 	user = "apeiros";
 	name = "Apeiros";
@@ -18,11 +21,6 @@ rec {
 		temp = "${home}/tmp";
 		tmpl = "${home}/tmpl";
 		vid  = "${home}/vid";
-
 		nix  = "${cfg}/nixos";
 	};
-
-	# host-specific (arguments to mkHost):
-	# hostname = "";
-	# stateVersion = "";
 }
