@@ -5,7 +5,7 @@ rec {
 	globals = import ./globals.nix;
 	overlays = import ./overlays.nix { inherit inputs; };
 
-	mkHost = { name, stateVersion, theme, modules, type }:
+	mkHost = { name, stateVersion, theme, config, type }:
 		import ./host.nix {
 			inherit name
 							inputs
@@ -15,7 +15,7 @@ rec {
 							globals
 							theme
 							stateVersion
-							modules
+							config
 							type;
 		};
 }

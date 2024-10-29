@@ -25,8 +25,8 @@
 				atlas = util.mkHost {
 					name = "atlas";
 					type = "desktop";
-					theme = import ./theme/everforest.nix;
-					modules = ./hosts/atlas;
+					theme = "everforest";
+					config = ./hosts/atlas;
 					stateVersion = "23.11"; # don't touch
 				};
 			};

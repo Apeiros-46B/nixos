@@ -8,7 +8,7 @@
 	globals,
 	theme,
 	stateVersion,
-	modules,
+	config,
 	type, # "desktop" or "server"
 }:
 
@@ -17,16 +17,17 @@ let lib = inputs.nixpkgs.lib; in
 {
 	inherit system;
 	specialArgs = {
-		inherit system inputs overlays functions theme;
+		inherit system inputs overlays functions;
+		theme = ../config/themes + theme;
 		globals = globals // { hostname = name; };
 	};
 	modules = [
 		# common modules
-		../modules/common
-		(if type == "desktop" then ../modules/desktop else ../modules/server)
+		../config/common
+		(if type == "desktop" then ../config/desktop else ../config/server)
 
 		# host-specific modules
-		modules
+		config
 
 		# include home-manager and sops-nix's flake inputs
 		inputs.home-manager.nixosModules.home-manager
