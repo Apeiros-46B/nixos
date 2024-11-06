@@ -25,6 +25,7 @@ in {
 		re = "exec \"$0\"";
 
 		# NixOS
+		# TODO: make config directory autodetect, currently it's fixed to ~/.config/nixos, needs to be in /etc/nixos on bastion
 		gen       = "readlink /nix/var/nix/profiles/system | cut -d- -f2";
 		rebuild   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
 		update    = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";

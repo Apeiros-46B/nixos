@@ -1,14 +1,18 @@
-{ ... }:
+{ globals, ... }:
 
 {
 	services.openssh = {
 		enable = true;
 		allowSFTP = true;
 		settings = {
+			AllowUsers = [ globals.user ];
 			PermitRootLogin = "no";
-			# TODO: figure out why accessing github via ssh keypair does not work (prompts for password, enter correct password, prompts again without message)
 			PasswordAuthentication = false;
 			X11Forwarding = true;
 		};
 	};
+
+	users.users.${globals.user}.openssh.authorizedKeys.keys = [
+		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJZmaaN5kFV74MHGGroN+hRqxMzmypm7iKz3njTkMCj apeiros@atlas"
+	];
 }
