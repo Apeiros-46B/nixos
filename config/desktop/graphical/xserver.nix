@@ -22,6 +22,8 @@
 				clickMethod = "clickfinger";
 			};
 		};
+
+		# digimend.enable = true; # TODO: reenable this when i have enough time for a kernel recompilation on all machines
 	};
 
 	hm.xsession.profileExtra = ''

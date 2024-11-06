@@ -1,6 +1,7 @@
 inputs:
 
 [
+	inputs.nixmox.overlay
 	inputs.nvim.overlays.default
 	inputs.f2k.overlays.window-managers
 

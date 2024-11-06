@@ -55,17 +55,18 @@ in {
 		mpd.useLocal = true;
 	};
 
-	hm.services.mpd-discord-rpc = {
-		enable = true;
-		settings = {
-			hosts = [ "${mpdAddress}:${toString mpdPort}" ];
-			format = {
-				details = "$title [$duration]";
-				state = "$artist / $album";
-				small_image = "";
-			};
-		};
-	};
+	# TODO: reenable when the 100% cpu usage is fixed
+	# hm.services.mpd-discord-rpc = {
+	# 	enable = true;
+	# 	settings = {
+	# 		hosts = [ "${mpdAddress}:${toString mpdPort}" ];
+	# 		format = {
+	# 			details = "$title [$duration]";
+	# 			state = "$artist / $album";
+	# 			small_image = "";
+	# 		};
+	# 	};
+	# };
 
 	services.mpdscribble = {
 		enable = true;

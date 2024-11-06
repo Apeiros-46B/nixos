@@ -3,8 +3,7 @@
 {
 	imports = [
 		./fonts.nix
-		./wayland.nix
-		./wsession.nix
+		./theme.nix
 		./xdg.nix
 		./xserver.nix
 		./xsession.nix

@@ -17,18 +17,15 @@ in {
 			name = globals.hostname;
 		in
 	{
-		c = "clear -x";
-		q = "exit";
-		s = "sudo ";
-
-		l  = "ls -lh";
-		ll = "ls -lAh";
+		ls = "ls -F --color=auto --group-directories-first";
+		l  = "ls -lAh";
+		ll = "ls -lh";
 		la = "ls -A";
-		cx = "chmod +x";
 
 		re = "exec \"$0\"";
 
 		# NixOS
+		gen       = "readlink /nix/var/nix/profiles/system | cut -d- -f2";
 		rebuild   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
 		update    = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
 		hm        = "home-manager";

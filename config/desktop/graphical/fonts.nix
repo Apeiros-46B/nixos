@@ -5,8 +5,9 @@
 		packages = with pkgs; [
 			# Microsoft fonts
 			corefonts
+			ibm-plex
+			twitter-color-emoji
 
-			# JetBrainsMono Nerd Font
 			(nerdfonts.override {
 				fonts = [
 					"JetBrainsMono"
@@ -15,16 +16,8 @@
 				];
 			})
 
-			# IBM Plex {Sans,Serif,Mono}
-			ibm-plex
-
-			# Twemoji
-			twitter-color-emoji
-
-			# Tewi
+			# my.fairfax-font # TODO: currently doesn't build
 			tewi-font
-
-			# Uiua
 			uiua386
 		];
 

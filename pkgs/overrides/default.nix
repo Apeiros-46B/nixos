@@ -1,3 +1,3 @@
-(_: prev: {
-	tewi-font = import ./tewi.nix { pkgs = prev; };
+(final: prev: {
+	tewi-font = import ./tewi.nix { inherit final prev; };
 })

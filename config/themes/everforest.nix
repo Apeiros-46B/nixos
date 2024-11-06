@@ -1,4 +1,4 @@
-{
+rec {
 	colors = {
 		bg1 = "2b3339";
 		bg2 = "323c41";
@@ -21,6 +21,7 @@
 		blue   = "7fbbb3";
 		purple = "d699b6";
 	};
+	colors_hash = builtins.mapAttrs (k: v: "#${v}") colors;
 	font = {
 		serif = "IBM Plex Serif";
 		sans = "IBM Plex Sans";

@@ -1,7 +1,7 @@
-{ pkgs }:
+{ final, prev }:
 
-pkgs.tewi-font.overrideAttrs (prev: {
-	nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgs.bdfresize ];
+prev.tewi-font.overrideAttrs (prevDrv: {
+	nativeBuildInputs = prevDrv.nativeBuildInputs ++ [ final.bdfresize ];
 
 	postBuild = ''
 		# upscale bdf fonts by a factor of 2
