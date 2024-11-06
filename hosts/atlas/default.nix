@@ -1,5 +1,6 @@
 # Thinkpad p15v gen 2
-{ config, lib, ... }:
+{ pkgs, lib, ... }:
+# TODO: restructure like boot.a boot.b into boot = {a b }
 
 {
 	imports = [
@@ -13,6 +14,8 @@
 		./wifi.nix
 	];
 
+	# zen kernel
+	boot.kernelPackages = pkgs.linuxPackages_zen;
 	boot.initrd.availableKernelModules = [
 		"xhci_pci"
 		"thunderbolt"
@@ -25,12 +28,10 @@
 	boot.kernelModules = [];
 	boot.extraModulePackages = [];
 
-	hardware.cpu.intel.updateMicrocode =
-		lib.mkDefault config.hardware.enableRedistributableFirmware;
-
 	fileSystems."/" = {
 		device = "/dev/disk/by-uuid/bdb03842-5d4c-4a18-b9c7-f6c2e6b84c07";
 		fsType = "ext4";
+		options = [ "relatime" "lazytime" ];
 	};
 	fileSystems."/boot" = {
 		device = "/dev/disk/by-uuid/E6D4-BA29";
@@ -41,5 +42,6 @@
 	}];
 
 	hardware.enableRedistributableFirmware = true;
+	hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
 	networking.useDHCP = lib.mkDefault true;
 }

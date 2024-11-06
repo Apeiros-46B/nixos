@@ -7,7 +7,7 @@ mkHost:
 		system = "x86_64-linux";
 		stateVersion = "23.11";
 	})
-	(mkHost "bastion" { # TODO: install nix on this machine, with zfs
+	(mkHost "bastion" {
 		type = "server";
 		theme = "everforest";
 		system = "x86_64-linux";

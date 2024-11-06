@@ -1,4 +1,4 @@
-{ pkgs, config, globals, ... }:
+{ config, pkgs, globals, ... }:
 
 let
 	lfmUser = "Apeiros-46B";
