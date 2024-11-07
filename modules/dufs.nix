@@ -1,20 +1,28 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-with pkgs.lib;
 let
 	cfg = config.my.services.dufs;
 	etcPath = "dufs/config.yaml";
 in {
-	options.my.services.dufs = {
+	options.my.services.dufs = with lib; {
 		enable = mkEnableOption "dufs, a file server";
+		group = mkOption {
+			type = types.str;
+			default = "dufs";
+		};
 		config = mkOption {
-			type = attrsOf inferred;
+			type = types.attrsOf types.anything;
 			default = {};
 		};
 	};
 
-	config = mkIf cfg.enable {
-		users.users.dufs.packages = [ pkgs.dufs ];
+	config = lib.mkIf cfg.enable {
+		users.users.dufs = {
+			isSystemUser = true;
+			packages = [ pkgs.dufs ];
+			group = cfg.group;
+		};
+		users.groups.dufs = {};
 
 		systemd.services.dufs = {
 			description = "Start dufs";
@@ -25,12 +33,14 @@ in {
 			serviceConfig = {
 				Type = "simple";
 				User = "dufs";
-				Group = "dufs";
+				Group = cfg.group;
 				ExecStart = "${pkgs.dufs}/bin/dufs --config /etc/${etcPath}";
 			};
 		};
 
-		environment.etc.${etcPath}.text =
-			(pkgs.formats.yaml {}).generate "config.yaml" cfg.config;
+		environment.etc.${etcPath}.source =
+			(pkgs.formats.yaml {}).generate "config.yaml" config.my.services.dufs.config;
+
+		networking.firewall.allowedTCPPorts = [ (cfg.config.port or 5000) ];
 	};
 }

@@ -1,5 +1,5 @@
 # Thinkpad p15v gen 2
-{ pkgs, lib, ... }:
+{ lib, pkgs, ... }:
 # TODO: restructure like boot.a boot.b into boot = {a b }
 
 {
