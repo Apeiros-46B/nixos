@@ -152,22 +152,9 @@ in {
 			# }}}
 			# }}}
 
-			# {{{ shell functions
-			fork() {
-				"$@" > /dev/null 2>&1 & disown;
-			}
-
-			launch() {
-				fork "$@"; exit;
-			}
-			# }}}
-
-			# {{{ keybinds
-			# accept autosuggestion
-			bindkey -- '^ ' forward-char
-			bindkey -s '^f' '^[Ifork ^M'
-			bindkey -s '^g' '^[Ilaunch ^M'
-			# }}}
+			# keybinds
+			bindkey -v # vi mode
+			bindkey -- '^ ' forward-char # accept autosuggestion
 
 			# {{{ better history navigation using beginning-search
 			autoload -U up-line-or-beginning-search
@@ -179,6 +166,8 @@ in {
 			bindkey -- '^j'   down-line-or-beginning-search
 			bindkey -- '^p'   up-line-or-beginning-search
 			bindkey -- '^n'   down-line-or-beginning-search
+			bindkey -- 'OA' up-line-or-beginning-search
+			bindkey -- 'OB' down-line-or-beginning-search
 			bindkey -- '^[^M' self-insert-unmeta
 			bindkey -- '^[[Z' reverse-menu-complete
 			bindkey -s '^z'   'fg^M'
@@ -224,6 +213,17 @@ in {
 			ec = "fork emacsclient -a '' -c";
 			tdy = "ec $(date +%Y.%m.%d).org";
 		};
+
+		initExtra = ''
+			fork() {
+				"$@" > /dev/null 2>&1 & disown;
+			}
+			launch() {
+				fork "$@"; exit;
+			}
+			bindkey -s '^f' '^[Ifork ^M'
+			bindkey -s '^g' '^[Ilaunch ^M'
+		'';
 	};
 	# }}}
 
