@@ -1,66 +1,81 @@
 { pkgs, ... }:
 
-{}
-# {
-#         # users and groups
-#         users = {
-#         	users.samba = {};
-#         	groups.samba.members = [ "root" "samba" ];
-# 
-#         	users.dufs.packages = [ pkgs.dufs ];
-#         	groups.dufs.members = [ "dufs" ];
-#         };
-# 
-#         # directories
-#         systemd.tmpfiles.settings.samba = {
-#         	"/mnt/shares/priv".d = {
-#         		user = "root"; # TODO: can samba change ownership to non-root? would be better for samba user to own files?
-#         		group = "samba";
-#         		mode = "0760";
-#         	};
-#         	"/mnt/shares/pub".d = {
-#         		user = "root";
-#         		group = "samba";
-#         		mode = "0764";
-#         	};
-#         };
-# 
-#         # samba for local management and transfers
-#         services.samba = {
-#         	# TODO set up samba
-#         };
-# 
-#         # world-accessible read-only dufs for non-critical files
-#         systemd.services.dufs-public-samba = {
-#         	description = "Start dufs on samba public share";
-#         	wantedBy = [ "multi-user.target" ];
-#         	wants = [ "network-online.target" ];
-#         	after = [ "network-online.target" ];
-# 
-#         	serviceConfig = {
-#         		Type = "simple";
-#         		User = "dufs";
-#         		Group = "dufs";
-#         		ExecStart = "${pkgs.dufs}/bin/dufs --path-prefix /pub --config /etc/dufs/config.yaml";
-#         	};
-#         };
-#         environment.etc."dufs/config.yaml".text = ''
-#         	serve-path: '/mnt/shares/pub'
-#         	auth:
-#         		- apeiros:${1}@/:ro # TODO: sops-managed password hashed with sha512 (the hash is stored in this config), make it rw as well
-#         		- '@/:ro'           # Guest users can only read
-#         	allow-all: false
-#         	allow-upload: false
-#         	allow-delete: false
-#         	allow-search: true
-#         	allow-symlink: false
-#         	allow-archive: false
-#         	enable-cors: true
-#         	render-index: false
-#         	render-try-index: false
-#         	render-spa: false
-#         	assets: /etc/dufs/assets/
-#         	log-file: /var/log/dufs.log
-#         	compress: medium
-#         '';
-# }
+{
+	users = {
+		users.nas = {};
+		users.dufs.packages = [ pkgs.dufs ];
+		groups.nas.members = [ "root" "nas" "dufs" ];
+	};
+	
+	# directories
+	systemd.tmpfiles.settings."10-my-nas" = {
+		# only accessible via samba
+		"/nas/samba/priv".d = {
+			user = "root";
+			group = "nas";
+			mode = "0640";
+		};
+		# accessible via samba, read-only in dufs (password protected)
+		"/nas/samba/prot".d = {
+			user = "root";
+			group = "nas";
+			mode = "0640";
+		};
+		# accessible via samba, read-only in dufs (not protected)
+		"/nas/samba/pub".d = {
+			user = "root";
+			group = "nas";
+			mode = "0640";
+		};
+		# accessible via samba, read-write in dufs (password protected)
+		"/nas/samba/inbox".d = {
+			user = "root";
+			group = "nas";
+			mode = "0660";
+		};
+
+		# dufs links
+		"/nas/dufs".d = {
+			user = "dufs";
+			group = "nas";
+			mode = "0660";
+		};
+		"/nas/dufs/inbox".L   = { argument = "/nas/samba/inbox"; };
+		"/nas/dufs/public".L  = { argument = "/nas/samba/pub";   };
+		"/nas/dufs/private".L = { argument = "/nas/samba/prot";  };
+	};
+	
+	# samba for local management and transfers
+	services.samba = {
+		# TODO set up samba
+	};
+
+	my.services.dufs = {
+		enable = true;
+		config = {
+			serve-path = "/nas/dufs";
+			log-file = "/var/log/dufs.log";
+			compress = "medium";
+
+			auth = [
+				# TODO: make the passwords 1,2 (sha512 hashed)
+				"inbox:${1}@/inbox:rw,/public:ro"
+				"apeiros:${2}@/:ro"
+				"@/public:ro"
+			];
+
+			allow-all = false;
+			allow-upload = true;
+			allow-delete = false;
+			allow-search = true;
+			allow-symlink = true;
+			allow-archive = true;
+
+			render-index = false;
+			render-try-index = false;
+			render-spa = false;
+
+			enable-cors = true;
+		};
+	};
+}
