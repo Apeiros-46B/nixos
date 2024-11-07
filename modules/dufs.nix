@@ -3,7 +3,7 @@
 with pkgs.lib;
 let
 	cfg = config.my.services.dufs;
-	
+	etcPath = "dufs/config.yaml";
 in {
 	options.my.services.dufs = {
 		enable = mkEnableOption "dufs, a file server";
@@ -14,6 +14,8 @@ in {
 	};
 
 	config = mkIf cfg.enable {
+		users.users.dufs.packages = [ pkgs.dufs ];
+
 		systemd.services.dufs = {
 			description = "Start dufs";
 			wantedBy = [ "multi-user.target" ];
@@ -24,11 +26,11 @@ in {
 				Type = "simple";
 				User = "dufs";
 				Group = "dufs";
-				ExecStart = "${pkgs.dufs}/bin/dufs --config /etc/dufs/config.yaml";
+				ExecStart = "${pkgs.dufs}/bin/dufs --config /etc/${etcPath}";
 			};
 		};
 
-		environment.etc."dufs/config.yaml".text =
+		environment.etc.${etcPath}.text =
 			(pkgs.formats.yaml {}).generate "config.yaml" cfg.config;
 	};
 }

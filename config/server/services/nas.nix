@@ -3,33 +3,43 @@
 {
 	users = {
 		users.nas = {};
-		users.dufs.packages = [ pkgs.dufs ];
 		groups.nas.members = [ "root" "nas" "dufs" ];
 	};
 	
-	# directories
+	# {{{ set up directories and symlinks
 	systemd.tmpfiles.settings."10-my-nas" = {
+		"/nas".d = {
+			user = "nas";
+			group = "nas";
+			mode = "0660";
+		}
+		"/nas/samba".d = {
+			user = "nas";
+			group = "nas";
+			mode = "0660";
+		}
+
 		# only accessible via samba
 		"/nas/samba/priv".d = {
-			user = "root";
+			user = "nas";
 			group = "nas";
 			mode = "0640";
 		};
 		# accessible via samba, read-only in dufs (password protected)
 		"/nas/samba/prot".d = {
-			user = "root";
+			user = "nas";
 			group = "nas";
 			mode = "0640";
 		};
 		# accessible via samba, read-only in dufs (not protected)
 		"/nas/samba/pub".d = {
-			user = "root";
+			user = "nas";
 			group = "nas";
 			mode = "0640";
 		};
 		# accessible via samba, read-write in dufs (password protected)
 		"/nas/samba/inbox".d = {
-			user = "root";
+			user = "nas";
 			group = "nas";
 			mode = "0660";
 		};
@@ -38,12 +48,13 @@
 		"/nas/dufs".d = {
 			user = "dufs";
 			group = "nas";
-			mode = "0660";
+			mode = "0400";
 		};
-		"/nas/dufs/inbox".L   = { argument = "/nas/samba/inbox"; };
-		"/nas/dufs/public".L  = { argument = "/nas/samba/pub";   };
-		"/nas/dufs/private".L = { argument = "/nas/samba/prot";  };
+		"/nas/dufs/inbox".L.argument   = "/nas/samba/inbox";
+		"/nas/dufs/public".L.argument  = "/nas/samba/pub";
+		"/nas/dufs/private".L.argument = "/nas/samba/prot";
 	};
+	# }}}
 	
 	# samba for local management and transfers
 	services.samba = {
