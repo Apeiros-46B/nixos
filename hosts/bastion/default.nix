@@ -1,6 +1,10 @@
 { pkgs, lib, ... }:
 
 {
+	imports = [
+		./nas.nix
+	];
+
 	networking.hostId = "d5f1bf16"; # for ZFS
 
 	boot = {

@@ -2,9 +2,10 @@
 
 let
 	# make prompts with the specified accent color
-	mkPS1 = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{0}%f %~ %k%b ";
-	mkPS2 = color: "%K{${color}} %K{0}%B + %b%k ";
-	mkPS3 = color: "%K{${color}} %K{0}%B > %b%k ";
+	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{0}%f %~ %k%b ";
+	mkPS2   = color: "%K{${color}} %K{0}%B + %b%k ";
+	mkPS3   = color: "%K{${color}} %K{0}%B > %b%k ";
+	rprompt = ''$([ $SSH_TTY ] && echo "%K{0}%B @%m %F{0}%K{2} %k%f%b")'';
 in {
 	# make zsh the default shell system-wide
 	users.defaultUserShell = pkgs.zsh;
@@ -17,12 +18,15 @@ in {
 			name = globals.hostname;
 		in
 	{
+		# preferred arguments
 		ls = "ls -F --color=auto --group-directories-first";
+		ip = "ip --color";
+
+		# utility
+		re = "exec \"$0\"";
 		l  = "ls -lAh";
 		ll = "ls -lh";
 		la = "ls -A";
-
-		re = "exec \"$0\"";
 
 		# NixOS
 		# TODO: make config directory autodetect, currently it's fixed to ~/.config/nixos, needs to be in /etc/nixos on bastion
@@ -43,6 +47,8 @@ in {
 			PS1='${mkPS1 "5"}'
 			PS2='${mkPS2 "5"}'
 			PS3='${mkPS3 "5"}'
+			RPROMPT='${rprompt}'
+			ZLE_RPROMPT_INDENT=0
 		'';
 		# }}}
 
@@ -85,8 +91,6 @@ in {
 			"7" = "cd -7";
 			"8" = "cd -8";
 			"9" = "cd -9";
-
-			"new" = "nvim +enew";
 			# }}}
 		};
 
@@ -148,7 +152,7 @@ in {
 			# }}}
 			# }}}
 
-      # {{{ shell functions
+			# {{{ shell functions
 			fork() {
 				"$@" > /dev/null 2>&1 & disown;
 			}
@@ -212,6 +216,7 @@ in {
 			PS1 = mkPS1 "4";
 			PS2 = mkPS2 "4";
 			PS3 = mkPS3 "4";
+			RPROMPT = rprompt;
 			ZLE_RPROMPT_INDENT = "0";
 		};
 
@@ -239,10 +244,12 @@ in {
 		enableZshIntegration = true;
 	};
 
-	# sudo messages
+	# sudo messages & preserve SSH variables across sudo boundaries
 	security.sudo.extraConfig = ''
 		Defaults passprompt="[sudo] authenticating as %p: "
 		Defaults badpass_message="[sudo] incorrect password"
 		Defaults authfail_message="[sudo] %d incorrect attempts"
+
+		Defaults env_keep += "SSH_TTY SSH_CONNECTION SSH_CLIENT"
 	'';
 }
