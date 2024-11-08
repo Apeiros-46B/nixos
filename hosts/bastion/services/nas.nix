@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
 	users = {
@@ -66,6 +66,7 @@
 
 	my.services.dufs = {
 		enable = true;
+		openFirewall = true;
 		group = "nas";
 		config = {
 			serve-path = "/nas/dufs";
@@ -73,7 +74,7 @@
 			compress = "medium";
 	
 			auth = [
-				# TODO: make the passwords 1,2 (sha512 hashed)
+				# TODO: make the passwords (they are currently 1,2) (should be sha512 hashed sops managed)
 				"inbox:${"1"}@/inbox:rw,/public:ro"
 				"apeiros:${"2"}@/:ro"
 				"@/public:ro"

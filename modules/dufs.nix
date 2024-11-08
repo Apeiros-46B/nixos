@@ -6,6 +6,10 @@ let
 in {
 	options.my.services.dufs = with lib; {
 		enable = mkEnableOption "dufs, a file server";
+		openFirewall = mkOption {
+			type = types.bool;
+			default = true;
+		};
 		group = mkOption {
 			type = types.str;
 			default = "dufs";
@@ -41,6 +45,7 @@ in {
 		environment.etc.${etcPath}.source =
 			(pkgs.formats.yaml {}).generate "config.yaml" config.my.services.dufs.config;
 
-		networking.firewall.allowedTCPPorts = [ (cfg.config.port or 5000) ];
+		networking.firewall.allowedTCPPorts =
+			lib.mkIf cfg.openFirewall [ (cfg.config.port or 5000) ];
 	};
 }
