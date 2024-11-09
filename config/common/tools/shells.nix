@@ -118,6 +118,7 @@ in {
 
 			# format
 			zstyle ':completion:*' group-name ""
+			zstyle ':completion:*' list-dirs-first true
 			zstyle ':completion:*:matches' group 'yes'
 			zstyle ':completion:*:options' description 'yes'
 			zstyle ':completion:*:options' auto-description '%d'
