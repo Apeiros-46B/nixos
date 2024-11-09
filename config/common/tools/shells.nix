@@ -21,6 +21,7 @@ in {
 		# preferred arguments
 		ls = "ls -F --color=auto --group-directories-first";
 		ip = "ip --color";
+		tree = "tree --dirsfirst";
 
 		# utility
 		re = "exec \"$0\"";
