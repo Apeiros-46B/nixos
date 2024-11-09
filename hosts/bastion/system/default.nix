@@ -3,6 +3,7 @@
 {
 	imports = [
 		./boot.nix
-		./zfs.nix
+		./fs.nix
+		./network.nix
 	];
 }

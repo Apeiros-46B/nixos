@@ -3,6 +3,7 @@
 let
 	cfg = config.my.services.dufs;
 	etcPath = "dufs/config.yaml";
+	cfgYaml = (pkgs.formats.yaml {}).generate "config.yaml" cfg.config;
 in {
 	options.my.services.dufs = with lib; {
 		enable = mkEnableOption "dufs, a file server";
@@ -28,6 +29,11 @@ in {
 		};
 		users.groups.dufs = {};
 
+		networking.firewall.allowedTCPPorts =
+			lib.mkIf cfg.openFirewall [ (cfg.config.port or 5000) ];
+
+		environment.etc.${etcPath}.source = cfgYaml;
+
 		systemd.services.dufs = {
 			description = "Start dufs";
 			wantedBy = [ "multi-user.target" ];
@@ -40,12 +46,7 @@ in {
 				Group = cfg.group;
 				ExecStart = "${pkgs.dufs}/bin/dufs --config /etc/${etcPath}";
 			};
+			restartTriggers = [ cfgYaml ];
 		};
-
-		environment.etc.${etcPath}.source =
-			(pkgs.formats.yaml {}).generate "config.yaml" config.my.services.dufs.config;
-
-		networking.firewall.allowedTCPPorts =
-			lib.mkIf cfg.openFirewall [ (cfg.config.port or 5000) ];
 	};
 }

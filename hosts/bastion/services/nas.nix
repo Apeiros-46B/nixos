@@ -69,13 +69,14 @@
 		openFirewall = true;
 		group = "nas";
 		config = {
+			port = 5000;
 			serve-path = "/nas/dufs";
 			log-file = "/var/log/dufs.log";
 			compress = "medium";
 	
 			auth = [
 				# TODO: make the passwords (they are currently 1,2) (should be sha512 hashed sops managed)
-				"inbox:${"1"}@/inbox:rw,/public:ro"
+				"inbox:${"1"}@/inbox:ro,/public:ro"
 				"apeiros:${"2"}@/:ro"
 				"@/public:ro"
 			];

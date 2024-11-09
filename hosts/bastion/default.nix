@@ -13,5 +13,4 @@
 
 	hardware.enableRedistributableFirmware = true;
 	hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
-	networking.useDHCP = lib.mkDefault true;
 }
