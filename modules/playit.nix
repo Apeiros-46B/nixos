@@ -19,5 +19,6 @@ in {
 			group = "root";
 			mode = "0700";
 		};
+		# TODO: make a systemd service
 	};
 }

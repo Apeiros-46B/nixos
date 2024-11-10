@@ -2,6 +2,7 @@
 
 {
 	imports = [
+		./games
 		./services
 		./system
 	];

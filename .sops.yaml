@@ -1,0 +1,8 @@
+# public keys
+keys:
+  - &root_atlas age1uwnwqs5gcdkzhuuc36r3t6s2f3ct7l6hpuxtk80xnlhxp6vx7g2qkxgacy
+creation_rules:
+  - path_regex: .+\.(yaml|jason|env|ini)$
+    key_groups:
+    - age:
+      - *root_atlas

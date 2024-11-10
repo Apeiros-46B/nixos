@@ -11,4 +11,6 @@
 			X11Forwarding = true;
 		};
 	};
+
+	# TODO: send login info to discord webhook on a pam hook
 }

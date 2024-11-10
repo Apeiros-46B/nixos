@@ -1,6 +1,7 @@
-{ ... }:
+{ config, ... }:
 
 {
+	#	set up users
 	users = {
 		users.samba = {
 			isSystemUser = true;
@@ -64,22 +65,52 @@
 		# TODO set up samba
 	};
 
+	# {{{ dufs for easy access for non-technical users
+	sops.secrets = {
+		dufs-inbox-pw = {
+			sopsFile = ./Secrets.yaml;
+			owner = "dufs";
+			group = "dufs";
+			mode = "0400";
+			restartUnits = [ "dufs.service" ];
+		};
+		dufs-admin-pw = {
+			sopsFile = ./Secrets.yaml;
+			owner = "dufs";
+			group = "dufs";
+			mode = "0400";
+			restartUnits = [ "dufs.service" ];
+		};
+	};
 	my.services.dufs = {
 		enable = true;
 		openFirewall = true;
 		group = "nas";
+		accounts = [
+			{ # admin
+				user = "apeiros";
+				passwordFile = config.sops.secrets.dufs-admin-pw.path;
+				rules = "@/:rw";
+			}
+			{ # admin
+				user = "netineti";
+				passwordFile = config.sops.secrets.dufs-admin-pw.path;
+				rules = "@/:rw";
+			}
+			{ # restricted uploads
+				user = "inbox";
+				passwordFile = config.sops.secrets.dufs-inbox-pw.path;
+				rules = "@/inbox:rw,/public:ro";
+			}
+			{ # guest
+				rules = "@/public:ro";
+			}
+		];
 		config = {
 			port = 5000;
 			serve-path = "/nas/dufs";
 			log-file = "/var/log/dufs.log";
 			compress = "medium";
-	
-			auth = [
-				# TODO: make the passwords (they are currently 1,2) (should be sha512 hashed sops managed)
-				"inbox:${"1"}@/inbox:ro,/public:ro"
-				"apeiros:${"2"}@/:ro"
-				"@/public:ro"
-			];
 	
 			allow-all = false;
 			allow-upload = true;
@@ -95,4 +126,5 @@
 			enable-cors = true;
 		};
 	};
+	# }}}
 }

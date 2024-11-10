@@ -7,8 +7,11 @@ rec {
 	user = "apeiros";
 	name = "Apeiros";
 	home = "/home/${user}";
+
 	gitName = "Apeiros-46B";
 	gitEmail = "Apeiros-46B@users.noreply.github.com";
+
+	discordUid = "443604304264429578";
 
 	dir = rec {
 		cfg  = "${home}/.config";
