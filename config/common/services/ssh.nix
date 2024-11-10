@@ -8,10 +8,10 @@ let
 
 		case "$PAM_TYPE" in
 			open_session)
-				PAYLOAD=" { \"content\": \"⚠️ $MENTION user \`$PAM_USER\` logged in to \`$HOSTNAME\` from $PAM_RHOST\" }"
+				PAYLOAD=" { \"content\": \"⚠️ $MENTION \`$PAM_USER@$HOSTNAME\` login from **$PAM_RHOST**\" }"
 				;;
 			close_session)
-				PAYLOAD=" { \"content\": \"⚠️ $MENTION user \`$PAM_USER\` logged out of \`$HOSTNAME\` from $PAM_RHOST\" }"
+				PAYLOAD=" { \"content\": \"⚠️ $MENTION \`$PAM_USER@$HOSTNAME\` logout from **$PAM_RHOST**\" }"
 				;;
 		esac
 
