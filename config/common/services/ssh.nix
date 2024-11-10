@@ -2,7 +2,7 @@
 
 let
 	# {{{ Discord webhook
-	hook = (pkgs.writeShellScriptBin "ssh-discord" ''
+	hook = "${(pkgs.writeShellScriptBin "ssh-discord" ''
 		WEBHOOK_URL="$(cat '${config.sops.secrets.ssh-discord-webhook-url.path}')"
 		MENTION='<@${globals.discordUid}>'
 
@@ -18,7 +18,7 @@ let
 		if [ -n "$PAYLOAD" ] ; then
 			curl -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" "$WEBHOOK_URL"
 		fi
-	'');
+	'')}/bin/ssh-discord";
 	# }}}
 in {
 	services.openssh = {
