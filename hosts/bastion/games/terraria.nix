@@ -16,11 +16,8 @@
 		enable = true;
 
 		dataDir = "/var/lib/terraria";
-		worldPath = "${dataDir}/world.wld";
-		banListPath = "${dataDir}/banned.txt";
-
 		port = 7777;
-		openFirewall = false;
+		openFirewall = true;
 		password = "$TERRARIA_PASSWORD";
 
 		maxPlayers = 6;

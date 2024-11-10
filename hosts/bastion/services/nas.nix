@@ -11,7 +11,7 @@
 	};
 	
 	# {{{ set up directories and symlinks
-	systemd.tmpfiles.settings."10-my-nas" = {
+	systemd.tmpfiles.settings."10-nas" = {
 		"/nas".d = {
 			user = "root";
 			group = "nas";
