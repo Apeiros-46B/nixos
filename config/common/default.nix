@@ -5,6 +5,8 @@
 		./services
 		./system
 		./tools
+
+		./wawa.nix # TODO: move to bastion
 	];
 
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];

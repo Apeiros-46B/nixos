@@ -12,12 +12,10 @@ in {
 	};
 
 	config = lib.mkIf cfg.enable {
-		environment.systemPackages = [
-		];
 		systemd.tmpfiles.settings."10-playit".${dataDir}.d = {
-			user = "root";
+			user  = "root";
 			group = "root";
-			mode = "0700";
+			mode  = "0700";
 		};
 		systemd.services.playit = {
 			description = "playit.gg agent";

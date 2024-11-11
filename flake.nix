@@ -8,6 +8,7 @@
 
 		sops-nix.url = "github:Mic92/sops-nix";
 		nixmox.url = "github:Sorixelle/nixmox";
+		wawa.url = "github:amatgil/wawa";
 
 		nvim.url = "github:nix-community/neovim-nightly-overlay";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";

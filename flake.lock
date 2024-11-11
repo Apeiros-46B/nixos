@@ -491,6 +491,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_8": {
+      "locked": {
+        "lastModified": 1728740863,
+        "narHash": "sha256-u+rxA79a0lyhG+u+oPBRtTDtzz8kvkc9a6SWSt9ekVc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "a3f9ad65a0bf298ed5847629a57808b97e6e8077",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-24.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nvim": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -564,7 +580,8 @@
         "nixpkgs": "nixpkgs_4",
         "nvim": "nvim",
         "sops-nix": "sops-nix",
-        "st": "st"
+        "st": "st",
+        "wawa": "wawa"
       }
     },
     "rust-analyzer-src": {
@@ -581,6 +598,27 @@
         "owner": "rust-analyzer",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "wawa",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1728959392,
+        "narHash": "sha256-fp4he1QQjE+vasDMspZYeXrwTm9otwEqLwEN6FKZ5v0=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4c6e317300f05b8871f585b826b6f583e7dc4a9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
         "type": "github"
       }
     },
@@ -649,6 +687,25 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "wawa": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_8",
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1731268055,
+        "narHash": "sha256-JkH6Ia6Lxf7DAnLFmu7pGsR95fctKG7zo71YW+50hAc=",
+        "owner": "amatgil",
+        "repo": "wawa",
+        "rev": "0a8ee73b244f97f1e95b8ace336ad25f78ac80fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amatgil",
+        "repo": "wawa",
         "type": "github"
       }
     }

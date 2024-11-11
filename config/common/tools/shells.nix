@@ -82,6 +82,9 @@ in {
 
 		shellAliases = {
 			# {{{
+			# make sudo expand aliases
+			sudo = "sudo ";
+
 			# cd to directory stack
 			"1" = "cd -1";
 			"2" = "cd -2";
@@ -173,6 +176,7 @@ in {
 			bindkey -- '^[^M' self-insert-unmeta
 			bindkey -- '^[[Z' reverse-menu-complete
 			bindkey -s '^z'   'fg^M'
+			bindkey -s '^x' '^[Inix run nixpkgs#^M'
 			# }}}
 		'';
 
