@@ -39,6 +39,7 @@
 				sp = "stash pop";
 				st = "stash";
 				sw = "switch";
+				u  = "reset --soft HEAD^";
 			};
 
 			core.pager = "delta";

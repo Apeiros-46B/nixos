@@ -11,7 +11,7 @@ let
 				PAYLOAD=" { \"content\": \"⚠️ $MENTION \`$PAM_USER@$HOSTNAME\` login from **$PAM_RHOST**\" }"
 				;;
 			close_session)
-				PAYLOAD=" { \"content\": \"⚠️ $MENTION \`$PAM_USER@$HOSTNAME\` logout from **$PAM_RHOST**\" }"
+				PAYLOAD=" { \"content\": \"⚠️ \`$PAM_USER@$HOSTNAME\` logout from **$PAM_RHOST**\" }"
 				;;
 		esac
 

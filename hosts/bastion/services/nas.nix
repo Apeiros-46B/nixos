@@ -66,46 +66,18 @@
 	};
 
 	# {{{ dufs for easy access for non-technical users
-	sops.secrets = {
-		dufs-inbox-pw = {
-			sopsFile = ./Secrets.yaml;
-			owner = "dufs";
-			group = "dufs";
-			mode = "0400";
-			restartUnits = [ "dufs.service" ];
-		};
-		dufs-admin-pw = {
-			sopsFile = ./Secrets.yaml;
-			owner = "dufs";
-			group = "dufs";
-			mode = "0400";
-			restartUnits = [ "dufs.service" ];
-		};
+	sops.secrets.dufs-auth-env = {
+		sopsFile = ./Secrets.yaml;
+		owner = "dufs";
+		group = "dufs";
+		mode = "0400";
+		restartUnits = [ "dufs.service" ];
 	};
 	my.services.dufs = {
 		enable = true;
 		openFirewall = true;
 		group = "nas";
-		accounts = [
-			{ # admin
-				user = "apeiros";
-				passwordFile = config.sops.secrets.dufs-admin-pw.path;
-				rules = "@/:rw";
-			}
-			{ # admin
-				user = "netineti";
-				passwordFile = config.sops.secrets.dufs-admin-pw.path;
-				rules = "@/:rw";
-			}
-			{ # restricted uploads
-				user = "inbox";
-				passwordFile = config.sops.secrets.dufs-inbox-pw.path;
-				rules = "@/inbox:rw,/public:ro";
-			}
-			{ # guest
-				rules = "@/public:ro";
-			}
-		];
+		authEnvFile = config.sops.secrets.dufs-auth-env.path;
 		config = {
 			port = 5000;
 			serve-path = "/nas/dufs";
