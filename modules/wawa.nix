@@ -47,6 +47,7 @@ in {
 			wants       = [ "network-online.target" ];
 			after       = [ "network-online.target" ];
 
+			# TODO: the package currently doesn't build
 			serviceConfig = {
 				EnvironmentFile = cfg.tokenEnvFile;
 				ExecStart = "${inputs.wawa.packages.${system}.default}/bin/wawa";
