@@ -54,9 +54,9 @@
 			group = "nas";
 			mode = "0550";
 		};
-		"/nas/dufs/inbox".L.argument   = "/nas/samba/inbox";
-		"/nas/dufs/public".L.argument  = "/nas/samba/pub";
-		"/nas/dufs/private".L.argument = "/nas/samba/prot";
+		"/nas/dufs/inbox"."L+".argument   = "/nas/samba/inbox";
+		"/nas/dufs/public"."L+".argument  = "/nas/samba/pub";
+		"/nas/dufs/private"."L+".argument = "/nas/samba/prot";
 	};
 	# }}}
 	

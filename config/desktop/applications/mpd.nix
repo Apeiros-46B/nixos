@@ -168,12 +168,12 @@ in {
 			};
 
 			albumtypes = {
-        ep          = "EP";
-        single      = "Single";
-        soundtrack  = "OST";
-        live        = "Live";
-        compilation = "Compilation";
-        remix       = "Remix";
+				ep          = "EP";
+				single      = "Single";
+				soundtrack  = "OST";
+				live        = "Live";
+				compilation = "Compilation";
+				remix       = "Remix";
 			};
 			lastfm.user = lfmUser;
 			lastgenre = {
