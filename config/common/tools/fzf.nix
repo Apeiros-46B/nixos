@@ -8,7 +8,7 @@ let
 			--header="" --ellipsis='...' --pointer='+' --marker='*' --prompt='? ' \
 			--color='hl+:#${purple}:bold,hl:#${purple}:bold,header:#${fg1}:bold' \
 			--color='pointer:#${fg1},marker:#${purple},prompt:#${orange},spinner:#${purple}' \
-			--color='bg+:#${bgv},bg:#${bg2},gutter:#${bg2},border:#${bg2},separator:#${bg2}' \
+			--color='bg+:#${bgVisual},bg:#${bg2},gutter:#${bg2},border:#${bg2},separator:#${bg2}' \
 			--color='fg+:#${fg1}:bold,fg:#${fg2},info:#${fg4}' \
 			"$@"
 	'');

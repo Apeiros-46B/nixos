@@ -4,14 +4,18 @@ rec {
 		bg2 = "323c41";
 		bg3 = "3a454a";
 		bg4 = "445055";
-		bgv = "503946";
-		bga = "404d44";
-		bgd = "4e3e43";
-		bgm = "394f5a";
+		bg5 = "4c555b";
+		bg6 = "53605c";
+
+		bgVisual = "503946";
+		bgRed    = "4e3e43";
+		bgGreen  = "404d44";
+		bgBlue   = "394f5a";
+		bgYellow = "4a4940";
 
 		fg1 = "d3c6aa";
 		fg2 = "859289";
-		fg3 = "7a8487";
+		fg3 = "7a8478";
     fg4 = "9da9a0";
 
 		red    = "e67e80";
@@ -22,7 +26,7 @@ rec {
 		blue   = "7fbbb3";
 		purple = "d699b6";
 	};
-	colors_hash = builtins.mapAttrs (k: v: "#${v}") colors;
+	colorsHash = builtins.mapAttrs (k: v: "#${v}") colors;
 	font = {
 		serif = "IBM Plex Serif";
 		sans = "IBM Plex Sans";

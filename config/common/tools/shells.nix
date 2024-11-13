@@ -2,10 +2,10 @@
 
 let
 	# make prompts with the specified accent color
-	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{0}%f %~ %k%b ";
-	mkPS2   = color: "%K{${color}} %K{0}%B + %b%k ";
-	mkPS3   = color: "%K{${color}} %K{0}%B > %b%k ";
-	rprompt = ''$([ $SSH_TTY ] && echo "%K{0}%B @%m %F{0}%K{2} %k%f%b")'';
+	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{8}%f %~ %k%b ";
+	mkPS2   = color: "%K{${color}} %K{8}%B + %b%k ";
+	mkPS3   = color: "%K{${color}} %K{8}%B > %b%k ";
+	rprompt = ''$([ $SSH_TTY ] && echo "%K{8}%B @%m %F{0}%K{2} %k%f%b")'';
 in {
 	# make zsh the default shell system-wide
 	users.defaultUserShell = pkgs.zsh;
@@ -95,21 +95,43 @@ in {
 			"7" = "cd -7";
 			"8" = "cd -8";
 			"9" = "cd -9";
+
+			# convenience
+			xj = "xdg-open @fd";
+			xk = "xdg-open @rg";
+			dj = "dragon @fd";
+			dk = "dragon @rg";
+
+			# vim ones are more complicated because it still opens vim with no arguments
+			# + we need to jump to the line number in ripgrep mode
+			vj = ''(x="$(fd | fzf)"; [ "$x" ] && vim "$x")'';
+			vk = ''(x="$(fzrg "echo '{1}/+{2}'")"; vim "''${x%/*}" "''${x##*/}")'';
+			evj = ''(x="$(fd | fzf)"; [ "$x" ] && evim "$x")'';
+			evk = ''(x="$(fzrg "echo '{1}/+{2}'")"; evim "''${x%/*}" "''${x##*/}")'';
 			# }}}
 		};
 
 		shellInit = ''
+			# {{{
 			# use fzf with rg for live grep within files
+			# optional argument: fzf exec on enter
 			fzrg() (
+				if [ "$1" ]; then
+					CONFIRM="$1"
+				else
+					CONFIRM="echo '{1}'"
+				fi
+
 				RELOAD='reload:rg --column --color=always --smart-case {q} || :'
 				fzf --disabled --ansi --multi \
 				 	 --bind "start:$RELOAD" --bind "change:$RELOAD" \
-					 --bind "enter:become:echo '{1}'" \
+					 --bind "enter:become:$CONFIRM" \
 				 	 --delimiter :
 			)
 
 			# edit in parent vim session when in vim's terminal
 			evim() {
+				[ "$1" ] || return 1
 				[ "$VIM_TERMINAL" ] || return 1
 				echo -e "\033]51;[\"drop\", \"$(realpath "$1")\"]\007"
 			}
@@ -120,7 +142,6 @@ in {
 
 			# keybinds
 			bindkey -v # vi mode
-			bindkey -- '^ ' forward-char # accept autosuggestion
 			bindkey -s '^z' 'fg^M'
 			bindkey -s '^x' '^[Inix run nixpkgs#^M'
 
@@ -197,16 +218,8 @@ in {
 			zstyle -e ':completion:*:hosts' hosts 'reply=( ''${=''${=''${=''${''${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ } ''${=''${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*} ''${=''${''${''${''${(@M)''${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}})'
 			# }}}
 			# }}}
+			# }}}
 		'';
-
-		# {{{ plugins
-		autosuggestions = {
-			enable = true;
-			strategy = [
-				"completion"
-				"history"
-			];
-		};
 
 		syntaxHighlighting = {
 			enable = true;
@@ -215,7 +228,6 @@ in {
 				"brackets"
 			];
 		};
-		# }}}
 	};
 	# }}}
 

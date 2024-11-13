@@ -2,25 +2,25 @@
 
 {
 	hm.xresources.properties = {
-		"*.foreground"  = theme.colors_hash.fg1;
-		"*.background"  = theme.colors_hash.bg1;
-		"*.cursorColor" = theme.colors_hash.fg1;
-		"*.color0"      = theme.colors_hash.bg3;
-		"*.color8"      = theme.colors_hash.fg2;
-		"*.color1"      = theme.colors_hash.red;
-		"*.color9"      = theme.colors_hash.red;
-		"*.color2"      = theme.colors_hash.green;
-		"*.color10"     = theme.colors_hash.green;
-		"*.color3"      = theme.colors_hash.yellow;
-		"*.color11"     = theme.colors_hash.yellow;
-		"*.color4"      = theme.colors_hash.blue;
-		"*.color12"     = theme.colors_hash.blue;
-		"*.color5"      = theme.colors_hash.purple;
-		"*.color13"     = theme.colors_hash.purple;
-		"*.color6"      = theme.colors_hash.cyan;
-		"*.color14"     = theme.colors_hash.cyan;
-		"*.color7"      = theme.colors_hash.fg1;
-		"*.color15"     = theme.colors_hash.fg1;
+		"*.foreground"  = theme.colorsHash.fg1;
+		"*.background"  = theme.colorsHash.bg1;
+		"*.cursorColor" = theme.colorsHash.fg1;
+		"*.color0"      = theme.colorsHash.bg3;
+		"*.color8"      = theme.colorsHash.fg2;
+		"*.color1"      = theme.colorsHash.red;
+		"*.color9"      = theme.colorsHash.red;
+		"*.color2"      = theme.colorsHash.green;
+		"*.color10"     = theme.colorsHash.green;
+		"*.color3"      = theme.colorsHash.yellow;
+		"*.color11"     = theme.colorsHash.yellow;
+		"*.color4"      = theme.colorsHash.blue;
+		"*.color12"     = theme.colorsHash.blue;
+		"*.color5"      = theme.colorsHash.purple;
+		"*.color13"     = theme.colorsHash.purple;
+		"*.color6"      = theme.colorsHash.cyan;
+		"*.color14"     = theme.colorsHash.cyan;
+		"*.color7"      = theme.colorsHash.fg1;
+		"*.color15"     = theme.colorsHash.fg1;
 	};
 
 	# TODO: gtk
