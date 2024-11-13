@@ -12,6 +12,7 @@ rec {
 		fg1 = "d3c6aa";
 		fg2 = "859289";
 		fg3 = "7a8487";
+    fg4 = "9da9a0";
 
 		red    = "e67e80";
 		orange = "e69875";

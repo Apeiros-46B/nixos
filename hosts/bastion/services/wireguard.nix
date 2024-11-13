@@ -2,6 +2,7 @@
 
 let
 	interface = "wg0";
+	port = 51820;
 in {
 	networking = {
 		nat = {
@@ -9,12 +10,14 @@ in {
 			externalInterface = "eno1";
 			internalInterfaces = [ interface ];
 		};
-		firewall.allowedUDPPorts = [ 51820 ];
+		firewall.allowedUDPPorts = [ port ];
 
 		wireguard = {
 			enable = true;
 			interfaces.${interface} = {
-				
+				ips = [ "10.10.0.1/24" ];
+				listenPort = port;
+				privateKeyFile = "/etc/ssh"
 			};
 		};
 	};

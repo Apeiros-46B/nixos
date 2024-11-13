@@ -99,6 +99,47 @@ in {
 		};
 
 		shellInit = ''
+			# use fzf with rg for live grep within files
+			fzrg() (
+				RELOAD='reload:rg --column --color=always --smart-case {q} || :'
+				fzf --disabled --ansi --multi \
+				 	 --bind "start:$RELOAD" --bind "change:$RELOAD" \
+					 --bind "enter:become:echo '{1}'" \
+				 	 --delimiter :
+			)
+
+			# edit in parent vim session when in vim's terminal
+			evim() {
+				[ "$VIM_TERMINAL" ] || return 1
+				echo -e "\033]51;[\"drop\", \"$(realpath "$1")\"]\007"
+			}
+
+			# shortcuts, intended to be used like "vim @fd" or "vim @rg"
+			alias -g @fd='$(fd | fzf)'
+			alias -g @rg='$(fzrg)'
+
+			# keybinds
+			bindkey -v # vi mode
+			bindkey -- '^ ' forward-char # accept autosuggestion
+			bindkey -s '^z' 'fg^M'
+			bindkey -s '^x' '^[Inix run nixpkgs#^M'
+
+			# {{{ better history navigation using beginning-search
+			autoload -U up-line-or-beginning-search
+			autoload -U down-line-or-beginning-search
+			zle -N up-line-or-beginning-search
+			zle -N down-line-or-beginning-search
+
+			bindkey -- '^k'   up-line-or-beginning-search
+			bindkey -- '^j'   down-line-or-beginning-search
+			bindkey -- '^p'   up-line-or-beginning-search
+			bindkey -- '^n'   down-line-or-beginning-search
+			bindkey -- 'OA' up-line-or-beginning-search
+			bindkey -- 'OB' down-line-or-beginning-search
+			bindkey -- '^[^M' self-insert-unmeta
+			bindkey -- '^[[Z' reverse-menu-complete
+			# }}}
+
 			# {{{ completion style settings
 			zstyle ':completion:*' use-cache on
 			zstyle ':completion:*' cache-path "$comppath"
@@ -155,28 +196,6 @@ in {
 			# beware: a lot of escaped dollar signs
 			zstyle -e ':completion:*:hosts' hosts 'reply=( ''${=''${=''${=''${''${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ } ''${=''${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*} ''${=''${''${''${''${(@M)''${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}})'
 			# }}}
-			# }}}
-
-			# keybinds
-			bindkey -v # vi mode
-			bindkey -- '^ ' forward-char # accept autosuggestion
-
-			# {{{ better history navigation using beginning-search
-			autoload -U up-line-or-beginning-search
-			autoload -U down-line-or-beginning-search
-			zle -N up-line-or-beginning-search
-			zle -N down-line-or-beginning-search
-
-			bindkey -- '^k'   up-line-or-beginning-search
-			bindkey -- '^j'   down-line-or-beginning-search
-			bindkey -- '^p'   up-line-or-beginning-search
-			bindkey -- '^n'   down-line-or-beginning-search
-			bindkey -- 'OA' up-line-or-beginning-search
-			bindkey -- 'OB' down-line-or-beginning-search
-			bindkey -- '^[^M' self-insert-unmeta
-			bindkey -- '^[[Z' reverse-menu-complete
-			bindkey -s '^z'   'fg^M'
-			bindkey -s '^x' '^[Inix run nixpkgs#^M'
 			# }}}
 		'';
 
