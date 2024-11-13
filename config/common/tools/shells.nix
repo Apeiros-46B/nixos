@@ -97,16 +97,17 @@ in {
 			"9" = "cd -9";
 
 			# convenience
-			xj = "xdg-open @fd";
-			xk = "xdg-open @rg";
-			dj = "dragon @fd";
-			dk = "dragon @rg";
+			xj  = "xdg-open @fd";
+			xk  = "xdg-open @rg";
+			dj  = "dragon @fd";
+			dja = "dragon @fd";
+			dk  = "dragon @rg";
 
-			# vim ones are more complicated because it still opens vim with no arguments
+			# vim ones are more complicated, it shouldn't open vim when nothing is selected
 			# + we need to jump to the line number in ripgrep mode
-			vj = ''(x="$(fd | fzf)"; [ "$x" ] && vim "$x")'';
+			vj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && vim "$x")'';
 			vk = ''(x="$(fzrg "echo '{1}/+{2}'")"; vim "''${x%/*}" "''${x##*/}")'';
-			evj = ''(x="$(fd | fzf)"; [ "$x" ] && evim "$x")'';
+			evj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && evim "$x")'';
 			evk = ''(x="$(fzrg "echo '{1}/+{2}'")"; evim "''${x%/*}" "''${x##*/}")'';
 			# }}}
 		};
@@ -137,7 +138,7 @@ in {
 			}
 
 			# shortcuts, intended to be used like "vim @fd" or "vim @rg"
-			alias -g @fd='$(fd | fzf)'
+			alias -g @fd='$(fd | fzf --multi)'
 			alias -g @rg='$(fzrg)'
 
 			# keybinds
@@ -200,10 +201,8 @@ in {
 			zstyle ':completion::*:(-command-|export):*' fake-parameters ''${''${''${_comps[(I)-value-*]#*,}%%,*}:#-*-}
 			zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
 			zstyle ':completion:*:processes-names' command 'ps c -u ''${USER} -o command | uniq'
-			zstyle ':completion:*:(vim|nvim|vi|nano|micro|emacs|neovide):*' ignored-patterns '*.(wav|mp3|flac|ogg|mp4|mov|avi|mkv|webm|iso|so|o|7z|zip|tar|gz|bz2|rar|deb|pkg|gzip|pdf|png|jpeg|jpg|jfif|gif)'
-			zstyle ':completion:*:ne:*' ignored-patterns '^(*.norg)'
-			zstyle ':completion:*:oe:*' ignored-patterns '^(*.org)'
-			zstyle ':completion:*:(sy|sioyek|za|zathura):*' ignored-patterns '^(*.(pdf|epub|mobi))'
+			zstyle ':completion:*:(vi|vim|nvim):*' ignored-patterns '*.(wav|mp3|flac|ogg|mp4|mov|avi|mkv|webm|iso|so|o|7z|zip|tar|gz|bz2|rar|deb|pkg|gzip|pdf|png|jpeg|jpg|jfif|gif)'
+			zstyle ':completion:*:(sioyek):*' ignored-patterns '^(*.(pdf|epub|mobi))'
 
 			# hostnames and addresses
 			zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'

@@ -37,22 +37,73 @@ in {
 				filetype plugin indent on
 
 				" editing
+				let g:nix_recommended_style = 0
+				set backspace=indent,eol,start
 				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab smartindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-				let g:nix_recommended_style = 0
+				command -nargs=+ Grep exe 'silent! grep <args>' | redraw! | copen
+				command -nargs=+ Lgrep exe 'silent! lgrep <args>' | redraw! | lopen
 
 				" UI
+				" {{{ statusline
+				let g:modes = {
+					\ 'n':     'N',
+					\ 'no':    'O',
+					\ 'nov':   'O',
+					\ 'noV':   'O',
+					\ 'no':  'O',
+					\ 'niI':   'i',
+					\ 'niR':   'r',
+					\ 'niV':   'r',
+					\ 'nt':    'N',
+					\ 'v':     'V',
+					\ 'vs':    'V',
+					\ 'V':     'V',
+					\ 'Vs':    'V',
+					\ '':    'V',
+					\ 's':   'V',
+					\ 's':     'S',
+					\ 'S':     'S',
+					\ '\19':   'S',
+					\ 'i':     'I',
+					\ 'ic':    'I',
+					\ 'ix':    'I',
+					\ 'R':     'R',
+					\ 'Rc':    'R',
+					\ 'Rx':    'R',
+					\ 'Rv':    'R',
+					\ 'Rvc':   'R',
+					\ 'Rvx':   'R',
+					\ 'c':     'C',
+					\ 'cv':    'C',
+					\ 'r':     'C',
+					\ 'rm':    'C',
+					\ 'r?':    'C',
+					\ '!':     'T',
+					\ 't':     'T',
+					\ }
+				function! StlRspace()
+					return winnr() == winnr('l') ? ' ' : '''
+				endfunction
+
+				set statusline=\ %{g:modes[mode()]}\ " space
+				set statusline+=%F\ %m%R
+				set statusline+=%=
+				set statusline+=%l:%c%V%{StlRspace()}
+				" statusline in qflist
+				autocmd Filetype qf setlocal statusline=\ Q\ %{w:quickfix_title}%=%l/%L%{StlRspace()}
+				" }}}
+
 				set nu rnu
 				set cursorline cursorlineopt=both
-				set list listchars=tab:\.\ " space at end!
-				set foldmethod=marker
+				set list listchars=tab:\.\ " space
 				set scrolloff=2
 				set hlsearch incsearch ignorecase smartcase
-				set shortmess=aoOstTcFS
-				set wildmenu
-				set cmdheight=1
 				set laststatus=2
-				set fillchars+=vert:\ " space at end!
+				set wildmenu cmdheight=1
+				set noshowmode shortmess=aoOstTcFS showcmd showcmdloc=last
+				set foldmethod=marker
+				set fillchars+=fold:\ ,eob:\ ,vert:\ " space
 				set splitbelow splitright
 
 				" keybinds
@@ -63,31 +114,37 @@ in {
 				nmap <leader>k <Cmd>bn!<CR>
 				nmap <leader><CR> <Cmd>vertical botright terminal<CR>
 				nmap <leader><Bslash> <Cmd>terminal<CR>
+				vmap <leader>y <Plug>OSCYankVisual
 				nmap <leader>y <Plug>OSCYankOperator
 				nmap <leader>yy <leader>y_
-				vmap <leader>y <Plug>OSCYankVisual
-				nmap cc :nohl<CR>
+				nmap cc <Cmd>silent! nohl<CR>
 				tmap <C-w><C-n> <C-\><C-n>
 
-				" autocmds
-				au InsertEnter * set nornu
-				au InsertLeave * set rnu
-				au TerminalOpen * setlocal nonu nornu nocursorline
-
-				" colorscheme
+				" {{{ colorscheme
 				" highlights adapted from everforest
 				set termguicolors
 				set background=dark
 
+				" from nano-emacs
+				hi FaceNormal ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE
+				hi FaceCritical ctermfg=1 guifg=${red} ctermbg=NONE guibg=NONE cterm=bold,underline term=bold,underline
+				hi FacePopout ctermfg=5 guifg=${purple} ctermbg=NONE guibg=NONE cterm=bold term=bold
+				hi FaceStrong ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE cterm=bold term=bold
+				hi FaceSalient ctermfg=4 guifg=${blue} ctermbg=NONE guibg=NONE
+				hi FaceFaded ctermfg=7 guifg=${fg2} ctermbg=NONE guibg=NONE
+				hi FaceSubtle ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg2}
+				hi FaceSubtleAlt ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg3}
+
+				" TODO: redefine these in terms of nano faces
 				hi Normal ctermfg=15 guifg=${fg1} ctermbg=0 guibg=${bg1}
 				hi EndOfBuffer ctermfg=0 guifg=${bg1} ctermbg=NONE guibg=NONE
-				hi Folded ctermfg=7 guifg=${fg2} ctermbg=0 guibg=${bg2}
+				hi Folded ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg2}
 				hi FoldColumn ctermfg=7 guifg=${bg6} ctermbg=NONE guibg=NONE
 				hi SignColumn ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE
-				hi ToolbarLine ctermfg=15 guifg=${fg1} ctermbg=0 guibg=${bg3}
+				hi ToolbarLine ctermfg=15 guifg=${fg1} ctermbg=8 guibg=${bg3}
 				hi IncSearch ctermfg=2 guifg=${green} ctermbg=0 guibg=${bg1} cterm=reverse term=reverse
-				hi Search ctermfg=2 guifg=${green} ctermbg=0 guibg=${bg1}
-				hi Conceal ctermfg=7 guifg=${bg6} ctermbg=NONE guibg=NONE
+				hi Search ctermfg=2 guifg=${green} ctermbg=NONE guibg=NONE
+				hi Conceal ctermfg=7 guifg=${fg2} ctermbg=NONE guibg=NONE
 				hi Cursor ctermfg=NONE guifg=NONE ctermbg=NONE guibg=NONE cterm=reverse term=reverse
 				hi CursorLine ctermfg=NONE guifg=NONE ctermbg=8 guibg=${bg2} cterm=NONE term=NONE
 				hi CursorColumn ctermfg=NONE guifg=NONE ctermbg=8 guibg=${bg2}
@@ -97,14 +154,14 @@ in {
 				hi DiffChange ctermfg=4 guifg=NONE ctermbg=NONE guibg=${bgBlue}
 				hi DiffDelete ctermfg=1 guifg=NONE ctermbg=NONE guibg=${bgRed}
 				hi DiffText ctermfg=4 guifg=${blue} ctermbg=0 guibg=${bg1} cterm=reverse term=reverse
-				hi Directory ctermfg=2 guifg=${green} ctermbg=NONE guibg=NONE
+				hi Directory ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE
 				hi ErrorMsg ctermfg=1 guifg=${red} ctermbg=NONE guibg=NONE cterm=bold,underline term=bold,underline
 				hi WarningMsg ctermfg=6 guifg=${yellow} ctermbg=NONE guibg=NONE cterm=bold term=bold
 				hi ModeMsg ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE cterm=bold term=bold
 				hi MoreMsg ctermfg=6 guifg=${yellow} ctermbg=NONE guibg=NONE cterm=bold term=bold
 				hi MatchParen ctermfg=NONE guifg=NONE ctermbg=8 guibg=${bg5}
-				hi NonText ctermfg=8 guifg=${bg5} ctermbg=NONE guibg=NONE
-				hi SpecialKey ctermfg=8 guifg=${bg4} ctermbg=NONE guibg=NONE
+				hi NonText ctermfg=7 guifg=${bg6} ctermbg=NONE guibg=NONE
+				hi SpecialKey ctermfg=7 guifg=${bg6} ctermbg=NONE guibg=NONE
 				hi Pmenu ctermfg=15 guifg=${fg1} ctermbg=8 guibg=${bg3}
 				hi PmenuSbar ctermfg=NONE guifg=NONE ctermbg=8 guibg=${bg3}
 				hi PmenuSel ctermfg=0 guifg=${bg1} ctermbg=2 guibg=${green}
@@ -128,6 +185,8 @@ in {
 				hi QuickFixLine ctermfg=5 guifg=${purple} ctermbg=NONE guibg=NONE cterm=bold term=bold
 				hi Debug ctermfg=1 guifg=${orange} ctermbg=NONE guibg=NONE
 				hi ToolbarButton ctermfg=0 guifg=${bg1} ctermbg=2 guibg=${green}
+				hi qfFileName ctermfg=7 guifg=${fg2} ctermbg=NONE guibg=NONE
+				hi qfLineNr ctermfg=15 guifg=${fg1} ctermbg=NONE guibg=NONE
 
 				hi! link CurSearch IncSearch
 				hi! link vCursor Cursor
@@ -141,6 +200,56 @@ in {
 					\ '${bg1}', '${red}', '${green}', '${yellow}', '${blue}', '${purple}', '${cyan}', '${fg2}',
 					\ '${bg3}', '${red}', '${green}', '${yellow}', '${blue}', '${purple}', '${cyan}', '${fg1}',
 					\ ]
+				" }}}
+
+				" {{{ syntax highlight
+				function SimpleSyntax()
+					syntax on
+					syntax reset
+
+					hi! link Boolean FaceNormal
+					hi! link Number FaceNormal
+					hi! link Float FaceNormal
+					hi! link PreProc FaceStrong
+					hi! link PreCondit FaceStrong
+					hi! link Include FaceStrong
+					hi! link Define FaceStrong
+					hi! link Conditional FaceStrong
+					hi! link Repeat FaceStrong
+					hi! link Keyword FaceStrong
+					hi! link Typedef FaceStrong
+					hi! link Exception FaceNormal
+					hi! link Statement FaceStrong
+					hi! link Error FaceCritical
+					hi! link StorageClass FaceNormal
+					hi! link Tag FaceNormal
+					hi! link Label FaceNormal
+					hi! link Structure FaceNormal
+					hi! link Operator FaceNormal
+					hi! link Title FaceNormal
+					hi! link Special FaceNormal
+					hi! link SpecialChar FaceNormal
+					hi! link Type FaceNormal
+					hi! link Function FaceNormal
+					hi! link String FaceFaded
+					hi! link Character FaceFaded
+					hi! link Constant FaceNormal
+					hi! link Macro FaceNormal
+					hi! link Identifier FaceNormal
+					hi! link Todo FaceSalient
+					hi! link Comment FaceFaded
+					hi! link SpecialComment FaceFaded
+					hi! link Delimiter FaceNormal
+					hi! link Ignore FaceFaded
+					hi! link Underlined FaceNormal
+				endfunction
+				" }}}
+
+				" autocmds
+				au BufEnter * call SimpleSyntax()
+				au InsertEnter * set nornu
+				au InsertLeave * set rnu
+				au TerminalOpen * setlocal nonu nornu nocursorline nobuflisted
 			'';
 		})
 	];
