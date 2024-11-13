@@ -1,9 +1,12 @@
-{ lib, pkgs, functions, ... }:
+{ pkgs, ... }:
 
 let
 	buildPlugin = pkgs.vimUtils.buildVimPlugin;
 in {
-	environment.variables.EDITOR = "vim";
+	environment.variables = {
+		EDITOR = "vim";
+		VISUAL = "vim";
+	};
 	environment.systemPackages = [
 		(pkgs.vim-full.customize {
 			vimrcConfig.packages.plugins.start = with pkgs.vimPlugins; [
