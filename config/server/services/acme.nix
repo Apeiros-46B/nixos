@@ -10,10 +10,11 @@
 
 	security.acme = {
 		acceptTerms = true;
-		defaults.email = "apeiros46@gmail.com";
-		certs."*.apeiros.xyz" = {
+		defaults = {
+			email = "apeiros46@gmail.com";
 			dnsProvider = "cloudflare";
 			environmentFile = config.sops.secrets.cloudflare-acme-tokens.path;
 		};
+		certs."img.apeiros.xyz" = {};
 	};
 }
