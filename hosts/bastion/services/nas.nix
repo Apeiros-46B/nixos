@@ -66,6 +66,8 @@
 	};
 
 	# {{{ dufs for easy access for non-technical users
+	# this cert is used by nginx, not here
+	security.acme.certs."box.apeiros.xyz" = {};
 	sops.secrets.dufs-auth-env = {
 		sopsFile = ./Secrets.yaml;
 		owner = "dufs";
