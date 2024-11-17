@@ -1,4 +1,4 @@
-{ lib, pkgs, theme, ... }:
+{ pkgs, theme, ... }:
 
 let
 	buildPlugin = pkgs.vimUtils.buildVimPlugin;
@@ -29,6 +29,7 @@ in {
 					};
 				})
 				vim-oscyank
+				vim-automkdir
 			];
 			vimrcConfig.customRC = with theme.colorsHash; ''
 				" files
@@ -42,7 +43,7 @@ in {
 				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab smartindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 				command -nargs=+ Grep exe 'silent! grep <args>' | redraw! | copen
-				command -nargs=+ Lgrep exe 'silent! lgrep <args>' | redraw! | lopen
+				command -nargs=+ Make exe 'silent! make <args>' | redraw! | copen
 
 				" UI
 				" {{{ statusline
@@ -82,16 +83,72 @@ in {
 					\ '!':     'T',
 					\ 't':     'T',
 					\ }
-				function! StlRspace()
+				func! StlRspace()
 					return winnr() == winnr('l') ? ' ' : '''
-				endfunction
+				endfunc
 
 				set statusline=\ %{g:modes[mode()]}\ " space
 				set statusline+=%F\ %m%R
 				set statusline+=%=
 				set statusline+=%l:%c%V%{StlRspace()}
-				" statusline in qflist
-				autocmd Filetype qf setlocal statusline=\ Q\ %{w:quickfix_title}%=%l/%L%{StlRspace()}
+				" }}}
+
+				" {{{ quickfix
+				func QfTitle()
+					return get(w:, 'quickfix_title', "")
+				endfunc
+
+				func QfSetup()
+					syntax clear
+					setlocal nowrap foldmethod=manual
+					setlocal statusline=\ Q\ %{QfTitle()}%=%l/%L%{StlRspace()}
+				endfunc
+
+				func QfFormat(info)
+					let items = a:info.quickfix ? getqflist() : getloclist(a:info.winid)
+					let iter = range(a:info.start_idx - 1, a:info.end_idx - 1)
+
+					let col1 = []
+					let col2 = []
+					let col3 = []
+					let res = []
+
+					let max_f_len = 0
+					let max_ln_len = 0
+					let max_col_len = 0
+
+					for i in iter
+						let cargo_subst = ':s?^\~/\.cargo/registry/src/[^/]*/\([^/]*\)/.\{-}\([^/]\+.rs\)?crate:\1/\2?'
+						let f = fnamemodify(bufname(items[i].bufnr), ':p:~:.' . cargo_subst)
+						let ln = items[i].lnum == 0 ? ' ' : items[i].lnum
+
+						call add(col1, f)
+						call add(col2, ln)
+						call add(col3, items[i].text)
+
+						let l = strwidth(f)
+						if l > max_f_len
+							let max_f_len = l
+						endif
+
+						let l = len(ln)
+						if l > max_ln_len
+							let max_ln_len = l
+						endif
+					endfor
+
+					for i in iter
+						let f = col1[i]
+						let ln = col2[i]
+						let f_padding = repeat(' ', max_f_len - strwidth(f))
+						let ln_padding = repeat(' ', max_ln_len - len(ln))
+						call add(res, f . f_padding . ' ' . ln_padding . ln . ' ' . col3[i])
+					endfor
+
+					return res
+				endfunc
+
+				set quickfixtextfunc=QfFormat
 				" }}}
 
 				set nu rnu
@@ -112,6 +169,15 @@ in {
 				nmap <leader>X <Cmd>bd!<CR>
 				nmap <leader>j <Cmd>bp!<CR>
 				nmap <leader>k <Cmd>bn!<CR>
+				nmap <leader>qf <Cmd>cw<CR>
+				nmap <leader>qj <Cmd>cnext<CR>
+				nmap <leader>qk <Cmd>cprev<CR>
+				nmap <leader>Qj <Cmd>lnext<CR>
+				nmap <leader>Qk <Cmd>lprev<CR>
+				nmap <leader>qJ <Cmd>cbelow<CR>
+				nmap <leader>qK <Cmd>cabove<CR>
+				nmap <leader>QJ <Cmd>lbelow<CR>
+				nmap <leader>QK <Cmd>labove<CR>
 				nmap <leader><CR> <Cmd>vertical botright terminal<CR>
 				nmap <leader><Bslash> <Cmd>terminal<CR>
 				vmap <leader>y <Plug>OSCYankVisual
@@ -203,7 +269,7 @@ in {
 				" }}}
 
 				" {{{ syntax highlight
-				function SimpleSyntax()
+				func SimpleSyntax()
 					syntax on
 					syntax reset
 
@@ -242,10 +308,12 @@ in {
 					hi! link Delimiter FaceNormal
 					hi! link Ignore FaceFaded
 					hi! link Underlined FaceNormal
-				endfunction
+				endfunc
 				" }}}
 
 				" autocmds
+				au Filetype qf call QfSetup()
+				au Filetype rust compiler cargo
 				au BufEnter * call SimpleSyntax()
 				au InsertEnter * set nornu
 				au InsertLeave * set rnu

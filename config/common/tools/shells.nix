@@ -2,10 +2,10 @@
 
 let
 	# make prompts with the specified accent color
-	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%K{8}%f %~ %k%b ";
-	mkPS2   = color: "%K{${color}} %K{8}%B + %b%k ";
-	mkPS3   = color: "%K{${color}} %K{8}%B > %b%k ";
-	rprompt = ''$([ $SSH_TTY ] && echo "%K{8}%B @%m %F{0}%K{2} %k%f%b")'';
+	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%b%K{8}%f %~ %k ";
+	mkPS2   = color: "%K{${color}} %K{8} + %k ";
+	mkPS3   = color: "%K{${color}} %K{8} > %k ";
+	rprompt = ''$([ $SSH_TTY ] && echo "%K{8} @%m %F{0}%K{2} %k%f")'';
 in {
 	# make zsh the default shell system-wide
 	users.defaultUserShell = pkgs.zsh;
@@ -267,10 +267,7 @@ in {
 	hm.programs.direnv = {
 		enable = true;
 		enableZshIntegration = true;
-		config = {
-			global.hide_env_diff = true;
-		};
-
+		config.global.hide_env_diff = true;
 		nix-direnv.enable = true;
 	};
 

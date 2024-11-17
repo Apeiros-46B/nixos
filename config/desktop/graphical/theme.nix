@@ -5,8 +5,8 @@
 		"*.foreground"  = theme.colorsHash.fg1;
 		"*.background"  = theme.colorsHash.bg1;
 		"*.cursorColor" = theme.colorsHash.fg1;
-		"*.color0"      = theme.colorsHash.bg3;
-		"*.color8"      = theme.colorsHash.fg2;
+		"*.color0"      = theme.colorsHash.bg1;
+		"*.color8"      = theme.colorsHash.bg3;
 		"*.color1"      = theme.colorsHash.red;
 		"*.color9"      = theme.colorsHash.red;
 		"*.color2"      = theme.colorsHash.green;
@@ -19,7 +19,7 @@
 		"*.color13"     = theme.colorsHash.purple;
 		"*.color6"      = theme.colorsHash.cyan;
 		"*.color14"     = theme.colorsHash.cyan;
-		"*.color7"      = theme.colorsHash.fg1;
+		"*.color7"      = theme.colorsHash.fg2;
 		"*.color15"     = theme.colorsHash.fg1;
 	};
 
