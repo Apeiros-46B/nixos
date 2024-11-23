@@ -2,6 +2,7 @@
 
 {
 	imports = [
+		./davfs.nix
 		./fzf.nix
 		./git.nix
 		./shells.nix

@@ -26,9 +26,10 @@
 			allowBitmaps = true;
 			useEmbeddedBitmaps = true;
 			defaultFonts = {
-				serif     = [ theme.font.serif ];
-				sansSerif = [ theme.font.sans  ];
-				monospace = [ theme.font.mono  ];
+				serif     = [ theme.font.serif      ];
+				sansSerif = [ theme.font.sans       ];
+				monospace = [ theme.font.mono       ];
+				emoji     = [ "Twitter Color Emoji" ];
 			};
 		};
 	};

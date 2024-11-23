@@ -55,19 +55,6 @@ in {
 		mpd.useLocal = true;
 	};
 
-	# TODO: reenable when the 100% cpu usage is fixed
-	# hm.services.mpd-discord-rpc = {
-	# 	enable = true;
-	# 	settings = {
-	# 		hosts = [ "${mpdAddress}:${toString mpdPort}" ];
-	# 		format = {
-	# 			details = "$title [$duration]";
-	# 			state = "$artist / $album";
-	# 			small_image = "";
-	# 		};
-	# 	};
-	# };
-
 	services.mpdscribble = {
 		enable = true;
 		host = mpdAddress;
@@ -143,7 +130,6 @@ in {
 				"lastimport"
 				"lastgenre"
 				"fetchart"
-				"lyrics"
 				"edit"
 
 				# audio analysis
@@ -181,6 +167,7 @@ in {
 				min_weight = 2;
 				title_case = "no";
 			};
+			fetchart.auto = "no";
 
 			bpm.max_strokes = 10;
 			replaygain = {
