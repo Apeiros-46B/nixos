@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-	environment.systemPackages = with pkgs; [ cloudflare-warp ];
+	environment.systemPackages = [ pkgs.cloudflare-warp ];
 
 	users.users.warp = {
 		isSystemUser = true;
