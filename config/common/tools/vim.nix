@@ -43,7 +43,7 @@ in {
 				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab smartindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 				command -nargs=+ Grep exe 'silent! grep <args>' | redraw! | copen
-				command -nargs=+ Make exe 'silent! make <args>' | redraw! | copen
+				command -nargs=* Make exe 'silent! make <args>' | redraw! | copen
 
 				" UI
 				" {{{ statusline

@@ -15,5 +15,5 @@
 		st.url = "github:Apeiros-46B/st";
 	};
 
-	outputs = { ... }@inputs: (import ./hosts inputs);
+	outputs = inputs: (import ./hosts inputs);
 }

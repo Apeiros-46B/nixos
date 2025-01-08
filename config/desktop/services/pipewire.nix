@@ -2,7 +2,6 @@
 
 {
 	# disable ALSA and pulse
-	sound.enable = false;
 	hardware.pulseaudio.enable = false;
 
 	services.pipewire = {

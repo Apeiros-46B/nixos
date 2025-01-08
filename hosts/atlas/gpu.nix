@@ -5,10 +5,9 @@
 	users.users.${globals.user}.extraGroups = [ "video" "render" ];
 
 	hardware = {
-		opengl = {
+		graphics = {
 			enable = true;
-			driSupport = true;
-			driSupport32Bit = true;
+			enable32Bit = true;
 			extraPackages = with pkgs; [
 				rocmPackages.clr.icd
 				intel-compute-runtime
