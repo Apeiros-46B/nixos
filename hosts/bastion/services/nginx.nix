@@ -21,7 +21,7 @@
 					https  "max-age=31536000; includeSubdomains; preload";
 			}
 			add_header Strict-Transport-Security $hsts_header;
-			#add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
+			add_header Content-Security-Policy "script-src 'self'; object-src 'none'; frame-ancestors 'self'; base-uri 'none';" always;
 			add_header 'Referrer-Policy' 'origin-when-cross-origin';
 			add_header X-Frame-Options SAMEORIGIN;
 			add_header X-Content-Type-Options nosniff;
@@ -35,6 +35,7 @@
 		{
 			"box.apeiros.xyz" = {
 				forceSSL = true;
+				enableACME = true;
 				locations."/" = {
 					proxyPass = "http://127.0.0.1:${dufsPort}/";
 					proxyWebsockets = true;
@@ -43,8 +44,6 @@
 						proxy_pass_header Authorization;
 					'';
 				};
-				sslCertificate = "/var/lib/acme/box.apeiros.xyz/cert.pem";
-				sslCertificateKey = "/var/lib/acme/box.apeiros.xyz/key.pem";
 			};
 		};
 	};
