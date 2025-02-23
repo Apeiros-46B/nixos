@@ -105,9 +105,9 @@ in {
 
 			# vim ones are more complicated, it shouldn't open vim when nothing is selected
 			# + we need to jump to the line number in ripgrep mode
-			vj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && vim "$x")'';
+			vj = ''(x="$(fd -H | fzf --multi)"; [ "$x" ] && vim "$x")'';
 			vk = ''(x="$(fzrg "echo '{1}/+{2}'")"; vim "''${x%/*}" "''${x##*/}")'';
-			evj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && evim "$x")'';
+			evj = ''(x="$(fd -H | fzf --multi)"; [ "$x" ] && evim "$x")'';
 			evk = ''(x="$(fzrg "echo '{1}/+{2}'")"; evim "''${x%/*}" "''${x##*/}")'';
 			# }}}
 		};
@@ -138,7 +138,7 @@ in {
 			}
 
 			# shortcuts, intended to be used like "vim @fd" or "vim @rg"
-			alias -g @fd='$(fd | fzf --multi)'
+			alias -g @fd='$(fd -H | fzf --multi)'
 			alias -g @rg='$(fzrg)'
 
 			# keybinds

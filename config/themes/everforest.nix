@@ -27,9 +27,11 @@ rec {
 		purple = "d699b6";
 	};
 	colorsHash = builtins.mapAttrs (k: v: "#${v}") colors;
+	# TODO: custom iosevka build
 	font = {
 		serif = "IBM Plex Serif";
 		sans = "IBM Plex Sans";
 		mono = "JetBrainsMono Nerd Font Mono";
+		mono2 = "Iosevka Nerd Font Mono";
 	};
 }

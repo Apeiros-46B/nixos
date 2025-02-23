@@ -30,6 +30,8 @@ in {
 				})
 				vim-oscyank
 				vim-automkdir
+
+				wgsl-vim
 			];
 			vimrcConfig.customRC = with theme.colorsHash; ''
 				" files
@@ -39,6 +41,7 @@ in {
 
 				" editing
 				let g:nix_recommended_style = 0
+				let g:rust_recommended_style = 0
 				set backspace=indent,eol,start
 				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab smartindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
@@ -269,6 +272,16 @@ in {
 				" }}}
 
 				" {{{ syntax highlight
+				" func WgslSyntax()
+				" 	syn keyword wgslKeyword alias break case const const_assert continue continuing default diagnostic discard else enable false fn for if let loop override requires return struct switch true var while
+				" 	syn match wgslAttribute '@[a-zA-Z_]\+'
+				" 	syn match wgslComment '//.*$'
+
+				" 	hi link wgslKeyword Keyword
+				" 	hi link wgslAttribute PreProc
+				" 	hi link wgslComment Comment
+				" endfunc
+
 				func SimpleSyntax()
 					syntax on
 					syntax reset
@@ -312,8 +325,9 @@ in {
 				" }}}
 
 				" autocmds
-				au Filetype qf call QfSetup()
-				au Filetype rust compiler cargo
+				au FileType qf call QfSetup()
+				au FileType rust compiler cargo
+				" au BufEnter *.wgsl call WgslSyntax()
 				au BufEnter * call SimpleSyntax()
 				au InsertEnter * set nornu
 				au InsertLeave * set rnu

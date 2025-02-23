@@ -76,6 +76,7 @@ in {
 		settings = {
 			mpd_host = mpdAddress;
 			mpd_port = mpdPort;
+			mpd_music_dir = globals.dir.mus;
 			lyrics_directory = "${mpdDataDir}/lyrics";
 
 			visualizer_output_name = visName;
@@ -83,6 +84,8 @@ in {
 			visualizer_in_stereo = if visStereo then "yes" else "no";
 			visualizer_type = "wave_filled";
 			visualizer_look = "●█";
+
+			visualizer_spectrum_dft_size = 1;
 
 			# TODO: move this into a separate service (a shell script) separate from ncmpcpp
 			execute_on_song_change = "${pkgs.writeShellScriptBin "ncmpcpp-notify-songinfo" ''
