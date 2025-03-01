@@ -4,7 +4,6 @@
 	networking.hostId = "d5f1bf16";
 
 	boot = {
-		kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
 		supportedFilesystems = [ "zfs" ];
 		initrd = {
 			supportedFilesystems = [ "zfs" ];

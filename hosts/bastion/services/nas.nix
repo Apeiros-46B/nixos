@@ -33,13 +33,13 @@
 		"/nas/samba/prot".d = {
 			user = "samba";
 			group = "nas";
-			mode = "0750";
+			mode = "0770";
 		};
 		# accessible via samba, read-only in dufs (not protected)
 		"/nas/samba/pub".d = {
 			user = "samba";
 			group = "nas";
-			mode = "0750";
+			mode = "0770";
 		};
 		# accessible via samba, read-write in dufs (password protected)
 		"/nas/samba/inbox".d = {
