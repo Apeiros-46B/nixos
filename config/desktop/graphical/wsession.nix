@@ -14,7 +14,7 @@
 		imv # TMP, move out to separate file
 	];
 
-	hm.home.packages = with pkgs; [ grim slurp wl-clipboard wl-clip-persist ];
+	hm.home.packages = with pkgs; [ grim slurp wl-clipboard ];
 
 	hm.programs.fuzzel = {
 		enable = true;
@@ -104,6 +104,7 @@
 			"Ctrl+Shift+Delete".action = power-off-monitors;
 			"Ctrl+Shift+Escape" = no-repeat (spawn "footclient" "-e" "btop");
 
+			"Mod+E" = no-repeat (spawn "emacsclient" "-a" "" "-c");
 			"Mod+Return" = no-repeat (spawn "footclient");
 			"Mod+Shift+S" = no-repeat (sh ''grim -g "$(slurp)" - | wl-copy'');
 			"Mod+Ctrl+Shift+S" = no-repeat (sh ''
@@ -254,7 +255,6 @@
 			{ command = [ "swww-daemon" ]; }
 			{ command = [ "xwayland-satellite" ]; }
 			{ command = [ "foot" "--server" ]; }
-			{ command = [ "wl-clip-persist" "--clipboard" "regular" ]; }
 		];
 	};
 

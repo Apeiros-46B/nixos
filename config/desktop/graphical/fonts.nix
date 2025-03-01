@@ -15,6 +15,16 @@
 			# my.fairfax-font # TODO: currently doesn't build
 			tewi-font
 			uiua386
+
+			(pkgs.iosevka.override {
+				privateBuildPlan = builtins.readFile ./iosevka.toml;
+				set = "Custom";
+			})
+
+			(pkgs.iosevka.override {
+				privateBuildPlan = builtins.readFile ./iosevka.toml;
+				set = "CustomManuscript";
+			})
 		];
 
 		fontDir.enable = true;
