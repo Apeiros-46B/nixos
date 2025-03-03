@@ -6,6 +6,7 @@
 		./nas.nix
 		./nginx.nix
 		./playit.nix
+		./shimmie.nix
 		./wawa.nix
 	];
 }

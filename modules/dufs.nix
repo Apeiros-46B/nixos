@@ -51,7 +51,7 @@ in {
 			"${cfg.config.log-file or "/var/log/dufs.log"}".f = {
 				user = "dufs";
 				group = cfg.group;
-				mode = "0770";
+				mode = "0660";
 			};
 		};
 
