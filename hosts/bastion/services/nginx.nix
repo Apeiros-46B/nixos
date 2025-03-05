@@ -45,6 +45,18 @@
 					'';
 				};
 			};
+			"img.apeiros.xyz" = {
+				forceSSL = true;
+				enableACME = true;
+				locations."/" = {
+					proxyPass = "http://127.0.0.1:${toString config.my.services.shimmie.port}/";
+					proxyWebsockets = true;
+					extraConfig = ''
+						proxy_ssl_server_name on;
+						proxy_pass_header Authorization;
+					'';
+				};
+			};
 		};
 	};
 }

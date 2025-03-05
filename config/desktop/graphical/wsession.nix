@@ -6,15 +6,25 @@
 	];
 
 	# TODO: can we change this to hm.home.packages?
-	environment.systemPackages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		xwayland-satellite
-		swww
-		foot # TMP, move out to separate file
+		wl-clipboard
 		swaylock
-		imv # TMP, move out to separate file
+		swww
+
+		# TMP, move to tools
+		foot imv grim slurp
 	];
 
-	hm.home.packages = with pkgs; [ grim slurp wl-clipboard ];
+	xdg.portal = {
+		enable = true;
+		wlr.enable = true;
+		config.common.default = [ "gtk" ];
+		extraPortals = with pkgs; [
+			xdg-desktop-portal-gtk
+			xdg-desktop-portal-gnome
+		];
+	};
 
 	hm.programs.fuzzel = {
 		enable = true;

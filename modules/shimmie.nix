@@ -67,6 +67,8 @@ in
 					data="./data"
 					srv="./server"
 
+					# TODO: do a check to see if versions have been updated.
+					# only pull source code if is a version mismatch between the nix store package and the "vendored" package
 					mkdir -p "$data" || fail "Failed making data folder"
 					rm -rf "$srv" || fail "Failed rm old server files"
 

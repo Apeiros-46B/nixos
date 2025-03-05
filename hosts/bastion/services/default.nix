@@ -2,6 +2,7 @@
 
 {
 	imports = [
+		./cgit.nix
 		./n8n.nix
 		./nas.nix
 		./nginx.nix
