@@ -2,23 +2,26 @@
 
 let
 	cfg = config.my.services.shimmie;
-	defaultPort = 9000;
 	varDir = "/var/lib/shimmie";
+	logFile = "/var/log/shimmie.log";
 in
 {
 	options.my.services.shimmie = with lib; with lib.types; {
 		enable = mkEnableOption "shimmie, a taggable image board (booru)";
+		dataDir = mkOption {
+			type = str;
+			default = "/srv/shimmie";
+		};
 		port = mkOption {
 			type = int;
-			default = defaultPort;
+			default = 9000;
 		};
 		openFirewall = mkOption {
 			type = bool;
 			default = true;
 		};
-		config = mkOption {
-			type = attrsOf anything;
-			default = {};
+		nginx.virtualHost = mkOption {
+			type = str;
 		};
 	};
 
@@ -28,21 +31,60 @@ in
 			packages = [ pkgs.my.shimmie ];
 			group = "shimmie";
 		};
-		users.groups.shimmie = {};
+		users.groups.shimmie.members = [ "nginx" ];
 
-		networking.firewall.allowedTCPPorts =
-			lib.mkIf cfg.openFirewall [ (cfg.port or defaultPort) ];
+		networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
-		systemd.tmpfiles.settings = {
-			"10-shimmie.log"."/var/log/shimmie.log".f = {
+		systemd.tmpfiles.settings."10-shimmie" = {
+			"${logFile}".f = {
 				user  = "shimmie";
 				group = "shimmie";
 				mode  = "0660";
 			};
-			"10-shimmie".${varDir}.d = {
+			"${varDir}".d = {
 				user  = "shimmie";
 				group = "shimmie";
 				mode  = "0770";
+			};
+			"${cfg.dataDir}".d = {
+				user  = "shimmie";
+				group = "shimmie";
+				mode  = "0770";
+			};
+			# fixes static serving
+			"${cfg.dataDir}/data"."L+".argument = "${cfg.dataDir}";
+		};
+
+		services.nginx.virtualHosts."${cfg.nginx.virtualHost}" = {
+			forceSSL = true;
+			enableACME = true;
+			root = cfg.dataDir;
+
+			# serve static assets from disk
+			locations."~ \"^/_images/([0-9a-f]{2})([0-9a-f]{30}).*$\"" = {
+				priority = 1;
+				alias = "${cfg.dataDir}/images/$1/$1$2";
+				extraConfig = "expires 30d;";
+			};
+			locations."~ \"^/_thumbs/([0-9a-f]{2})([0-9a-f]{30}).*$\"" = {
+				priority = 2;
+				alias = "${cfg.dataDir}/thumbs/$1/$1$2";
+				extraConfig = "expires 30d;";
+			};
+			locations."~ \"^.*\\.(css|js|map|gif|png|jpg|jpeg|ico|mp4|mov|mkv|webm|webp)$\"" = {
+				priority = 3;
+				tryFiles = "$uri /";
+				extraConfig = "expires 1d;";
+			};
+
+			# pass other requests to shimmie
+			locations."/" = {
+				proxyPass = "http://127.0.0.1:${toString cfg.port}/";
+				proxyWebsockets = true;
+				extraConfig = ''
+					proxy_ssl_server_name on;
+					proxy_pass_header Authorization;
+				'';
 			};
 		};
 
@@ -54,32 +96,30 @@ in
 
 			# prevent composer from trying to cache things in /var/empty
 			environment.COMPOSER_HOME = "${varDir}/.composer";
+
 			serviceConfig = {
 				Type = "simple";
 				User = "shimmie";
 				Group = "shimmie";
 				WorkingDirectory = varDir;
 				ExecStart = "${pkgs.writeShellScriptBin "shimmie-wrapper" ''
-					fail() {
-						>&2 echo "$@"
-						exit 1
+					guard() {
+						msg="$1"; shift
+						"$@" || { >&2 echo "Failed at: $msg"; exit 1; }
 					}
-					data="./data"
-					srv="./server"
 
 					# TODO: do a check to see if versions have been updated.
 					# only pull source code if is a version mismatch between the nix store package and the "vendored" package
-					mkdir -p "$data" || fail "Failed making data folder"
-					rm -rf "$srv" || fail "Failed rm old server files"
 
 					# pull source code and composer packages
-					cp -r --no-preserve=mode "${pkgs.my.shimmie}" "$srv" || fail "Failed pulling source"
-					${pkgs.php83Packages.composer}/bin/composer install -d "$srv" || fail "Failed install php pkgs"
+					guard "rm old server" rm -rf ./server
+					guard "pull src" cp -r --no-preserve=mode "${pkgs.my.shimmie}" ./server
+					guard "pull pkgs" ${pkgs.php83Packages.composer}/bin/composer install -d ./server
+					guard "link data" ln -s "${cfg.dataDir}" ./server/data
 
 					# launch server
-					cd "$srv"
-					ln -s "../$data" "./data" || fail "Failed symlink server data"
-					${pkgs.php}/bin/php -S 0.0.0.0:${toString cfg.port} tests/router.php
+					guard "cd to server" cd ./server || fail "Failed cd to server files"
+					exec ${pkgs.php}/bin/php -S 0.0.0.0:${toString cfg.port} tests/router.php > "${logFile}" 2>&1
 				''}/bin/shimmie-wrapper";
 			};
 		};

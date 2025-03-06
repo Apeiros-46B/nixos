@@ -3,7 +3,7 @@
 {
 	my.services.shimmie = {
 		enable = true;
-		port = 8000;
 		openFirewall = true;
+		nginx.virtualHost = "img.apeiros.xyz";
 	};
 }

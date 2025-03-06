@@ -24,6 +24,7 @@
 	fileSystems = {
 		"/"          = { device = "nixos/root";    fsType = "zfs"; };
 		"/nix"       = { device = "nixos/nix";     fsType = "zfs"; };
+		"/srv"       = { device = "nixos/srv";     fsType = "zfs"; };
 		"/var"       = { device = "nixos/var";     fsType = "zfs"; };
 		"/home"      = { device = "nixos/home";    fsType = "zfs"; };
 		"/docker"    = { device = "nixos/docker";  fsType = "zfs"; };
