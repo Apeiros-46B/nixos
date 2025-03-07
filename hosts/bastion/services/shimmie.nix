@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
 	my.services.shimmie = {

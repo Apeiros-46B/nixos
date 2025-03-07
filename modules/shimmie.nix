@@ -36,17 +36,17 @@ in
 		networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
 		systemd.tmpfiles.settings."10-shimmie" = {
-			"${logFile}".f = {
+			${logFile}.f = {
 				user  = "shimmie";
 				group = "shimmie";
 				mode  = "0660";
 			};
-			"${varDir}".d = {
+			${varDir}.d = {
 				user  = "shimmie";
 				group = "shimmie";
 				mode  = "0770";
 			};
-			"${cfg.dataDir}".d = {
+			${cfg.dataDir}.d = {
 				user  = "shimmie";
 				group = "shimmie";
 				mode  = "0770";
@@ -86,6 +86,21 @@ in
 					proxy_pass_header Authorization;
 				'';
 			};
+		};
+
+		services.postgresql = {
+			ensureDatabases = [ "shimmie" ];
+			ensureUsers = [
+				{
+					name = "shimmie";
+					ensureDBOwnership = true;
+				}
+			];
+			authentication = ''
+				local  shimmie  shimmie                trust
+				host   shimmie  shimmie  127.0.0.1/32  trust
+				host   shimmie  shimmie  ::1/128       trust
+			'';
 		};
 
 		systemd.services.shimmie = {
