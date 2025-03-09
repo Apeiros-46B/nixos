@@ -15,21 +15,16 @@
 		};
 
 		nvidia = {
-			package = config.boot.kernelPackages.nvidiaPackages.production;
+			# open modules only support power management after Ampere, which I don't have
 			open = false;
-
-			# this doesn't work; nvidia-powerd fails with
-			# "Error finding power policy"
-			# "Failed to initialize RM client"
-			# dynamicBoost.enable = true;
-
-			modesetting.enable = true;
+			package = config.boot.kernelPackages.nvidiaPackages.production;
 			nvidiaSettings = true;
 
-			# might cause suspend panic, idk
-			powerManagement.enable = true;
-			powerManagement.finegrained = true;
-
+			modesetting.enable = true;
+			powerManagement = {
+				enable = true;
+				finegrained = true;
+			};
 			prime = {
 				offload = {
 					enable = true;

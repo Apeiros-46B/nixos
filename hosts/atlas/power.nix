@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+	powerManagement = {
+		powertop.enable = true;
+		cpuFreqGovernor = "powersave";
+	};
+
 	services.tlp = {
 		enable = true;
 		settings = {
@@ -33,7 +38,6 @@
 
 	# utils
 	environment.systemPackages = with pkgs; [ acpi powertop ];
-	powerManagement.powertop.enable = true;
 
 	# disable integrated camera
 	boot.blacklistedKernelModules = [ "uvcvideo" ];
@@ -53,6 +57,5 @@
 	};
 	fileSystems."/".options = [ "commit=60" ];
 
-	# TODO: investigate resume-from-suspend kernel panic issue. maybe this is the culprit?
 	boot.initrd.availableKernelModules = [ "thinkpad_acpi" ];
 }
