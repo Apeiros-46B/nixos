@@ -81,6 +81,7 @@ in
 			locations."/" = {
 				proxyPass = "http://127.0.0.1:${toString cfg.port}/";
 				proxyWebsockets = true;
+				# TODO: pass the original addr to shimmie using X-Real-IP
 				extraConfig = ''
 					proxy_ssl_server_name on;
 					proxy_pass_header Authorization;
