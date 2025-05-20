@@ -4,9 +4,8 @@
 	imports = [
 		./minecraft.nix
 		./steam.nix
+		./util.nix
 	];
 
-	hm.home.packages = with pkgs; [
-		mangohud
-	];
+	hm.home.packages = [ pkgs.mindustry-wayland ];
 }

@@ -3,7 +3,7 @@ mkHost:
 [
 	(mkHost "atlas" {
 		type = "desktop";
-		theme = "everforest";
+		theme = "elysium";
 		system = "x86_64-linux";
 		stateVersion = "23.11";
 	})

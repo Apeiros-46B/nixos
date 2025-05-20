@@ -1,6 +1,12 @@
-{ config, functions, theme, ... }:
+{ config, pkgs, functions, theme, ... }:
 
 {
+	hm.home.packages = with pkgs; [
+		libreoffice-still
+		hunspell
+		hunspellDicts.en_CA-large
+	];
+
 	hm.programs.sioyek = {
 		enable = true;
 

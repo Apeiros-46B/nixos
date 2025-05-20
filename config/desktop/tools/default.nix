@@ -1,16 +1,17 @@
-{ pkgs, ... }:
+{ inputs, pkgs, system, ... }:
 
 {
 	imports = [
 		./flameshot.nix
-		./obs.nix
-		./qalc.nix
-		./screenkey.nix
-		./st.nix
+		./foot.nix
 		./urxvt.nix
 	];
 
-	environment.systemPackages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		xdragon
+		libqalculate
+		qalculate-gtk
+		obs-studio
+		inputs.st.packages.${system}.st-snazzy
 	];
 }

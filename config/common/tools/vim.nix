@@ -204,6 +204,15 @@ in {
 				hi FaceSubtle ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg2}
 				hi FaceSubtleAlt ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg3}
 
+				" from elysium
+				hi Red ctermfg=1 guifg=${red} ctermbg=NONE guibg=NONE
+				hi Orange ctermfg=1 guifg=${orange} ctermbg=NONE guibg=NONE
+				hi Yellow ctermfg=3 guifg=${yellow} ctermbg=NONE guibg=NONE
+				hi Green ctermfg=2 guifg=${green} ctermbg=NONE guibg=NONE
+				hi Aqua ctermfg=6 guifg=${cyan} ctermbg=NONE guibg=NONE
+				hi Blue ctermfg=4 guifg=${blue} ctermbg=NONE guibg=NONE
+				hi Purple ctermfg=5 guifg=${purple} ctermbg=NONE guibg=NONE
+
 				" TODO: redefine these in terms of nano faces
 				hi Normal ctermfg=15 guifg=${fg1} ctermbg=0 guibg=${bg1}
 				hi EndOfBuffer ctermfg=0 guifg=${bg1} ctermbg=NONE guibg=NONE
@@ -267,7 +276,7 @@ in {
 
 				let g:terminal_ansi_colors = [
 					\ '${bg1}', '${red}', '${green}', '${yellow}', '${blue}', '${purple}', '${cyan}', '${fg2}',
-					\ '${bg3}', '${red}', '${green}', '${yellow}', '${blue}', '${purple}', '${cyan}', '${fg1}',
+					\ '${bg2}', '${red}', '${green}', '${yellow}', '${blue}', '${purple}', '${cyan}', '${fg1}',
 					\ ]
 				" }}}
 
@@ -286,36 +295,37 @@ in {
 					syntax on
 					syntax reset
 
-					hi! link Boolean FaceNormal
-					hi! link Number FaceNormal
-					hi! link Float FaceNormal
-					hi! link PreProc FaceStrong
-					hi! link PreCondit FaceStrong
-					hi! link Include FaceStrong
-					hi! link Define FaceStrong
-					hi! link Conditional FaceStrong
-					hi! link Repeat FaceStrong
-					hi! link Keyword FaceStrong
-					hi! link Typedef FaceStrong
-					hi! link Exception FaceNormal
-					hi! link Statement FaceStrong
+					" stripped down version of elysium
+					hi! link Boolean Purple
+					hi! link Number Purple
+					hi! link Float Purple
+					hi! link PreProc Purple
+					hi! link PreCondit Purple
+					hi! link Include Red
+					hi! link Define Purple
+					hi! link Conditional Blue
+					hi! link Repeat Blue
+					hi! link Keyword Blue
+					hi! link Typedef Blue
+					hi! link Exception Red
+					hi! link Statement Blue
 					hi! link Error FaceCritical
-					hi! link StorageClass FaceNormal
+					hi! link StorageClass Blue
 					hi! link Tag FaceNormal
-					hi! link Label FaceNormal
-					hi! link Structure FaceNormal
-					hi! link Operator FaceNormal
+					hi! link Label Orange
+					hi! link Structure Blue
+					hi! link Operator Orange
 					hi! link Title FaceNormal
-					hi! link Special FaceNormal
-					hi! link SpecialChar FaceNormal
-					hi! link Type FaceNormal
-					hi! link Function FaceNormal
-					hi! link String FaceFaded
-					hi! link Character FaceFaded
-					hi! link Constant FaceNormal
-					hi! link Macro FaceNormal
+					hi! link Special Aqua
+					hi! link SpecialChar Green
+					hi! link Type Yellow
+					hi! link Function Green
+					hi! link String Aqua
+					hi! link Character Aqua
+					hi! link Constant Purple
+					hi! link Macro Purple
 					hi! link Identifier FaceNormal
-					hi! link Todo FaceSalient
+					hi! link Todo Blue
 					hi! link Comment FaceFaded
 					hi! link SpecialComment FaceFaded
 					hi! link Delimiter FaceNormal

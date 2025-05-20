@@ -5,15 +5,14 @@
 		inputs.niri.nixosModules.niri
 	];
 
-	# TODO: can we change this to hm.home.packages?
 	hm.home.packages = with pkgs; [
 		xwayland-satellite
 		wl-clipboard
 		swaylock
 		swww
 
-		# TMP, move to tools
-		foot imv grim slurp
+		# TODO: move to tools
+		foot imv grim slurp playerctl
 	];
 
 	xdg.portal = {
@@ -30,8 +29,8 @@
 		enable = true;
 		settings = {
 			main = {
-				font = "${theme.font.mono2}:size=13";
-				terminal = "${pkgs.foot}/bin/footclient";
+				font = "${theme.font.mono}:size=13";
+				terminal = "${pkgs.foot}/bin/foot";
 
 				use-bold = true;
 				show-actions = true;
@@ -112,10 +111,10 @@
 			"Mod+Shift+B".action = show-hotkey-overlay;
 			"Ctrl+Alt+Delete".action = quit;
 			"Ctrl+Shift+Delete".action = power-off-monitors;
-			"Ctrl+Shift+Escape" = no-repeat (spawn "footclient" "-e" "btop");
+			"Ctrl+Shift+Escape" = no-repeat (spawn "foot" "-e" "btop");
 
 			"Mod+E" = no-repeat (spawn "emacsclient" "-a" "" "-c");
-			"Mod+Return" = no-repeat (spawn "footclient");
+			"Mod+Return" = no-repeat (spawn "foot");
 			"Mod+Shift+S" = no-repeat (sh ''grim -g "$(slurp)" - | wl-copy'');
 			"Mod+Ctrl+Shift+S" = no-repeat (sh ''
 				file="$(${pkgs.coreutils}/bin/mktemp)"
@@ -141,6 +140,16 @@
 			"XF86AudioMicMute" = allow-when-locked (
 				spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"
 			);
+			"XF86AudioRewind" = allow-when-locked (
+				spawn "playerctl" "-p" "mpd,%any" "position" "15-"
+			);
+			"XF86AudioForward" = allow-when-locked (
+				spawn "playerctl" "-p" "mpd,%any" "position" "15+"
+			);
+			"XF86AudioPrev" = allow-when-locked (spawn "playerctl" "-p" "mpd,%any" "previous");
+			"XF86AudioNext" = allow-when-locked (spawn "playerctl" "-p" "mpd,%any" "next");
+			"XF86AudioPlay" = allow-when-locked (spawn "playerctl" "-p" "mpd,%any" "play-pause");
+
 			"XF86MonBrightnessUp" = allow-when-locked (spawn "brightnessctl" "set" "5%+");
 			"XF86MonBrightnessDown" = allow-when-locked (spawn "brightnessctl" "set" "5%-");
 
@@ -264,7 +273,6 @@
 		spawn-at-startup = [
 			{ command = [ "swww-daemon" ]; }
 			{ command = [ "xwayland-satellite" ]; }
-			{ command = [ "foot" "--server" ]; }
 		];
 	};
 

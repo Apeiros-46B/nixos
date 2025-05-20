@@ -8,10 +8,9 @@ functions.linkImpure "nvim" {
 	};
 
 	hm.home.packages = with pkgs; [
-		xclip
+		nil # make nix language server available system-wide
 		gcc
 		gnumake
-		nil # make nix language server available system-wide
 	];
 
 	environment.variables = {

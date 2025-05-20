@@ -12,9 +12,5 @@
 		package = pkgs.jdk21;
 	};
 
-	hm.home.packages = with pkgs; [
-		ferium
-		prismlauncher
-		fabric-installer
-	];
+	hm.home.packages = [ pkgs.prismlauncher ];
 }

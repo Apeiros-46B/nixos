@@ -34,4 +34,7 @@
 			};
 		};
 	};
+
+	# do not restart keyd when it exits from the panic key (code 255)
+	systemd.services.keyd.serviceConfig.RestartPreventExitStatus="255";
 }

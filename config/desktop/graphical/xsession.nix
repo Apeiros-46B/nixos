@@ -36,8 +36,8 @@ in
 {
 	services.xserver.displayManager.startx.enable = true;
 
-	# install packages
 	hm.home.packages = with pkgs; [
+		xclip
 		picom
 		libnotify
 		i3lock-color

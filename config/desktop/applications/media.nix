@@ -2,28 +2,39 @@
 
 let
 	lfmUser = "Apeiros-46B";
-
 	mpdAddress = "127.0.0.1";
 	mpdPort = 6600;
 	mpdDataDir = "${globals.dir.mus}/.mpd";
-
-	visName = "ncmpcpp visualizer feed";
-	visPath = "${mpdDataDir}/visualizer.fifo";
-	visStereo = true;
+	mpdVisName = "ncmpcpp visualizer feed";
+	mpdVisPath = "${mpdDataDir}/visualizer.fifo";
+	mpdVisStereo = true;
 in {
 	hm.home.packages = with pkgs; [
-		mpc-cli
 		yt-dlp
-
 		ffmpeg
-		chromaprint
+		mpc-cli
 
+		chromaprint
 		python312Packages.pyacoustid
 		python312Packages.requests
 		python312Packages.beautifulsoup4
 		python312Packages.pylast
 	];
 
+	# {{{ mpv
+	hm.programs.mpv = {
+		enable = true;
+		scripts = with pkgs; [
+			mpvScripts.uosc
+			mpvScripts.mpris
+			mpvScripts.thumbfast
+			mpvScripts.sponsorblock
+			mpvScripts.cutter
+		];
+	};
+	# }}}
+
+	# {{{ mpd
 	hm.services.mpd = {
 		enable = true;
 		network = {
@@ -43,9 +54,9 @@ in {
 
 			audio_output {
 				type   "fifo"
-				name   "${visName}"
-				path   "${visPath}"
-				format "44100:16:${if visStereo then "2" else "1"}"
+				name   "${mpdVisName}"
+				path   "${mpdVisPath}"
+				format "44100:16:${if mpdVisStereo then "2" else "1"}"
 			}
 		'';
 	};
@@ -55,6 +66,13 @@ in {
 		mpd.useLocal = true;
 	};
 
+	sops.secrets.lastfm-pw = {
+		sopsFile = ./Secrets.yaml;
+		owner = "root";
+		group = "root";
+		mode = "0400";
+		restartUnits = [ "mpdscribble.service" ];
+	};
 	services.mpdscribble = {
 		enable = true;
 		host = mpdAddress;
@@ -62,32 +80,70 @@ in {
 		endpoints = {
 			"last.fm" = {
 				username = lfmUser;
-				passwordFile = "${globals.home}/auth/.lfm.pw"; # TODO use sops-nix
+				passwordFile = config.sops.secrets.lastfm-pw.path;
 			};
 		};
 	};
+	# }}}
 
+	# {{{ ncmpcpp
 	hm.programs.ncmpcpp = {
 		enable = true;
-		package = pkgs.ncmpcpp.override {
-			visualizerSupport = true;
-		};
-
+		package = pkgs.ncmpcpp.override { visualizerSupport = true; };
+		mpdMusicDir = globals.dir.mus;
 		settings = {
 			mpd_host = mpdAddress;
 			mpd_port = mpdPort;
-			mpd_music_dir = globals.dir.mus;
 			lyrics_directory = "${mpdDataDir}/lyrics";
 
-			visualizer_output_name = visName;
-			visualizer_data_source = visPath;
-			visualizer_in_stereo = if visStereo then "yes" else "no";
+			visualizer_output_name = mpdVisName;
+			visualizer_data_source = mpdVisPath;
+			visualizer_in_stereo = if mpdVisStereo then "yes" else "no";
+
 			visualizer_type = "wave_filled";
 			visualizer_look = "●█";
-
 			visualizer_spectrum_dft_size = 1;
 
-			# TODO: move this into a separate service (a shell script) separate from ncmpcpp
+			# ncmpcpp's 256color needs to add one to the number (color 247 is written as 248)
+			current_item_prefix = "$(green_248)";
+			current_item_suffix = "$(end)";
+			current_item_inactive_column_prefix = "$(green_255)";
+			current_item_inactive_column_suffix = "$(end)";
+			selected_item_prefix = "$(magenta_251)";
+			selected_item_suffix = "$(end)";
+			modified_item_prefix = "$(green)+ $(end)";
+			alternative_header_second_line_format =
+				"{{$(blue)$b{%a}$/b$(end)}{ - $(cyan)%b$(end)}{ ($(yellow)%y$(end))}}|{%D}";
+			song_columns_list_format =
+				"(20)[blue]{a} (4f)[white]{NE} (50)[green]{t|f} (20)[cyan]{b} (5f)[magenta]{lr}";
+			song_window_title_format = "{%a - }{%t}|{%f}";
+			browser_sort_mode = "format";
+			browser_sort_format = "{%n}|{%t}|{%b}|{%f}";
+
+			user_interface = "alternative";
+			playlist_display_mode = "columns";
+			browser_display_mode = "columns";
+			search_engine_display_mode = "columns";
+			playlist_editor_display_mode = "columns";
+			display_bitrate = "yes";
+			titles_visibility = "no";
+			show_duplicate_tags = "no";
+			connected_message_on_startup = "no";
+			empty_tag_color = "red";
+			main_window_color = "white";
+			progressbar_color = "255";
+			progressbar_elapsed_color = "magenta";
+			progressbar_look = "──";
+			tags_separator = " + ";
+
+			volume_change_step = 4;
+			screen_switcher_mode = "playlist";
+			external_editor = "vim";
+			data_fetching_delay = "no";
+			ignore_diacritics = "yes";
+			ignore_leading_the = "no";
+
+			# TODO: move this to the ags shell (using playerctl lib) eventually
 			execute_on_song_change = "${pkgs.writeShellScriptBin "ncmpcpp-notify-songinfo" ''
 				mpc='${pkgs.mpc-cli}/bin/mpc'
 				notify='${pkgs.libnotify}/bin/notify-send'
@@ -104,7 +160,9 @@ in {
 		};
 		# bindings = {}; # TODO
 	};
+	# }}}
 
+	# {{{ beets
 	hm.programs.beets = {
 		enable = true;
 		mpdIntegration = {
@@ -180,4 +238,5 @@ in {
 			types.rating = "int";
 		};
 	};
+	# }}}
 }
