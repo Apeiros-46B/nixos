@@ -6,11 +6,13 @@ mkHost:
 		theme = "elysium";
 		system = "x86_64-linux";
 		stateVersion = "23.11";
+		globals = {};
 	})
 	(mkHost "bastion" {
 		type = "server";
 		theme = "everforest";
 		system = "x86_64-linux";
 		stateVersion = "24.05";
+		globals.dir.nix = "/etc/nixos";
 	})
 ]

@@ -30,8 +30,6 @@ in {
 				})
 				vim-oscyank
 				vim-automkdir
-
-				wgsl-vim
 			];
 			vimrcConfig.customRC = with theme.colorsHash; ''
 				" files
@@ -212,8 +210,6 @@ in {
 				hi Aqua ctermfg=6 guifg=${cyan} ctermbg=NONE guibg=NONE
 				hi Blue ctermfg=4 guifg=${blue} ctermbg=NONE guibg=NONE
 				hi Purple ctermfg=5 guifg=${purple} ctermbg=NONE guibg=NONE
-
-				" TODO: redefine these in terms of nano faces
 				hi Normal ctermfg=15 guifg=${fg1} ctermbg=0 guibg=${bg1}
 				hi EndOfBuffer ctermfg=0 guifg=${bg1} ctermbg=NONE guibg=NONE
 				hi Folded ctermfg=7 guifg=${fg2} ctermbg=8 guibg=${bg2}
@@ -281,16 +277,6 @@ in {
 				" }}}
 
 				" {{{ syntax highlight
-				" func WgslSyntax()
-				" 	syn keyword wgslKeyword alias break case const const_assert continue continuing default diagnostic discard else enable false fn for if let loop override requires return struct switch true var while
-				" 	syn match wgslAttribute '@[a-zA-Z_]\+'
-				" 	syn match wgslComment '//.*$'
-
-				" 	hi link wgslKeyword Keyword
-				" 	hi link wgslAttribute PreProc
-				" 	hi link wgslComment Comment
-				" endfunc
-
 				func SimpleSyntax()
 					syntax on
 					syntax reset
@@ -337,7 +323,6 @@ in {
 				" autocmds
 				au FileType qf call QfSetup()
 				au FileType rust compiler cargo
-				" au BufEnter *.wgsl call WgslSyntax()
 				au BufEnter * call SimpleSyntax()
 				au InsertEnter * set nornu
 				au InsertLeave * set rnu

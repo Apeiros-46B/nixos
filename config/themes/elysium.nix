@@ -1,4 +1,5 @@
 rec {
+	name = "elysium";
 	dark = false;
 	colors = {
 		bg1 = "ffffff";

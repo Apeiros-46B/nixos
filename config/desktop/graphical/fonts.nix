@@ -12,7 +12,6 @@
 			nerd-fonts.iosevka
 			nerd-fonts.dejavu-sans-mono
 
-			# my.fairfax-font # TODO: currently doesn't build
 			tewi-font
 			uiua386
 

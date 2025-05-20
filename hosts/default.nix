@@ -1,16 +1,18 @@
 inputs:
 
 let
-	mkHost = hostname: { type, theme, system, stateVersion }:
+	lib = inputs.nixpkgs.lib;
 	# {{{ host constructor
-	{
+	mkHost = hostname: { type, theme, system, stateVersion, globals }: {
 		name = hostname;
-		value = inputs.nixpkgs.lib.nixosSystem {
+		value = lib.nixosSystem {
 			inherit system;
-			specialArgs = (import ../config/util { inherit inputs hostname; }) // {
-				inherit system inputs;
-				theme = import (../config/themes + ("/" + theme) + ".nix");
-			};
+			specialArgs = lib.attrsets.recursiveUpdate
+				(import ../config/util { inherit inputs hostname; })
+				{
+					inherit inputs globals system;
+					theme = import (../config/themes + ("/" + theme) + ".nix");
+				};
 			modules = [
 				../modules
 				../config/common           # common config

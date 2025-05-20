@@ -1,8 +1,8 @@
-{ config, globals, ... }:
+{ globals, ... }:
 
 {
 	hm.xdg = {
-		configHome = "${globals.home}/.config";
+		configHome = globals.dir.cfg;
 		userDirs = {
 			enable = true;
 			createDirectories = false;
@@ -18,8 +18,5 @@
 		};
 	};
 
-	# hacky
-	environment.variables = {
-		XDG_CONFIG_HOME = config.hm.xdg.configHome;
-	};
+	environment.variables.XDG_CONFIG_HOME = globals.dir.cfg;
 }

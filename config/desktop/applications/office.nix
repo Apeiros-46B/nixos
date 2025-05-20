@@ -1,10 +1,16 @@
 { config, pkgs, functions, theme, ... }:
 
 {
+	xdg.mime.defaultApplications = {
+		"application/pdf"      = "sioyek.desktop";
+		"application/epub+zip" = "sioyek.desktop";
+	};
+
 	hm.home.packages = with pkgs; [
 		libreoffice-still
 		hunspell
 		hunspellDicts.en_CA-large
+		pandoc
 	];
 
 	hm.programs.sioyek = {

@@ -10,9 +10,6 @@
 		wl-clipboard
 		swaylock
 		swww
-
-		# TODO: move to tools
-		foot imv grim slurp playerctl
 	];
 
 	xdg.portal = {

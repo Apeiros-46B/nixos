@@ -1,4 +1,5 @@
 rec {
+	name = "everforest";
 	dark = true;
 	colors = {
 		bg1 = "2b3339";

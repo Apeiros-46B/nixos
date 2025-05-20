@@ -46,7 +46,7 @@
 			interactive.diffFilter = "delta --color-only";
 			delta = {
 				dark = theme.dark;
-				syntax-theme = "none"; # TODO: make a delta theme that matches the system
+				syntax-theme = "none";
 				minus-emph-style = "red #${theme.colors.bgRed} bold strike";
 				minus-style = "red #${theme.colors.bgRed}";
 				plus-emph-style = "green #${theme.colors.bgGreen} bold";

@@ -9,10 +9,20 @@ let
 	mpdVisPath = "${mpdDataDir}/visualizer.fifo";
 	mpdVisStereo = true;
 in {
+	xdg.mime.defaultApplications = {
+		"image/jpeg" = "imv.desktop";
+		"image/apng" = "imv.desktop";
+		"image/png"  = "imv.desktop";
+		"image/gif"  = "imv.desktop";
+	};
+
 	hm.home.packages = with pkgs; [
+		imv
+
 		yt-dlp
 		ffmpeg
 		mpc-cli
+		playerctl
 
 		chromaprint
 		python312Packages.pyacoustid
@@ -105,9 +115,9 @@ in {
 			visualizer_spectrum_dft_size = 1;
 
 			# ncmpcpp's 256color needs to add one to the number (color 247 is written as 248)
-			current_item_prefix = "$(green_248)";
+			current_item_prefix = "$(blue_250)";
 			current_item_suffix = "$(end)";
-			current_item_inactive_column_prefix = "$(green_255)";
+			current_item_inactive_column_prefix = "$(blue_255)";
 			current_item_inactive_column_suffix = "$(end)";
 			selected_item_prefix = "$(magenta_251)";
 			selected_item_suffix = "$(end)";
@@ -143,7 +153,6 @@ in {
 			ignore_diacritics = "yes";
 			ignore_leading_the = "no";
 
-			# TODO: move this to the ags shell (using playerctl lib) eventually
 			execute_on_song_change = "${pkgs.writeShellScriptBin "ncmpcpp-notify-songinfo" ''
 				mpc='${pkgs.mpc-cli}/bin/mpc'
 				notify='${pkgs.libnotify}/bin/notify-send'
