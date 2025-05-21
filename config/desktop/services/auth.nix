@@ -4,6 +4,7 @@
 	programs.seahorse.enable = true;
 	programs.gnupg.agent.enable = true;
 	services.gnome.gnome-keyring.enable = true;
+	security.polkit.enable = true;
 
 	environment.systemPackages = [ pkgs.libsecret ];
 

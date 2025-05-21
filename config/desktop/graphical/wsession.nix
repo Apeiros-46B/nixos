@@ -17,27 +17,47 @@
 		wlr.enable = true;
 		config.common.default = [ "gtk" ];
 		extraPortals = with pkgs; [
+			xdg-desktop-portal-wlr
 			xdg-desktop-portal-gtk
-			xdg-desktop-portal-gnome
 		];
+	};
+
+	# use a GTK agent (easier to theme) instead of the KDE agent provided by niri-flake
+	systemd.user.services.niri-flake-polkit.enable = false;
+	systemd.user.services.polkit-gnome-authentication-agent-1 = {
+		description = "GNOME Polkit authentication agent";
+		wantedBy = [ "graphical-session.target" ];
+		wants = [ "graphical-session.target" ];
+		after = [ "graphical-session.target" ];
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+			Restart = "on-failure";
+			RestartSec = 1;
+			TimeoutStopSec = 10;
+		};
 	};
 
 	hm.programs.fuzzel = {
 		enable = true;
 		settings = {
 			main = {
-				font = "${theme.font.mono}:size=13";
+				font = "${theme.font.sans}:size=13";
 				terminal = "${pkgs.foot}/bin/foot";
 
 				use-bold = true;
 				show-actions = true;
 				icons-enabled = false;
 
-				width = 50;
+				width = 30;
 				lines = 25;
 				tabs = 2;
 				horizontal-pad = 40;
 				vertical-pad = 40;
+			};
+			border = {
+				width = 0;
+				radius = 0;
 			};
 			colors = with builtins.mapAttrs (k: v: "${v}ff") theme.colors; {
 				background = bg2;
@@ -45,10 +65,10 @@
 				prompt = orange;
 				placeholder = fg2;
 				input = fg1;
-				match = green;
-				selection = green;
-				selection-text = bg3;
-				selection-match = bg1;
+				match = blue;
+				selection = bgBlue;
+				selection-text = fg1;
+				selection-match = blue;
 			};
 		};
 	};
@@ -106,6 +126,7 @@
 		in {
 			"Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
 			"Mod+Shift+B".action = show-hotkey-overlay;
+			"Mod+Tab".action = toggle-overview;
 			"Ctrl+Alt+Delete".action = quit;
 			"Ctrl+Shift+Delete".action = power-off-monitors;
 			"Ctrl+Shift+Escape" = no-repeat (spawn "foot" "-e" "btop");
@@ -186,15 +207,14 @@
 			"Mod+6".action = focus-workspace 6;
 			"Mod+7".action = focus-workspace 7;
 			"Mod+8".action = focus-workspace 8;
-			"Mod+Shift+1".action = move-column-to-workspace 1;
-			"Mod+Shift+2".action = move-column-to-workspace 2;
-			"Mod+Shift+3".action = move-column-to-workspace 3;
-			"Mod+Shift+4".action = move-column-to-workspace 4;
-			"Mod+Shift+5".action = move-column-to-workspace 5;
-			"Mod+Shift+6".action = move-column-to-workspace 6;
-			"Mod+Shift+7".action = move-column-to-workspace 7;
-			"Mod+Shift+8".action = move-column-to-workspace 8;
-			"Mod+Tab".action = focus-workspace-previous;
+			"Mod+Shift+1".action = move-column-to-index 1;
+			"Mod+Shift+2".action = move-column-to-index 2;
+			"Mod+Shift+3".action = move-column-to-index 3;
+			"Mod+Shift+4".action = move-column-to-index 4;
+			"Mod+Shift+5".action = move-column-to-index 5;
+			"Mod+Shift+6".action = move-column-to-index 6;
+			"Mod+Shift+7".action = move-column-to-index 7;
+			"Mod+Shift+8".action = move-column-to-index 8;
 			"Mod+U".action = focus-workspace-down;
 			"Mod+I".action = focus-workspace-up;
 			"Mod+Shift+U".action = move-column-to-workspace-down;
@@ -217,27 +237,50 @@
 				open-maximized = true;
 			}
 			{
-				matches = [{ app-id = "^imv$"; }];
+				matches = [{ app-id = "^firefox$"; }];
+				open-maximized = true;
+			}
+			{
+				matches = [
+					{ app-id = "^imv$"; }
+					{ app-id = "^Thunar$"; title = "File Operation Progress"; }
+				];
 				open-floating = true;
 			}
+		];
+		layer-rules = [
+			# TODO: once niri-flake updates, uncomment this and combine with layout.background-color = "transparent";
+			# {
+			# 	matches = [{ namespace = "^swww-daemon$"; }];
+			# 	place-within-backdrop = true;
+			# }
 		];
 		layout = {
 			gaps = 8;
 			focus-ring.enable = false;
 			border.enable = false;
+			shadow = {
+				enable = true;
+				color = "#00000040";
+				offset.y = 0;
+				softness = 24;
+				spread = 0;
+			};
 			insert-hint = {
 				enable = true;
 				display.color = "${theme.colorsHash.blue}33";
 			};
-			# tab-indicator = {
-			# 	enable = true;
-			# 	gap = 0;
-			# 	gaps-between-tabs = 2;
-			# 	width = 8;
-			# 	position = "top";
-			# 	active-color = "${theme.colorsHash.green}";
-			# 	inactive-color = "${theme.colorsHash.bg3}";
-			# };
+			tab-indicator = {
+				enable = true;
+				place-within-column = true;
+				position = "left";
+				length.total-proportion = 1.;
+				width = 8;
+				gap = 0;
+				gaps-between-tabs = 2;
+				active.color = "${theme.colorsHash.blue}";
+				inactive.color = "${theme.colorsHash.bg5}";
+			};
 			default-column-width.proportion = 1. / 2.;
 			preset-column-widths = [
 				{ proportion = 1. / 3.; }
@@ -250,22 +293,13 @@
 				{ proportion = 1.; }
 			];
 		};
-		# TODO: get this working on multi monitor?
-		workspaces = {
-			"1".name = "sch-www";
-			"2".name = "sch";
-			"3".name = "dev-www";
-			"4".name = "dev";
-			"5".name = "adm";
-			"6".name = "tmp";
-			"7".name = "www";
-		};
+		overview.backdrop-color = "#f4f4f4";
 		cursor = {
 			theme = config.hm.home.pointerCursor.name;
 			size = config.hm.home.pointerCursor.size;
 			hide-when-typing = false;
 		};
-		animations.slowdown = 0.8;
+		animations.slowdown = 0.75;
 		prefer-no-csd = true;
 		spawn-at-startup = [
 			{ command = [ "swww-daemon" ]; }

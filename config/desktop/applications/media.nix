@@ -117,7 +117,7 @@ in {
 			# ncmpcpp's 256color needs to add one to the number (color 247 is written as 248)
 			current_item_prefix = "$(blue_250)";
 			current_item_suffix = "$(end)";
-			current_item_inactive_column_prefix = "$(blue_255)";
+			current_item_inactive_column_prefix = "$(blue_9)";
 			current_item_inactive_column_suffix = "$(end)";
 			selected_item_prefix = "$(magenta_251)";
 			selected_item_suffix = "$(end)";
@@ -167,7 +167,42 @@ in {
 					"$($mpc -f 'on %album% [mpd]' current)"
 			''}/bin/ncmpcpp-notify-songinfo";
 		};
-		# bindings = {}; # TODO
+		bindings = let
+			bind = key: command: { inherit command key; };
+		in [
+			(bind "h" "previous_column")
+			(bind "j" "scroll_down")
+			(bind "k" "scroll_up")
+			(bind "l" "next_column")
+			(bind "H" "previous")
+			(bind "J" [ "select_item" "scroll_down" ])
+			(bind "K" [ "select_item" "scroll_up" ])
+			(bind "L" "next")
+			(bind "escape" "remove_selection")
+
+			(bind "u" "move_sort_order_down")
+			(bind "u" "move_selected_items_down")
+			(bind "i" "move_sort_order_up")
+			(bind "i" "move_selected_items_up")
+
+			(bind "n" "next_found_item")
+			(bind "N" "previous_found_item")
+			(bind "space" "start_searching")
+
+			(bind "C" "clear_playlist")
+			(bind "C" "clear_main_playlist")
+			(bind "ctrl-s" "save_playlist")
+
+			(bind "c" "toggle_consume")
+			(bind "s" "toggle_random")
+			(bind "R" "toggle_single")
+			(bind "#" "shuffle")
+
+			(bind "K" "show_song_info")
+			(bind "ctrl-k" "show_artist_info")
+			(bind "," "toggle_browser_sort_mode")
+			(bind "," "toggle_media_library_sort_mode")
+		];
 	};
 	# }}}
 
