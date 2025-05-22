@@ -196,7 +196,7 @@ in {
 			(bind "c" "toggle_consume")
 			(bind "s" "toggle_random")
 			(bind "R" "toggle_single")
-			(bind "#" "shuffle")
+			(bind "S" "shuffle")
 
 			(bind "K" "show_song_info")
 			(bind "ctrl-k" "show_artist_info")

@@ -1,6 +1,6 @@
 { pkgs }:
 
-pkgs.stdenv.mkDerivation rec {
+pkgs.stdenv.mkDerivation {
 	pname = "shimmie";
 	version = "9be9f3e";
 

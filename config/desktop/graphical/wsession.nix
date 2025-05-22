@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, theme, ... }:
+{ inputs, config, pkgs, globals, theme, ... }:
 
 {
 	imports = [
@@ -11,6 +11,9 @@
 		swaylock
 		swww
 	];
+
+	programs.ydotool.enable = true;
+	users.users.${globals.user}.extraGroups = [ config.programs.ydotool.group ];
 
 	xdg.portal = {
 		enable = true;
@@ -243,7 +246,8 @@
 			{
 				matches = [
 					{ app-id = "^imv$"; }
-					{ app-id = "^Thunar$"; title = "File Operation Progress"; }
+					{ app-id = "^Thunar$"; title = "^File Operation Progress$"; }
+					{ app-id = "^.blueman-manager-wrapped$"; }
 				];
 				open-floating = true;
 			}
