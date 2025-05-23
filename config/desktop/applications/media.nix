@@ -187,7 +187,6 @@ in {
 
 			(bind "n" "next_found_item")
 			(bind "N" "previous_found_item")
-			(bind "space" "start_searching")
 
 			(bind "C" "clear_playlist")
 			(bind "C" "clear_main_playlist")

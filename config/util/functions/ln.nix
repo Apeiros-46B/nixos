@@ -3,7 +3,7 @@
 
 let
 	capFirst = str: lib.strings.toUpper (builtins.substring 0 1 str)
-									+ builtins.substring 1 (-1) str;
+	              + builtins.substring 1 (-1) str;
 in {
 	linkImpure = name: opts: lib.mkMerge [
 		opts

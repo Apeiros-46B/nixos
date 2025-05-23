@@ -8,7 +8,7 @@ let
 		value = lib.nixosSystem {
 			inherit system;
 			specialArgs = lib.attrsets.recursiveUpdate
-				(import ../config/util { inherit inputs hostname; })
+				(import ../config/util { inherit inputs hostname type; })
 				{
 					inherit inputs globals system;
 					theme = import (../config/themes + ("/" + theme) + ".nix");

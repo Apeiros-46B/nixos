@@ -1,7 +1,8 @@
-hostname:
+{ hostname, type }:
 
 rec {
 	inherit hostname;
+	hostType = type;
 
 	uid = 1000;
 	user = "apeiros";

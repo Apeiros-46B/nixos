@@ -48,6 +48,13 @@ in {
 				dim5       = purple;
 				dim6       = cyan;
 				dim7       = fg2;
+				"232"      = bg1;
+				"233"      = bg2;
+				"234"      = bg3;
+				"235"      = bg4;
+				"236"      = bg5;
+				"237"      = bg6;
+				"238"      = fg1;
 				"244"      = bgRed;
 				"246"      = bgYellow;
 				"247"      = bgGreen;
