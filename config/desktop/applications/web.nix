@@ -124,27 +124,27 @@ in {
 				@import '${pkgs.my.verticalfox}/linux/userChrome.css';
 
 				:root {
-					--bg: ${bg1};
-					--urlbar-bg: ${bg2};
-					--urlbar-border-top: ${bg1};
-					--urlbar-border-bottom: ${bg1};
+					--bg: ${bg0};
+					--urlbar-bg: ${bg1};
+					--urlbar-border-top: ${bg0};
+					--urlbar-border-bottom: ${bg0};
 					--urlbar-outline: ${blue};
 					--urlbar-height: 30px;
-					--urldrop-bg: ${bg2};
+					--urldrop-bg: ${bg1};
 
 					--fullscreen-warn: rgb(25, 25, 25);
 
 					--arrowpanel-background: var(--urlbar-bg) !important;
-					--button-hover-bgcolor: ${bg3} !important;
+					--button-hover-bgcolor: ${bg2} !important;
 					--button-active-bgcolor: ${bgBlue} !important;
-					--button-bgcolor: ${bg2} !important;
+					--button-bgcolor: ${bg1} !important;
 					--toolbarbutton-icon-fill-opacity: 1.0 !important;
-					--arrowpanel-border-color: ${bg1} !important;
-					--identity-btn-hover-color: ${bg3} !important;
+					--arrowpanel-border-color: ${bg0} !important;
+					--identity-btn-hover-color: ${bg2} !important;
 
-					--dark-menu-background-color: ${bg2} !important;
-					--dark-menu-border-color: ${bg2} !important;
-					--dark-menuitem-hover-background-color: ${bg3} !important;
+					--dark-menu-background-color: ${bg1} !important;
+					--dark-menu-border-color: ${bg1} !important;
+					--dark-menuitem-hover-background-color: ${bg2} !important;
 				}
 
 				#urlbar,
@@ -165,7 +165,7 @@ in {
 					margin: 0 !important;
 					opacity: 1 !important;
 					border-radius: 0px !important;
-					background-color: ${bg3} !important;
+					background-color: ${bg2} !important;
 				}
 
 				#nav-bar {

@@ -63,14 +63,14 @@
 				radius = 0;
 			};
 			colors = with builtins.mapAttrs (k: v: "${v}ff") theme.colors; {
-				background = bg2;
-				text = fg1;
+				background = bg1;
+				text = fg0;
 				prompt = orange;
-				placeholder = fg2;
-				input = fg1;
+				placeholder = fg3;
+				input = fg0;
 				match = blue;
 				selection = bgBlue;
-				selection-text = fg1;
+				selection-text = fg0;
 				selection-match = blue;
 			};
 		};
@@ -85,9 +85,9 @@
 		margin = "24";
 		maxIconSize = 48;
 		width = 400;
-		textColor = fg1;
+		textColor = fg0;
 		progressColor = green;
-		backgroundColor = bg2;
+		backgroundColor = bg1;
 	};
 
 	programs.niri = {
@@ -283,7 +283,7 @@
 				gap = 0;
 				gaps-between-tabs = 2;
 				active.color = "${theme.colorsHash.blue}";
-				inactive.color = "${theme.colorsHash.bg5}";
+				inactive.color = "${theme.colorsHash.bg4}";
 			};
 			default-column-width.proportion = 1. / 2.;
 			preset-column-widths = [
