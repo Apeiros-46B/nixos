@@ -76,18 +76,20 @@
 		};
 	};
 
-	hm.services.mako = with theme.colorsHash; {
+	hm.services.mako = {
 		enable = true;
-		defaultTimeout = 5000;
-		borderSize = 0;
-		borderRadius = 0;
-		padding = "16";
-		margin = "24";
-		maxIconSize = 48;
-		width = 400;
-		textColor = fg0;
-		progressColor = green;
-		backgroundColor = bg1;
+		settings = with theme.colorsHash; {
+			default-timeout = 5000;
+			border-size = 0;
+			border-radius = 0;
+			padding = "16";
+			margin = "24";
+			max-icon-size = 48;
+			width = 400;
+			text-color = fg0;
+			progress-color = green;
+			background-color = bg1;
+		};
 	};
 
 	programs.niri = {

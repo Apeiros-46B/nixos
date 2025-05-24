@@ -249,7 +249,7 @@ in {
 			tdy = "ec $(date +%Y.%m.%d).org";
 		};
 
-		initExtra = ''
+		initContent = ''
 			fork() {
 				"$@" > /dev/null 2>&1 & disown;
 			}

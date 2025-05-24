@@ -9,4 +9,7 @@
 		./office.nix
 		./web.nix
 	];
+
+	# TODO: move elsewhere
+	virtualisation.waydroid.enable = true;
 }
