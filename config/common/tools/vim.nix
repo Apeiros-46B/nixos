@@ -1,7 +1,8 @@
-{ pkgs, theme, hostType, ... }:
+{ pkgs, globals, theme, ... }:
 
 let
 	buildPlugin = pkgs.vimUtils.buildVimPlugin;
+	useTruecolor = theme.name == "elysium" && globals.hostType != "server";
 in {
 	environment.variables = {
 		EDITOR = "vim";
@@ -33,8 +34,8 @@ in {
 					src = pkgs.fetchFromGitHub {
 						owner = "Apeiros-46B";
 						repo = "elysium";
-						rev = "6309af58cf35c9cff4d011f7cb1b4c86cb484a22";
-						sha256 = "8Mxp+xoa9WT/5rOeyttkqOb1gA6RSa8+wj37fHJGhIk=";
+						rev = "8a378de33c8358d6002eb6c87cd49b6eb61daef8";
+						sha256 = "vY8hQ6bqSdUMTN+lv2QFr3Opzyo3Da8XIjP1tEgWfz8=";
 					};
 					sourceRoot = "source/ports/vim";
 				})
@@ -198,7 +199,7 @@ in {
 				tmap <C-w><C-n> <C-\><C-n>
 
 				set background=dark
-				set ${if hostType != "server" then "notermguicolors" else "termguicolors"}
+				set ${if useTruecolor then "termguicolors" else "notermguicolors"}
 				let g:elysium_256color = v:false
 				colorscheme elysium
 
