@@ -35,7 +35,7 @@ in {
 						owner = "Apeiros-46B";
 						repo = "elysium";
 						rev = "8a378de33c8358d6002eb6c87cd49b6eb61daef8";
-						sha256 = "vY8hQ6bqSdUMTN+lv2QFr3Opzyo3Da8XIjP1tEgWfz8=";
+						sha256 = "Iz6HhxQKbhdZXeQuIm9HE2VoJ7+hDPk5xJGD0ilWCs4=";
 					};
 					sourceRoot = "source/ports/vim";
 				})
