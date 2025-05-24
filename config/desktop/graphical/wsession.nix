@@ -246,8 +246,9 @@
 			{
 				matches = [
 					{ app-id = "^imv$"; }
-					{ app-id = "^Thunar$"; title = "^File Operation Progress$"; }
 					{ app-id = "^.blueman-manager-wrapped$"; }
+					{ app-id = "^Thunar$"; title = "^File Operation Progress$"; }
+					{ app-id = "^firefox$"; title = "^Picture-in-Picture$"; }
 				];
 				open-floating = true;
 			}
