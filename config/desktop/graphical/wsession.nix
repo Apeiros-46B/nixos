@@ -179,6 +179,7 @@
 			"Mod+C" = no-repeat (close-window);
 			"Mod+F".action = fullscreen-window;
 			"Mod+Shift+F".action = toggle-window-floating;
+			"Alt+Tab".action = switch-focus-between-floating-and-tiling;
 
 			"Mod+H".action = focus-column-left;
 			"Mod+J".action = focus-window-or-workspace-down;
@@ -238,11 +239,11 @@
 		};
 		window-rules = [
 			{
-				matches = [{ app-id = "^brave-browser$"; }];
-				open-maximized = true;
-			}
-			{
-				matches = [{ app-id = "^firefox$"; }];
+				matches = [
+					{ app-id = "^brave-browser$"; }
+					{ app-id = "^firefox$"; }
+					{ app-id = "^gimp-3.0$"; }
+				];
 				open-maximized = true;
 			}
 			{
@@ -250,6 +251,7 @@
 					{ app-id = "^imv$"; }
 					{ app-id = "^.blueman-manager-wrapped$"; }
 					{ app-id = "^Thunar$"; title = "^File Operation Progress$"; }
+					{ app-id = "^Thunar$"; title = "^Rename \".*\"$"; }
 					{ app-id = "^firefox$"; title = "^Picture-in-Picture$"; }
 				];
 				open-floating = true;

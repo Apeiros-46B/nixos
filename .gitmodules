@@ -1,5 +1,5 @@
-[submodule "impure/nvim"]
-	path = impure/nvim
+[submodule "impure/nvim.OLD"]
+	path = impure/nvim.OLD
 	url = https://github.com/Apeiros-46B/nvim
 [submodule "impure/emacs"]
 	path = impure/emacs

@@ -18,6 +18,7 @@ in {
 
 	hm.home.packages = with pkgs; [
 		imv
+		nicotine-plus
 
 		yt-dlp
 		ffmpeg
@@ -123,9 +124,9 @@ in {
 			selected_item_suffix = "$(end)";
 			modified_item_prefix = "$(green)+ $(end)";
 			alternative_header_second_line_format =
-				"{{$(blue)$b{%a}$/b$(end)}{ - $(aqua)%b$(end)}{ ($(yellow)%y$(end))}}|{%D}";
+				"{{$(blue)$b{%a}$/b$(end)}{ - $(cyan)%b$(end)}{ ($(yellow)%y$(end))}}|{%D}";
 			song_columns_list_format =
-				"(20)[blue]{a} (4f)[white]{NE} (50)[green]{t|f} (20)[aqua]{b} (5f)[magenta]{lr}";
+				"(20)[blue]{a} (4f)[white]{NE} (50)[green]{t|f} (20)[cyan]{b} (5f)[magenta]{lr}";
 			song_window_title_format = "{%a - }{%t}|{%f}";
 			browser_sort_mode = "format";
 			browser_sort_format = "{%n}|{%t}|{%b}|{%f}";

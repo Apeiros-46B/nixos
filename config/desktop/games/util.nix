@@ -18,11 +18,14 @@
 	hm.home.packages = with pkgs; [
 		mangohud
 		gamescope
+		(pkgs.writeShellScriptBin "rungame" ''
+			gamemoderun gamescope -F nearest -o 30 -b --mangoapp "$@"
+		'')
 		(pkgs.writeShellScriptBin "gamescope-4k" ''
-			gamemoderun gamescope -w 1920 -h 1080 -W 3840 -H 2160 -o 30 -b -- "$@"
+			rungame -w 1920 -h 1080 -W 3840 -H 2160 "$@"
 		'')
 		(pkgs.writeShellScriptBin "gamescope-1080p" ''
-			gamemoderun gamescope -w 1920 -h 1080 -W 1920 -H 1080 -o 30 -b -- "$@"
+			rungame -w 1920 -h 1080 -W 1920 -H 1080 "$@"
 		'')
 	];
 }

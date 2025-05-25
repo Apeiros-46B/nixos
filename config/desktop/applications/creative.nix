@@ -5,6 +5,6 @@
 		aseprite
 		blender
 		darktable
-		gimp
+		gimp3
 	];
 }

@@ -38,8 +38,8 @@
 			BTN_OUTLINE_OFFSET=10
 			BTN_OUTLINE_WIDTH=1
 			CARET1_FG=${purple}
-			CARET2_FG=${bg3}
-			CARET_SIZE=0.04
+			CARET2_FG=${purple}
+			CARET_SIZE=0.05
 			CINNAMON_OPACITY=1.0
 			FG=${fg0}
 			GRADIENT=0.0
@@ -47,8 +47,8 @@
 			HDR_BG=${bg1}
 			HDR_BTN_BG=${bg2}
 			HDR_BTN_FG=${fg0}
-			HDR_FG=${fg0}
-			ICONS_ARCHDROID=${bg4}
+			HDR_FG=${fg4}
+			ICONS_ARCHDROID=${blue}
 			ICONS_DARK=${bg1}
 			ICONS_LIGHT=${blue}
 			ICONS_LIGHT_FOLDER=${blue}
@@ -62,11 +62,11 @@
 			MATERIA_STYLE_COMPACT=True
 			MENU_BG=${bg2}
 			MENU_FG=${fg0}
-			NAME="elysium-gtk"
-			OUTLINE_WIDTH=1
+			NAME="${theme.name}-gtk"
+			OUTLINE_WIDTH=0
 			ROUNDNESS=0
 			SEL_BG=${blue}
-			SEL_FG=${bg0}
+			SEL_FG=${fg0}
 			SPACING=3
 			SURUPLUS_GRADIENT1=${blue}
 			SURUPLUS_GRADIENT2=${blue}
@@ -100,8 +100,8 @@
 			TXT_BG=${bg1}
 			TXT_FG=${fg0}
 			UNITY_DEFAULT_LAUNCHER_STYLE=False
-			WM_BORDER_FOCUS=${blue}
-			WM_BORDER_UNFOCUS=${fg3}
+			WM_BORDER_FOCUS=${bg0}
+			WM_BORDER_UNFOCUS=${bg0}
 		'';
 	in {
 		enable = true;
