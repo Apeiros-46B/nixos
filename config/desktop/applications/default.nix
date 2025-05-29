@@ -2,12 +2,14 @@
 
 {
 	imports = [
-		./brave.nix
-		./discord.nix
+		./creative.nix
 		./emacs.nix
-		./mpd.nix
-		./mpv.nix
+		./media.nix
 		./nvim.nix
-		./sioyek.nix
+		./office.nix
+		./web.nix
 	];
+
+	# TODO: move elsewhere
+	virtualisation.waydroid.enable = true;
 }

@@ -2,15 +2,14 @@
 
 {
 	imports = [
-		./flameshot.nix
-		./obs.nix
-		./qalc.nix
-		./screenkey.nix
-		./st.nix
-		./urxvt.nix
+		./filemgr.nix
+		./screencap.nix
+		./terminals.nix
 	];
 
-	environment.systemPackages = with pkgs; [
+	hm.home.packages = with pkgs; [
 		xdragon
+		libqalculate
+		qalculate-gtk
 	];
 }

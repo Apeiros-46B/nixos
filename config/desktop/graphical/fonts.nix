@@ -8,17 +8,22 @@
 			ibm-plex
 			twitter-color-emoji
 
-			(nerdfonts.override {
-				fonts = [
-					"JetBrainsMono"
-					"Iosevka"
-					"DejaVuSansMono"
-				];
-			})
+			nerd-fonts.jetbrains-mono
+			nerd-fonts.iosevka
+			nerd-fonts.dejavu-sans-mono
 
-			# my.fairfax-font # TODO: currently doesn't build
 			tewi-font
 			uiua386
+
+			(pkgs.iosevka.override {
+				privateBuildPlan = builtins.readFile ./iosevka.toml;
+				set = "Custom";
+			})
+
+			(pkgs.iosevka.override {
+				privateBuildPlan = builtins.readFile ./iosevka.toml;
+				set = "CustomManuscript";
+			})
 		];
 
 		fontDir.enable = true;

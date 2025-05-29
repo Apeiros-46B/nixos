@@ -30,8 +30,7 @@ in {
 		la = "ls -A";
 
 		# NixOS
-		# TODO: make config directory autodetect, currently it's fixed to ~/.config/nixos, needs to be in /etc/nixos on bastion
-		gen       = "readlink /nix/var/nix/profiles/system | cut -d- -f2";
+		nixgen    = "readlink /nix/var/nix/profiles/system";
 		rebuild   = "sudo nixos-rebuild switch --flake '${cfg}#${name}'";
 		update    = "pushd '${cfg}'; nix flake update; reb --upgrade; popd";
 		hm        = "home-manager";
@@ -105,9 +104,9 @@ in {
 
 			# vim ones are more complicated, it shouldn't open vim when nothing is selected
 			# + we need to jump to the line number in ripgrep mode
-			vj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && vim "$x")'';
+			vj = ''(x="$(fd -H | fzf --multi)"; [ "$x" ] && vim "$x")'';
 			vk = ''(x="$(fzrg "echo '{1}/+{2}'")"; vim "''${x%/*}" "''${x##*/}")'';
-			evj = ''(x="$(fd | fzf --multi)"; [ "$x" ] && evim "$x")'';
+			evj = ''(x="$(fd -H | fzf --multi)"; [ "$x" ] && evim "$x")'';
 			evk = ''(x="$(fzrg "echo '{1}/+{2}'")"; evim "''${x%/*}" "''${x##*/}")'';
 			# }}}
 		};
@@ -138,7 +137,7 @@ in {
 			}
 
 			# shortcuts, intended to be used like "vim @fd" or "vim @rg"
-			alias -g @fd='$(fd | fzf --multi)'
+			alias -g @fd='$(fd -H | fzf --multi)'
 			alias -g @rg='$(fzrg)'
 
 			# keybinds
@@ -250,7 +249,7 @@ in {
 			tdy = "ec $(date +%Y.%m.%d).org";
 		};
 
-		initExtra = ''
+		initContent = ''
 			fork() {
 				"$@" > /dev/null 2>&1 & disown;
 			}

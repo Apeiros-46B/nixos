@@ -4,7 +4,6 @@
 
 {
 	imports = [
-		./backlight.nix
 		./bluetooth.nix
 		./display.nix
 		./fingerprint.nix

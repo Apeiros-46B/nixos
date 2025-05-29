@@ -1,4 +1,3 @@
-# TODO: default apps for mime types with xdg.mime.defaultApplications
 { ... }:
 
 {

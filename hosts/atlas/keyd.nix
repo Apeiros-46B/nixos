@@ -19,12 +19,13 @@
 						j = "down";
 						k = "up";
 						l = "right";
-
+						w = "C-right";
+						b = "C-left";
 						g = "home";
 						p = "pageup";
 						n = "pagedown";
-
-						backspace = "delete";
+						r = "S-right";
+						x = "delete";
 					};
 					"altgr+shift" = {
 						g = "end";
@@ -33,4 +34,7 @@
 			};
 		};
 	};
+
+	# do not restart keyd when it exits from the panic key (code 255)
+	systemd.services.keyd.serviceConfig.RestartPreventExitStatus="255";
 }

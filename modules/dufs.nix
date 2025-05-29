@@ -47,6 +47,14 @@ in {
 
 		environment.etc.${etcPath}.source = cfgYaml;
 
+		systemd.tmpfiles.settings."10-dufs.log" = {
+			"${cfg.config.log-file or "/var/log/dufs.log"}".f = {
+				user = "dufs";
+				group = cfg.group;
+				mode = "0660";
+			};
+		};
+
 		systemd.services.dufs = {
 			description = "Start dufs";
 			wantedBy = [ "multi-user.target" ];

@@ -1,6 +1,18 @@
-{ config, functions, theme, ... }:
+{ config, pkgs, functions, theme, ... }:
 
 {
+	xdg.mime.defaultApplications = {
+		"application/pdf"      = "sioyek.desktop";
+		"application/epub+zip" = "sioyek.desktop";
+	};
+
+	hm.home.packages = with pkgs; [
+		libreoffice-still
+		hunspell
+		hunspellDicts.en_CA-large
+		pandoc
+	];
+
 	hm.programs.sioyek = {
 		enable = true;
 
@@ -72,31 +84,31 @@
 
 			# {{{ colors
 			# primary
-			background_color             = color bg1;
-			dark_mode_background_color   = color bg1;
-			ui_text_color                = color fg2;
-			ui_background_color          = color bg2;
-			ui_selected_text_color       = color bg1;
+			background_color             = color bg0;
+			dark_mode_background_color   = color bg0;
+			ui_text_color                = color fg3;
+			ui_background_color          = color bg1;
+			ui_selected_text_color       = color bg0;
 			ui_selected_background_color = color green;
 			text_highlight_color         = color purple;
-			link_highlight_color         = color cyan;
+			link_highlight_color         = color aqua;
 
-			vertical_line_color          = coloro bg2 0.3;
-			visual_mark_color            = coloro bg2 0.3;
-			status_bar_color             = color bg2;
-			status_bar_text_color        = color fg2;
+			vertical_line_color          = coloro bg1 0.3;
+			visual_mark_color            = coloro bg1 0.3;
+			status_bar_color             = color bg1;
+			status_bar_text_color        = color fg3;
 
 			# recolor
-			custom_text_color                        = color fg1;
-			custom_background_color                  = color bg1;
-			custom_color_mode_empty_background_color = color bg1;
+			custom_text_color                        = color fg0;
+			custom_background_color                  = color bg0;
+			custom_color_mode_empty_background_color = color bg0;
 
 			# highlights
 			highlight_color_a = color red;
 			highlight_color_b = color orange;
 			highlight_color_c = color yellow;
 			highlight_color_d = color green;
-			highlight_color_e = color cyan;
+			highlight_color_e = color aqua;
 			highlight_color_f = color blue;
 			highlight_color_g = color purple;
 			# }}}

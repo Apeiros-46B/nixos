@@ -13,5 +13,6 @@
 		config.allowUnfree = true;
 		hostPlatform = system;
 	};
+	environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
 	programs.nix-ld.enable = true;
 }

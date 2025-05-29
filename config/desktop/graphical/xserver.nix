@@ -5,25 +5,23 @@
 		enable = true;
 		dpi = 96;
 		exportConfiguration = true;
+	};
 
-		libinput = {
-			enable = true;
-			mouse = {
-				accelSpeed = "0.0";
-				accelProfile = "flat";
-				middleEmulation = false;
-			};
-			touchpad = {
-				accelSpeed = "0.8";
-				accelProfile = "flat";
-				middleEmulation = false;
-				tappingDragLock = false;
-				tappingButtonMap = "lrm";
-				clickMethod = "clickfinger";
-			};
+	services.libinput = {
+		enable = true;
+		mouse = {
+			accelSpeed = "0.0";
+			accelProfile = "flat";
+			middleEmulation = false;
 		};
-
-		# digimend.enable = true; # TODO: reenable this when i have enough time for a kernel recompilation on all machines
+		touchpad = {
+			accelSpeed = "0.8";
+			accelProfile = "flat";
+			middleEmulation = false;
+			tappingDragLock = false;
+			tappingButtonMap = "lrm";
+			clickMethod = "clickfinger";
+		};
 	};
 
 	hm.xsession.profileExtra = ''
@@ -33,7 +31,7 @@
 	hm.home.pointerCursor = {
 		name = "phinger-cursors-light";
 		package = pkgs.phinger-cursors;
-		size = 32;
+		size = 24;
 		gtk.enable = true;
 		x11 = {
 			enable = true;

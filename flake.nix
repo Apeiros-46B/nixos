@@ -11,9 +11,10 @@
 		wawa.url = "github:amatgil/wawa";
 
 		nvim.url = "github:nix-community/neovim-nightly-overlay";
+		niri.url = "github:sodiboo/niri-flake";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
 		st.url = "github:Apeiros-46B/st";
 	};
 
-	outputs = { ... }@inputs: (import ./hosts inputs);
+	outputs = inputs: (import ./hosts inputs);
 }

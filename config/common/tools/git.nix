@@ -1,4 +1,4 @@
-{ pkgs, globals, ... }:
+{ pkgs, globals, theme, ... }:
 
 {
 	environment.systemPackages = [ pkgs.delta ];
@@ -44,6 +44,14 @@
 
 			core.pager = "delta";
 			interactive.diffFilter = "delta --color-only";
+			delta = {
+				dark = theme.dark;
+				syntax-theme = "none";
+				minus-emph-style = "red #${theme.colors.bgRed} bold strike";
+				minus-style = "red #${theme.colors.bgRed}";
+				plus-emph-style = "green #${theme.colors.bgGreen} bold";
+				plus-style = "green #${theme.colors.bgGreen}";
+			};
 		};
 	};
 

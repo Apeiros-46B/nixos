@@ -7,7 +7,5 @@
 		dedicatedServer.openFirewall = true;
 	};
 
-	environment.systemPackages = with pkgs; [
-		steam-run
-	];
+	hm.home.packages = [ pkgs.steam-run ];
 }
