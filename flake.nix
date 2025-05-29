@@ -7,7 +7,7 @@
 		};
 
 		sops-nix.url = "github:Mic92/sops-nix";
-		nixmox.url = "github:Sorixelle/nixmox";
+		nixmox.url = "git+https://git.isincredibly.gay/srxl/nixmox.git";
 		wawa.url = "github:amatgil/wawa";
 
 		nvim.url = "github:nix-community/neovim-nightly-overlay";

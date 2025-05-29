@@ -5,7 +5,7 @@
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
 
-	users.users.${globals.user}.extraGroups = [ "networkmanager" ];
+	users.users.${globals.user}.extraGroups = [ "networkmanager" "video" "render" ];
 	networking.networkmanager = {
 		enable = true;
 		insertNameservers = [
@@ -43,9 +43,9 @@
 
 	# TODO move out to separate module (maybe factor out to common desktop config)
 	services.xserver.videoDrivers = [ "nvidia" ];
-	users.users.${globals.user}.extraGroups = [ "video" "render" ];
+	# users.users.${globals.user}.extraGroups = [ "video" "render" ];
 	hardware = {
-		opengl = {
+		graphics = {
 			enable = true;
 			enable32Bit = true;
 			extraPackages = with pkgs; [
@@ -54,15 +54,14 @@
 		};
 		nvidia = {
 			open = false;
-			package = config.boot.kernelPackages.nvidiaPackages.production
+			package = config.boot.kernelPackages.nvidiaPackages.production;
 			nvidiaSettings = true;
 
 			modesetting.enable = true;
 			powerManagement = {
 				enable = false;
 				finegrained = false;
-			}
-			package = config.boot.kernelPackages.nvidiaPackages.stable;
+			};
 		};
 	};
 }
