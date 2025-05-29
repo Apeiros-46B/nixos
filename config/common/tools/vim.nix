@@ -42,7 +42,7 @@ in {
 				vim-oscyank
 				vim-automkdir
 			];
-			vimrcConfig.customRC = with theme.colorsHash; ''
+			vimrcConfig.customRC = ''
 				" files
 				set autoread
 				set modeline modelines=5
@@ -170,7 +170,7 @@ in {
 				set hlsearch incsearch ignorecase smartcase
 				set laststatus=2
 				set wildmenu cmdheight=1
-				set noshowmode shortmess=aoOstTcFS showcmd showcmdloc=last
+				set noshowmode shortmess=aoOstTIcC showcmd showcmdloc=last
 				set foldmethod=marker
 				set fillchars+=fold:\ ,eob:\ ,vert:\ " space
 				set splitbelow splitright

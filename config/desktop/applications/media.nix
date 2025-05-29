@@ -123,6 +123,7 @@ in {
 			selected_item_prefix = "$(magenta_251)";
 			selected_item_suffix = "$(end)";
 			modified_item_prefix = "$(green)+ $(end)";
+			alternative_header_first_line_format = "$b{%t}|{%f}$/b";
 			alternative_header_second_line_format =
 				"{{$(blue)$b{%a}$/b$(end)}{ - $(cyan)%b$(end)}{ ($(yellow)%y$(end))}}|{%D}";
 			song_columns_list_format =
