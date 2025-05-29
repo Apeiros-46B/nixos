@@ -6,6 +6,7 @@ mkHost:
 		theme = "everforest";
 		system = "x86_64-linux";
 		stateVersion = "24.05";
+		globals = {};
 	})
 	(mkHost "atlas" {
 		type = "desktop";

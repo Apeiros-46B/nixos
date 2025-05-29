@@ -41,24 +41,27 @@
 	hardware.enableRedistributableFirmware = true;
 	hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
 
-	# TODO move out to separate nvidia module
+	# TODO move out to separate module (maybe factor out to common desktop config)
 	services.xserver.videoDrivers = [ "nvidia" ];
-	# users.users.${globals.user}.extraGroups = [ "video" "render" ];
+	users.users.${globals.user}.extraGroups = [ "video" "render" ];
 	hardware = {
 		opengl = {
 			enable = true;
-			driSupport = true;
-			driSupport32Bit = true;
+			enable32Bit = true;
 			extraPackages = with pkgs; [
 				rocmPackages.clr.icd
 			];
 		};
 		nvidia = {
-			modesetting.enable = true;
-			powerManagement.enable = false;
-			powerManagement.finegrained = false;
 			open = false;
+			package = config.boot.kernelPackages.nvidiaPackages.production
 			nvidiaSettings = true;
+
+			modesetting.enable = true;
+			powerManagement = {
+				enable = false;
+				finegrained = false;
+			}
 			package = config.boot.kernelPackages.nvidiaPackages.stable;
 		};
 	};
