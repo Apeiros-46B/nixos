@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
 	networking.hostId = "d5f1bf16";

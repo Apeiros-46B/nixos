@@ -12,6 +12,7 @@ rec {
 		bgPurple = "503946";
 		bgRed    = "4e3e43";
 		bgGreen  = "404d44";
+		bgAqua   = "455956";
 		bgBlue   = "394f5a";
 		bgYellow = "4a4940";
 

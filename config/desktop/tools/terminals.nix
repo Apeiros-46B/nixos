@@ -62,6 +62,7 @@ in {
 				"244"      = bgRed;
 				"246"      = bgYellow;
 				"247"      = bgGreen;
+				"248"      = bgAqua;
 				"249"      = bgBlue;
 				"250"      = bgPurple;
 			};
