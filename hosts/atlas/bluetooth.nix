@@ -5,6 +5,9 @@
 		enable = true;
 		powerOnBoot = false;
 
+		# fix keyboards
+		settings.Input.ClassicBondedOnly = false;
+
 		# report battery level to upower
 		settings.General.Experimental = true;
 	};

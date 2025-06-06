@@ -8,6 +8,7 @@
 			default = {
 				ids = [
 					"0001:0001"
+					"28da:1505"
 				];
 				settings = {
 					main = {
