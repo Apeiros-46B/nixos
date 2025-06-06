@@ -9,5 +9,6 @@
 	];
 
 	services.printing.enable = true;
+	services.flatpak.enable = true;
 	security.rtkit.enable = true;
 }
