@@ -199,6 +199,7 @@ in {
 			(bind "R" "toggle_single")
 			(bind "S" "shuffle")
 
+			(bind "U" "update_database")
 			(bind "K" "show_song_info")
 			(bind "ctrl-k" "show_artist_info")
 			(bind "," "toggle_browser_sort_mode")
