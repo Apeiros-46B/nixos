@@ -19,13 +19,7 @@
 		mangohud
 		gamescope
 		(pkgs.writeShellScriptBin "rungame" ''
-			gamemoderun gamescope -F nearest -o 30 -b --mangoapp "$@"
-		'')
-		(pkgs.writeShellScriptBin "gamescope-4k" ''
-			rungame -w 1920 -h 1080 -W 3840 -H 2160 "$@"
-		'')
-		(pkgs.writeShellScriptBin "gamescope-1080p" ''
-			rungame -w 1920 -h 1080 -W 1920 -H 1080 "$@"
+			gamemoderun gamescope -F nearest -S integer -o 30 -w 1888 -h 1084 -b --mangoapp "$@"
 		'')
 	];
 }

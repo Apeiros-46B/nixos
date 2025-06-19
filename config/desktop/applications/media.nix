@@ -143,7 +143,7 @@ in {
 			connected_message_on_startup = "no";
 			empty_tag_color = "red";
 			main_window_color = "white";
-			progressbar_color = "255";
+			progressbar_color = "234";
 			progressbar_elapsed_color = "magenta";
 			progressbar_look = "──";
 			tags_separator = " + ";

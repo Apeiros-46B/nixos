@@ -41,6 +41,8 @@
 		};
 	};
 
+	programs.wshowkeys.enable = true;
+
 	hm.programs.fuzzel = {
 		enable = true;
 		settings = {
@@ -256,6 +258,14 @@
 				];
 				open-floating = true;
 			}
+			{
+				matches = [ { app-id = "steam"; title = "^notificationtoasts_\\d+_desktop$"; } ];
+				default-floating-position = {
+					x = 10;
+					y = 10;
+					relative-to = "bottom-right";
+				};
+			}
 		];
 		layer-rules = [
 			# TODO: once niri-flake updates, uncomment this and combine with layout.background-color = "transparent";
@@ -302,7 +312,7 @@
 				{ proportion = 1.; }
 			];
 		};
-		overview.backdrop-color = "#f4f4f4";
+		overview.backdrop-color = "${theme.colorsHash.bg2}";
 		cursor = {
 			theme = config.hm.home.pointerCursor.name;
 			size = config.hm.home.pointerCursor.size;
