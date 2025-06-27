@@ -3,8 +3,11 @@
 {
 	hm.home.packages = with pkgs; [
 		aseprite
-		blender
 		darktable
 		gimp3
+		blender
+		# (blender.override {
+		# 	cudaSupport = true;
+		# })
 	];
 }
