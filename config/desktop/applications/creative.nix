@@ -6,6 +6,7 @@
 		darktable
 		gimp3
 		blender
+		godot
 		# (blender.override {
 		# 	cudaSupport = true;
 		# })
