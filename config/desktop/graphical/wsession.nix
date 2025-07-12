@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, globals, theme, ... }:
+{ inputs, config, pkgs, globals, system, theme, ... }:
 
 {
 	imports = [
@@ -10,6 +10,12 @@
 		wl-clipboard
 		swaylock
 		swww
+	];
+
+	# for quickshell
+	qt.enable = true;
+	environment.systemPackages = [
+		inputs.quickshell.packages.${system}.default
 	];
 
 	programs.ydotool.enable = true;
