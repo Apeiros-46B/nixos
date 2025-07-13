@@ -755,11 +755,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1683780162,
-        "narHash": "sha256-PGOplI7zMD28Zso8jM9hMAa4vbZQwWdGRYofpqpiWjg=",
+        "lastModified": 1752429816,
+        "narHash": "sha256-La2XAxHWDCTXvEltAFQpaN600BHF+riG565pXt2xpLw=",
         "owner": "Apeiros-46B",
         "repo": "st",
-        "rev": "b2801d319337b059befefded67fb2b5214f53463",
+        "rev": "5e9e4e796302e5d47931b750ffe5ae2d3863fa44",
         "type": "github"
       },
       "original": {

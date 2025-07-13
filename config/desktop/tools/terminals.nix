@@ -121,5 +121,28 @@ in {
 	'';
 	# }}}
 
+	# {{{ st
 	hm.home.packages = [ inputs.st.packages.${system}.st-snazzy ];
+	hm.programs.zsh.initContent = with theme.colorsHash; ''
+		if [ $TERM = "st-256color" ]; then
+			echo -ne '\e]4;232;${bg0}\a'
+			echo -ne '\e]4;233;${bg1}\a'
+			echo -ne '\e]4;234;${bg2}\a'
+			echo -ne '\e]4;235;${bg3}\a'
+			echo -ne '\e]4;236;${bg4}\a'
+			echo -ne '\e]4;237;${bg5}\a'
+			echo -ne '\e]4;238;${fg0}\a'
+			echo -ne '\e]4;239;${fg1}\a'
+			echo -ne '\e]4;240;${fg2}\a'
+			echo -ne '\e]4;241;${fg3}\a'
+			echo -ne '\e]4;243;${orange}\a'
+			echo -ne '\e]4;244;${bgRed}\a'
+			echo -ne '\e]4;246;${bgYellow}\a'
+			echo -ne '\e]4;247;${bgGreen}\a'
+			echo -ne '\e]4;248;${bgAqua}\a'
+			echo -ne '\e]4;249;${bgBlue}\a'
+			echo -ne '\e]4;250;${bgPurple}\a'
+		fi
+	'';
+	# }}}
 }

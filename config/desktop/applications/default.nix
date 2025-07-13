@@ -7,6 +7,7 @@
 		./media.nix
 		./nvim.nix
 		./office.nix
+		./social.nix
 		./web.nix
 	];
 

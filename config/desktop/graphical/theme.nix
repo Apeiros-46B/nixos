@@ -1,26 +1,26 @@
 { pkgs, theme, ... }:
 
 {
-	hm.xresources.properties = {
-		"*.foreground"  = theme.colorsHash.fg0;
-		"*.background"  = theme.colorsHash.bg0;
-		"*.cursorColor" = theme.colorsHash.fg0;
-		"*.color0"      = theme.colorsHash.bg0;
-		"*.color8"      = theme.colorsHash.bg2;
-		"*.color1"      = theme.colorsHash.red;
-		"*.color9"      = theme.colorsHash.red;
-		"*.color2"      = theme.colorsHash.green;
-		"*.color10"     = theme.colorsHash.green;
-		"*.color3"      = theme.colorsHash.yellow;
-		"*.color11"     = theme.colorsHash.yellow;
-		"*.color4"      = theme.colorsHash.blue;
-		"*.color12"     = theme.colorsHash.blue;
-		"*.color5"      = theme.colorsHash.purple;
-		"*.color13"     = theme.colorsHash.purple;
-		"*.color6"      = theme.colorsHash.aqua;
-		"*.color14"     = theme.colorsHash.aqua;
-		"*.color7"      = theme.colorsHash.fg3;
-		"*.color15"     = theme.colorsHash.fg0;
+	hm.xresources.properties = with theme.colorsHash; {
+		"*.foreground"  = fg0;
+		"*.background"  = bg0;
+		"*.cursorColor" = fg0;
+		"*.color0"      = bg0;
+		"*.color8"      = bg2;
+		"*.color1"      = red;
+		"*.color9"      = red;
+		"*.color2"      = green;
+		"*.color10"     = green;
+		"*.color3"      = yellow;
+		"*.color11"     = yellow;
+		"*.color4"      = blue;
+		"*.color12"     = blue;
+		"*.color5"      = purple;
+		"*.color13"     = purple;
+		"*.color6"      = aqua;
+		"*.color14"     = aqua;
+		"*.color7"      = fg3;
+		"*.color15"     = fg0;
 	};
 
 	environment.systemPackages = [ pkgs.oomoxFull ];
