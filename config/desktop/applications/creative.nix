@@ -5,8 +5,9 @@
 		aseprite
 		darktable
 		gimp3
-		blender
+		davinci-resolve
 		godot
+		blender
 		# (blender.override {
 		# 	cudaSupport = true;
 		# })

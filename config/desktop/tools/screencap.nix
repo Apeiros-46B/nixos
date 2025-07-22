@@ -1,13 +1,15 @@
 { pkgs, ... }:
 
 {
-	hm.programs.obs-studio = {
+	programs.obs-studio = {
 		enable = true;
+		enableVirtualCamera = true;
 		package = pkgs.obs-studio.override {
 			cudaSupport = true;
 		};
 		plugins = with pkgs.obs-studio-plugins; [
 			wlrobs
+			droidcam-obs
 			obs-backgroundremoval
 			obs-pipewire-audio-capture
 		];

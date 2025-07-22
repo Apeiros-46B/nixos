@@ -20,6 +20,10 @@ let
 		exts);
 	installExts = exts: { "*".installation_mode = "allowed"; } // extsToAttrs exts;
 in {
+	hm.home.packages = with pkgs; [
+		zoom-us
+	];
+
 	hm.programs.brave.enable = true;
 
 	# for taking exams
