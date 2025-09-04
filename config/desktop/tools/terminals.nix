@@ -58,6 +58,7 @@ in {
 				"239"      = fg1;
 				"240"      = fg2;
 				"241"      = fg3;
+				"242"      = bgShade;
 				"243"      = orange;
 				"244"      = bgRed;
 				"246"      = bgYellow;

@@ -1,4 +1,4 @@
-{ config, globals, ... }:
+{ pkgs, config, globals, ... }:
 
 {
 	# for windows dual boot
@@ -9,4 +9,7 @@
 	];
 	services.davfs2.enable = true;
 	services.gvfs.enable = true;
+	environment.sessionVariables."GIO_EXTRA_MODULES" = [ "${pkgs.gvfs}/lib/gio/modules" ];
+
+	hm.home.packages = [ pkgs.sshfs ];
 }

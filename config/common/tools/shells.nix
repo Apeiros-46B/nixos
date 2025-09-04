@@ -200,7 +200,7 @@ in {
 			zstyle ':completion::*:(-command-|export):*' fake-parameters ''${''${''${_comps[(I)-value-*]#*,}%%,*}:#-*-}
 			zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
 			zstyle ':completion:*:processes-names' command 'ps c -u ''${USER} -o command | uniq'
-			zstyle ':completion:*:(vi|vim|nvim):*' ignored-patterns '*.(wav|mp3|flac|ogg|mp4|mov|avi|mkv|webm|iso|so|o|7z|zip|tar|gz|bz2|rar|deb|pkg|gzip|pdf|png|jpeg|jpg|jfif|gif)'
+			zstyle ':completion:*:(vi|vim|nvim):*' ignored-patterns '*.(wav|mp3|flac|ogg|mp4|mov|avi|mkv|webm|iso|so|o|deb|pkg|pdf|png|jpeg|jpg|jfif|gif)'
 			zstyle ':completion:*:(sioyek):*' ignored-patterns '^(*.(pdf|epub|mobi))'
 
 			# hostnames and addresses

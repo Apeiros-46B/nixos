@@ -2,12 +2,13 @@ rec {
 	name = "elysium";
 	dark = false;
 	colors = {
-		bg0 = "ffffff";
-		bg1 = "f4f4f4";
-		bg2 = "ebebeb";
-		bg3 = "e4e4e4";
-		bg4 = "dfdfdf";
-		bg5 = "dcdcdc";
+		bg0     = "ffffff";
+		bg1     = "f4f4f4";
+		bg2     = "ebebeb";
+		bg3     = "e4e4e4";
+		bg4     = "dfdfdf";
+		bg5     = "dcdcdc";
+		bgShade = "fafafa";
 
 		bgPurple = "e4dce8";
 		bgRed    = "e9dbdf";

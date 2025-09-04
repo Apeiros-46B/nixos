@@ -2,12 +2,13 @@ rec {
 	name = "everforest";
 	dark = true;
 	colors = {
-		bg0 = "2b3339";
-		bg1 = "323c41";
-		bg2 = "3a454a";
-		bg3 = "445055";
-		bg4 = "4c555b";
-		bg5 = "53605c";
+		bg0     = "2b3339";
+		bg1     = "323c41";
+		bg2     = "3a454a";
+		bg3     = "445055";
+		bg4     = "4c555b";
+		bg5     = "53605c";
+		bgShade = "2d373d";
 
 		bgPurple = "503946";
 		bgRed    = "4e3e43";
