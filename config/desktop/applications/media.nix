@@ -19,6 +19,7 @@ in {
 	hm.home.packages = with pkgs; [
 		imv
 		nicotine-plus
+		quodlibet-full
 
 		yt-dlp
 		ffmpeg
@@ -85,7 +86,7 @@ in {
 		restartUnits = [ "mpdscribble.service" ];
 	};
 	services.mpdscribble = {
-		enable = true;
+		enable = false;
 		host = mpdAddress;
 		port = mpdPort;
 		endpoints = {
