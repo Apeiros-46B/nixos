@@ -7,6 +7,9 @@ let
 	mkPS3   = color: "%K{${color}} %K{8} > %k ";
 	rprompt = ''$([ $SSH_TTY ] && echo "%K{8} @%m %F{0}%K{2} %k%f")'';
 in {
+	# TODO: set this up with nix-index
+	environment.systemPackages = [ pkgs.comma ];
+
 	# make zsh the default shell system-wide
 	users.defaultUserShell = pkgs.zsh;
 	environment.shells = [ pkgs.zsh ];
