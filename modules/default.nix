@@ -5,6 +5,7 @@
 {
 	imports = [
 		./dufs.nix
+		./lxc.nix
 		./playit.nix
 		./shimmie.nix
 		./wawa.nix

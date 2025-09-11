@@ -25,6 +25,7 @@ rec {
 		temp = "${home}/tmp";
 		tmpl = "${home}/tmpl";
 		vid  = "${home}/vid";
+		vm   = "${home}/vm";
 		nix  = "${cfg}/nixos";
 	};
 }

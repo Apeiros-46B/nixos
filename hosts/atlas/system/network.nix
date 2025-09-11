@@ -1,4 +1,4 @@
-{ pkgs, globals, ... }:
+{ lib, pkgs, globals, ... }:
 
 {
 	users.users.${globals.user}.extraGroups = [
@@ -8,17 +8,14 @@
 	networking = {
 		# I only have one network card
 		usePredictableInterfaceNames = false;
-
+		useDHCP = lib.mkDefault true;
 		networkmanager = {
 			enable = true;
-
 			unmanaged = [ "eth0" ];
-
 			wifi = {
 				scanRandMacAddress = false;
 				powersave = true;
 			};
-
 			insertNameservers = [
 				"1.1.1.1" # Cloudflare
 				"1.0.0.1" # Cloudflare

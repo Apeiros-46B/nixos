@@ -8,6 +8,10 @@
 
 		sops-nix.url = "github:Mic92/sops-nix";
 		nixmox.url = "git+https://git.isincredibly.gay/srxl/nixmox.git";
+		nixvirt = {
+			url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 
 		quickshell = {
 			url = "github:quickshell-mirror/quickshell";

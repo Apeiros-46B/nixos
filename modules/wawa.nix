@@ -1,4 +1,4 @@
-{ system, inputs, config, lib, ... }:
+{ inputs, config, lib, system, ... }:
 
 let
 	cfg = config.my.services.wawa;
