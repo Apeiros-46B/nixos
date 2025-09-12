@@ -1,82 +1,94 @@
-{ inputs, pkgs, globals, ... }:
+{ lib, globals, functions, ... }:
 
 let
+	makeCloudConfig = attrs: "#cloud-config\n" + (lib.generators.toYAML {} attrs);
 	networkIface = "incusbr0";
-	# {{{
-	nixvirt = inputs.nixvirt;
-
-	domain_name = "tbots-ubuntu";
-	pool_name = "linux-vm";
-	volume_name = "${domain_name}.qcow2";
-
-	domain = nixvirt.lib.domain.writeXML (nixvirt.lib.domain.templates.linux {
-		name = domain_name;
-		uuid = "bec3cac4-b2a4-4e59-b079-3219fb7ba3c8";
-		memory = { count = 8; unit = "GiB"; };
-		storage_vol = { pool = pool_name; volume = volume_name; };
-		install_vol = "${pkgs.my.ubuntu-server}/installer.iso";
-		virtio_video = null;
-	});
-	network = nixvirt.lib.network.writeXML (nixvirt.lib.network.templates.bridge {
-		uuid = "70b08691-28dc-4b47-90a1-45bbeac9ab5a";
-		subnet_byte = 16;
-	});
-	pool = nixvirt.lib.pool.writeXML {
-		name = pool_name;
-		uuid = "650c5bbb-eebd-4cea-8a2f-36e1a75a8683";
-		type = "dir";
-		target = { path = "${globals.dir.vm}/${pool_name}"; };
-	};
-	volume = nixvirt.lib.volume.writeXML {
-		name = domain_name;
-		capacity = { count = 24; unit = "GB"; };
-	};
-	# }}}
 in {
-	# {{{
-	# imports = [
-	# 	nixvirt.nixosModules.default
-	# ];
-	#
-	# virtualisation.libvirt = {
-	# 	enable = true;
-	# 	connections."qemu:///session" = {
-	# 		domains = [
-	# 			{ definition = domain; }
-	# 		];
-	# 		networks = [
-	# 			{
-	# 				active = true;
-	# 				definition = network;
-	# 			}
-	# 		];
-	# 		pools = [
-	# 			{
-	# 				active = true;
-	# 				definition = pool;
-	# 				volumes = [
-	# 					{
-	# 						present = true;
-	# 						definition = volume;
-	# 					}
-	# 				];
-	# 			}
-	# 		];
-	# 	};
-	# };
-	# }}}
+	systemd.tmpfiles.settings."10-vm-dir" = {
+		${globals.dir.vm}.d = {
+			user = globals.user;
+			group = "users";
+			mode = "0755";
+		};
+	};
 
 	users.users.${globals.user}.extraGroups = [ "incus-admin" ];
+
 	virtualisation.incus = {
 		enable = true;
 		preseed = {
 			profiles = [
-				{
-					config = {
-						"environment.DISPLAY" = ":0";
-						"user.user-data" = "packages:\n  - x11-apps\n  - mesa-utils";
+				 {
+					config = let
+						bootstrapPath = "/usr/local/bin/bootstrap.sh";
+						socketSetupScriptPath = "/usr/local/bin/socket_setup.sh";
+						socketSetupServicePath = "/usr/local/etc/socket_setup.service";
+					in {
+						"security.nesting" = true;
+						"cloud-init.user-data" = makeCloudConfig {
+							package_update = true;
+							package_upgrade = true;
+							package_reboot_if_required = true;
+							packages = [
+								"git"
+								"tmux"
+							];
+							hostname = "tbots";
+							user = {
+								name = globals.user;
+								uid = globals.uid;
+								sudo = [ "ALL=(ALL) NOPASSWD:ALL" ];
+								ssh_authorized_keys = [
+									"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlwqbul8KpSr0J7RwZ4yYL/EV7Xka0IdNTywQWwRLGc @tbots#atlas"
+								];
+							};
+							write_files = [
+								{
+									path = bootstrapPath;
+									permissions = "0755";
+									content = functions.stripTabs ''
+										#!/bin/sh
+										default_wants='${globals.home}/.config/systemd/user/default.target.wants'
+										name="$(basename '${socketSetupServicePath}')"
+										mkdir -p "$default_wants"
+										ln -s ${socketSetupServicePath} "$default_wants/$name"
+										ln -s ${socketSetupServicePath} "${globals.home}/.config/systemd/user/$name"
+										echo 'export DISPLAY=:0' >> ${globals.home}/.profile
+
+										chown -R ${globals.user}:${globals.user} ${globals.home}
+									'';
+								}
+								{
+									path = socketSetupScriptPath;
+									permissions = "0755";
+									content = functions.stripTabs ''
+										#!/bin/sh
+										tmp_dir=/tmp/.X11-unix
+										mkdir -p $tmp_dir
+										ln -sf /mnt/.x11_socket $tmp_dir/X0
+									'';
+								}
+								{
+									path = socketSetupServicePath;
+									content = functions.stripTabs ''
+										[Unit]
+										After=local-fs.target
+										[Service]
+										Type=oneshot
+										ExecStart=/usr/local/bin/socket_setup.sh
+										[Install]
+										WantedBy=default.target
+									'';
+								}
+							];
+							runcmd = [ bootstrapPath ];
+						};
 					};
 					devices = {
+						gpu = {
+							gid = 44;
+							type = "gpu";
+						};
 						eth0 = {
 							name = "eth0";
 							network = networkIface;
@@ -88,17 +100,19 @@ in {
 							size = "24GiB";
 							type = "disk";
 						};
-						X0 = {
-							bind = "container";
-							type = "proxy";
-							connect = "unix:@/tmp/.X11-unix/X0";
-							listen = "unix:@/tmp/.X11-unix/X0";
-							"security.uid" = 1000;
-							"security.gid" = 100;
+						mount = {
+							path = "${globals.home}/shared";
+							source = globals.dir.vm;
+							shift = true;
+							type = "disk";
 						};
-						gpu = { type = "gpu"; };
+						x11_socket = {
+							source = "/tmp/.X11-unix/X0";
+							path = "/mnt/.x11_socket";
+							type = "disk";
+						};
 					};
-					name = "default-gui";
+					name = "tbots-base";
 				}
 			];
 			networks = [
@@ -114,10 +128,10 @@ in {
 			storage_pools = [
 				{
 					config = {
-						source = "/var/lib/incus/storage-pools/default";
+						source = "/var/lib/incus/storage-pools/tbots-pool";
 					};
 					driver = "dir";
-					name = "default";
+					name = "tbots-pool";
 				}
 			];
 		};
