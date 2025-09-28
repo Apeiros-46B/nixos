@@ -82,6 +82,8 @@ in {
 								packages = [
 									{
 										apt = cfg.packages ++ [
+											"gcc"
+											"make"
 											"git"
 											"wget"
 											"openssh-client"
@@ -105,7 +107,6 @@ in {
 											export WAYLAND_DISPLAY=wayland-${toString cfg.waylandDisplay}
 											export XDG_SESSION_TYPE=wayland
 											export QT_QPA_PLATFORM=wayland
-											eval "$(dircolors -b)"
 										'' + "\n" + cfg.envExtra);
 									}
 									{

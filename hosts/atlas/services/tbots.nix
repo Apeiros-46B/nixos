@@ -6,7 +6,10 @@
 		user = globals.user;
 		dataDir = globals.dir.vm;
 		waylandDisplay = 1;
-		packages = [ "tree" "tmux" "mesa-utils" ];
+		packages = [
+			"tree"
+			"tmux"
+			"mesa-utils" "ripgrep" ];
 		envExtra = ''
 			eval "$(dircolors -b)"
 		'';
