@@ -191,6 +191,11 @@ in {
 								network = cfg.networkName;
 								type = "nic";
 							};
+							gc_proxy = {
+								connect = "tcp:127.0.0.1:8081";
+								listen = "tcp:127.0.0.1:8081";
+								type = "proxy";
+							};
 						};
 						name = cfg.profileName;
 					}

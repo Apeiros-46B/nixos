@@ -5,7 +5,30 @@ let
 	mkPS1   = color: "%F{0}%B%(0?.%K{${color}} .%K{1} )%(1j.&%j .)%b%K{8}%f %~ %k ";
 	mkPS2   = color: "%K{${color}} %K{8} + %k ";
 	mkPS3   = color: "%K{${color}} %K{8} > %k ";
-	rprompt = ''$([ $SSH_TTY ] && echo "%K{8} @%m %F{0}%K{2} %k%f")'';
+	# TODO: apply
+	bashPS1 = ''
+		prompt_accent() {
+			if [ $? -ne 0 ]; then
+				tput setab 1
+			elif [ "$(whoami)" = root ]; then
+				tput setab 5
+			else
+				tput setab 2
+			fi
+		}
+		prompt_host() {
+			[ $SSH_TTY ] && echo "$(hostname)."
+		}
+		PS1='$(prompt_accent) $(tput setab 8) $(prompt_host)\w $(tput sgr0) '
+	'';
+	rprompt_script = "${pkgs.writeShellScriptBin "zsh-rprompt" ''
+		branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
+		[ -z "$SSH_TTY" ] && [ -z "$branch" ] && exit 0
+		echo -n "%K{8} "
+		[ "$branch" ] && echo -n "#$branch "
+		[ "$SSH_TTY" ] && echo -n "@%m "
+		echo -n "%F{0}%K{2} %k%f"
+	''}/bin/zsh-rprompt";
 in {
 	# TODO: set this up with nix-index
 	environment.systemPackages = [ pkgs.comma ];
@@ -50,8 +73,10 @@ in {
 			PS1='${mkPS1 "5"}'
 			PS2='${mkPS2 "5"}'
 			PS3='${mkPS3 "5"}'
-			RPROMPT='${rprompt}'
 			ZLE_RPROMPT_INDENT=0
+			precmd() {
+				RPROMPT="$(${rprompt_script})"
+			}
 		'';
 		# }}}
 
@@ -243,7 +268,6 @@ in {
 			PS1 = mkPS1 "4";
 			PS2 = mkPS2 "4";
 			PS3 = mkPS3 "4";
-			RPROMPT = rprompt;
 			ZLE_RPROMPT_INDENT = "0";
 		};
 
@@ -253,6 +277,9 @@ in {
 		};
 
 		initContent = ''
+			precmd() {
+				RPROMPT="$(${rprompt_script})"
+			}
 			fork() {
 				"$@" > /dev/null 2>&1 & disown;
 			}

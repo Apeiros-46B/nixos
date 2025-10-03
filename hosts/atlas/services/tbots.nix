@@ -28,7 +28,7 @@
 				elif [ "$(whoami)" = root ]; then
 					tput setab 5
 				else
-					tput setab 4
+					tput setab 3
 				fi
 			}
 			PS1='$(prompt_accent) $(tput setab 8) \h.\w $(tput sgr0) '
