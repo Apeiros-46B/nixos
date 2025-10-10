@@ -304,7 +304,7 @@
 				gap = 0;
 				gaps-between-tabs = 2;
 				active.color = "${theme.colorsHash.blue}";
-				inactive.color = "${theme.colorsHash.bg4}";
+				inactive.color = "${theme.colorsHash.bg3}";
 			};
 			default-column-width.proportion = 1. / 2.;
 			preset-column-widths = [
