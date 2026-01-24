@@ -24,6 +24,7 @@
 				ca = "commit --amend";
 				cl = "clone";
 				d  = "diff";
+				ds = "diff --staged";
 				j  = "pull";
 				k  = "push";
 				l  = "log";
@@ -35,7 +36,8 @@
 				R  = "restore"; # capitalized to avoid accidents
 				Rs = "reset";
 				RS = "reset --hard";
-				s  = "status";
+				s  = "status --short --branch";
+				sl = "status";
 				sp = "stash pop";
 				st = "stash";
 				sw = "switch";
@@ -46,11 +48,18 @@
 			interactive.diffFilter = "delta --color-only";
 			delta = {
 				dark = theme.dark;
+				navigate = "true";
+				file-style = "cyan bold";
+				file-decoration-style = "omit";
+				minus-emph-style = "black bold red";
+				minus-style = "red 244"; # TODO: hardcoded 256colors should be defined by the theme
+				plus-emph-style = "black bold green";
+				plus-style = "green 247";
+				hunk-header-decoration-style = "white";
+				hunk-header-file-style = "white";
+				hunk-header-line-number-style = "blue";
+				hunk-header-style = "line-number white bold";
 				syntax-theme = "none";
-				minus-emph-style = "red #${theme.colors.bgRed} bold strike";
-				minus-style = "red #${theme.colors.bgRed}";
-				plus-emph-style = "green #${theme.colors.bgGreen} bold";
-				plus-style = "green #${theme.colors.bgGreen}";
 			};
 		};
 	};

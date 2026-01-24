@@ -10,5 +10,6 @@
 		./postgres.nix
 		./shimmie.nix
 		./wawa.nix
+		./wireguard.nix
 	];
 }

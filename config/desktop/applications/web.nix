@@ -68,6 +68,7 @@ in {
 			DisplayMenuBar = "never";
 			SearchBar = "unified";
 
+			# this is so incredibly overengineered
 			ExtensionSettings = installExts [
 				"{446900e4-71c2-419f-a6a7-df9c091e268b}" # bitwarden
 				"{74145f27-f039-47ce-a470-a662b129930a}" # clearurls

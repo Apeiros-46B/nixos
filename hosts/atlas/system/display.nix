@@ -80,10 +80,10 @@
 				y = 0;
 			};
 			mode = {
-				width = 1920;
-				height = 1080;
+				width = 2560;
+				height = 1440;
 			};
-			scale = 1;
+			scale = 4.0 / 3.0;
 		};
 	};
 
