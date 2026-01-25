@@ -5,6 +5,11 @@ let
 	domain = "box.apeiros.xyz";
 	lanRange = "10.0.0.0/8";
 	tailscaleRange = "100.64.0.0/10";
+	copypartyPython = pkgs.python313.withPackages (pypkgs: with pypkgs; [
+		mutagen  # audio tagging
+		pyvips   # image processing
+		rawpy    # raw image support
+	]);
 in {
 	imports = [
 		inputs.copyparty.nixosModules.default
@@ -17,13 +22,8 @@ in {
 		};
 		groups.nas.members = [ "root" "copyparty" ];
 	};
-	systemd.services.copyparty.path = with pkgs; [
-		python313Packages.paramiko # TODO: sftp, ftps, ftp, webdav? which one?
-		python313Packages.mutagen
-		python313Packages.pyvips
-		python313Packages.rawpy
-		ffmpeg-headless
-	];
+	# TODO: remove copyparty from system pkgs when done configuring and don't need to look at --help
+	environment.systemPackages = with pkgs; [ copyparty ];
 
 	networking.firewall.allowedTCPPorts = [ port ];
 	services.cloudflared.tunnels."72d0b7dc-fc9b-460e-9d70-c873c5e97fb8".ingress = {
@@ -54,7 +54,6 @@ in {
 			i = "0.0.0.0";
 			p = [ port ];
 			rproxy = -1; # for cf tunnel
-			xff-hdr = "cf-proxying-ip";
 
 			# security
 			no-readme = true;
@@ -121,5 +120,10 @@ in {
 				};
 			};
 		};
+	};
+
+	systemd.services.copyparty = {
+		path = [ pkgs.ffmpeg-headless ];
+		environment.PYTHONPATH = "${copypartyPython}/${copypartyPython.sitePackages}";
 	};
 }
