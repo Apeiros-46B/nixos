@@ -1,6 +1,8 @@
 { pkgs, config, inputs, ... }:
 
-{
+let
+	copypartyPort = 4000;
+in {
 	imports = [
 		inputs.copyparty.nixosModules.default
 	];
@@ -32,26 +34,22 @@
 		group = "nas";
 		mode = "0400";
 	};
-	sops.secrets.copyparty-neti-password = {
-		sopsFile = ./Secrets.yaml;
-		owner = "copyparty";
-		group = "nas";
-		mode = "0400";
-	};
 
+	networking.firewall.allowedTCPPorts = [ copypartyPort ];
 	services.copyparty = {
 		enable = true;
 		user = "copyparty";
 		group = "nas";
 		settings = {
 			i = "0.0.0.0";
-			p = [ 4000 ];
+			p = [ copypartyPort ];
 			no-reload = true;
+			usernames = true;
+			rproxy = -1;
 		};
 		accounts = {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
 			apeiros.passwordFile = "${config.sops.secrets.copyparty-apeiros-password.path}";
-			neti.passwordFile = "${config.sops.secrets.copyparty-neti-password.path}";
 		};
 		volumes = {
 			"/inbox" = {
@@ -83,7 +81,6 @@
 				path = "/nas/private";
 				access = {
 					A = [ "apeiros" ];
-					rwm = [ "neti" ];
 				};
 				flags = {
 					e2dsa = true;

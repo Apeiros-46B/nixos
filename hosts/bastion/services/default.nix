@@ -3,6 +3,7 @@
 {
 	imports = [
 		./cgit.nix
+		./cloudflare.nix
 		./n8n.nix
 		./nas.nix
 		./nginx.nix
@@ -10,6 +11,5 @@
 		./postgres.nix
 		./shimmie.nix
 		./wawa.nix
-		# ./wireguard.nix
 	];
 }
