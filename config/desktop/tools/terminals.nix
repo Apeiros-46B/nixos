@@ -75,6 +75,7 @@ in {
 	# {{{ urxvt
 	hm.programs.urxvt = {
 		enable = true;
+		# TODO: we don't have tewi anymore, set to like departure mono or something
 		fonts = [ "xft:tewi:pixelsize=22" ];
 		scroll = {
 			bar.enable = false;

@@ -31,7 +31,7 @@
 					tput setab 3
 				fi
 			}
-			PS1='$(prompt_accent) $(tput setab 8) \h.\w $(tput sgr0) '
+			PS1='\[$(prompt_accent)\] \[$(tput setab 8)\] \h.\w \[$(tput sgr0)\] '
 		'';
 	};
 }

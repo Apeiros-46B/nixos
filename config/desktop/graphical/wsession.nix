@@ -60,7 +60,7 @@
 				show-actions = true;
 				icons-enabled = false;
 
-				width = 30;
+				width = 60;
 				lines = 25;
 				tabs = 2;
 				horizontal-pad = 40;
@@ -274,16 +274,16 @@
 			}
 		];
 		layer-rules = [
-			# TODO: once niri-flake updates, uncomment this and combine with layout.background-color = "transparent";
-			# {
-			# 	matches = [{ namespace = "^swww-daemon$"; }];
-			# 	place-within-backdrop = true;
-			# }
+			{
+				matches = [{ namespace = "^swww-daemon$"; }];
+				place-within-backdrop = true;
+			}
 		];
 		layout = {
 			gaps = 8;
 			focus-ring.enable = false;
 			border.enable = false;
+			background-color = "transparent";
 			shadow = {
 				enable = true;
 				color = "#00000040";
@@ -318,12 +318,13 @@
 				{ proportion = 1.; }
 			];
 		};
-		overview.backdrop-color = "${theme.colorsHash.bg2}";
+		overview.workspace-shadow.enable = false;
 		cursor = {
 			theme = config.hm.home.pointerCursor.name;
 			size = config.hm.home.pointerCursor.size;
 			hide-when-typing = false;
 		};
+		gestures.hot-corners.enable = false;
 		animations.slowdown = 0.75;
 		prefer-no-csd = true;
 		spawn-at-startup = [

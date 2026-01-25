@@ -23,7 +23,8 @@
 		"*.color15"     = fg0;
 	};
 
-	environment.systemPackages = [ pkgs.oomoxFull ];
+	# TODO: this doesn't build, causes wrapGApps renamed thing
+	# environment.systemPackages = [ pkgs.oomoxFull ];
 
 	hm.gtk = let
 		oomox = pkgs.oomoxPlugins;

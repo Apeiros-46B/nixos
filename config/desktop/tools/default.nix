@@ -9,7 +9,7 @@
 	];
 
 	hm.home.packages = with pkgs; [
-		xdragon
+		dragon-drop
 		libqalculate
 		qalculate-gtk
 	];

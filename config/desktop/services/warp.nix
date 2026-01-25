@@ -11,9 +11,9 @@
 	};
 	users.groups.warp = {};
 
-	services.resolved.extraConfig = ''
-		ResolveUnicastSingleLabel=yes
-	'';
+	services.resolved.settings.Resolve = {
+		ResolveUnicastSingleLabel = true;
+	};
 
 	systemd = {
 		packages = [

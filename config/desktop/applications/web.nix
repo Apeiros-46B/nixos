@@ -126,59 +126,6 @@ in {
 			};
 			# {{{ custom theme
 			userChrome = with theme.colorsHash; ''
-				@import '${pkgs.my.verticalfox}/linux/userChrome.css';
-
-				:root {
-					--bg: ${bg0};
-					--urlbar-bg: ${bg1};
-					--urlbar-border-top: ${bg0};
-					--urlbar-border-bottom: ${bg0};
-					--urlbar-outline: ${blue};
-					--urlbar-height: 30px;
-					--urldrop-bg: ${bg1};
-
-					--fullscreen-warn: rgb(25, 25, 25);
-
-					--arrowpanel-background: var(--urlbar-bg) !important;
-					--button-hover-bgcolor: ${bg2} !important;
-					--button-active-bgcolor: ${bgBlue} !important;
-					--button-bgcolor: ${bg1} !important;
-					--toolbarbutton-icon-fill-opacity: 1.0 !important;
-					--arrowpanel-border-color: ${bg0} !important;
-					--identity-btn-hover-color: ${bg2} !important;
-
-					--dark-menu-background-color: ${bg1} !important;
-					--dark-menu-border-color: ${bg1} !important;
-					--dark-menuitem-hover-background-color: ${bg2} !important;
-				}
-
-				#urlbar,
-				#urlbar-background {
-					border-radius: 0px !important;
-				}
-				#urlbar {
-					top: 6px !important;
-				}
-				#urlbar[breakout][breakout-extend] {
-					top: 2px !important;
-				}
-				#urlbar[breakout][breakout-extend] > #urlbar-background {
-					border-radius: 0 !important;
-				}
-
-				#identity-icon-box.identity-box-button {
-					margin: 0 !important;
-					opacity: 1 !important;
-					border-radius: 0px !important;
-					background-color: ${bg2} !important;
-				}
-
-				#nav-bar {
-					padding-right: 0px !important;
-				}
-				toolbarbutton.titlebar-button {
-					display: none !important;
-				}
 			'';
 			# }}}
 		};

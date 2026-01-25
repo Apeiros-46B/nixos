@@ -52,6 +52,11 @@ in {
 	};
 
 	config = lib.mkIf cfg.enable {
+		users.users.root = {
+			subUidRanges = [ { startUid = cfg.uid; count = 1; } ];
+			subGidRanges = [ { startGid = cfg.uid; count = 1; } ];
+		};
+
 		systemd.tmpfiles.settings."10-tbots-shared-dir" = {
 			${cfg.dataDir}.d = {
 				user = cfg.user;
@@ -73,7 +78,7 @@ in {
 							socketSetupScriptPath = "/usr/local/bin/socket_setup.sh";
 							socketSetupServicePath = "/usr/local/etc/socket_setup.service";
 						in {
-							"raw.idmap" = "uid ${toString cfg.uid} 1000";
+							"raw.idmap" = "both ${toString cfg.uid} 1000";
 							"security.nesting" = true;
 							"cloud-init.user-data" = makeCloudConfig {
 								package_update = true;

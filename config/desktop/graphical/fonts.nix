@@ -12,7 +12,6 @@
 			nerd-fonts.iosevka
 			nerd-fonts.dejavu-sans-mono
 
-			tewi-font
 			uiua386
 
 			(pkgs.iosevka.override {

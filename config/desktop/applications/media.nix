@@ -23,7 +23,7 @@ in {
 
 		yt-dlp
 		ffmpeg
-		mpc-cli
+		mpc
 		playerctl
 
 		chromaprint
@@ -157,7 +157,7 @@ in {
 			ignore_leading_the = "no";
 
 			execute_on_song_change = "${pkgs.writeShellScriptBin "ncmpcpp-notify-songinfo" ''
-				mpc='${pkgs.mpc-cli}/bin/mpc'
+				mpc='${pkgs.mpc}/bin/mpc'
 				notify='${pkgs.libnotify}/bin/notify-send'
 
 				# find first image
@@ -253,7 +253,7 @@ in {
 
 			play = {
 				relative_to = globals.dir.mus;
-				command = "bash -c 'cat $0 | ${pkgs.mpc-cli}/bin/mpc add'";
+				command = "bash -c 'cat $0 | ${pkgs.mpc}/bin/mpc add'";
 			};
 			playlist = {
 				auto = "yes";
