@@ -22,6 +22,7 @@
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
 		st.url = "github:Apeiros-46B/st";
 
+		sidechain.url = "github:Apeiros-46B/sidechain";
 		copyparty.url = "github:9001/copyparty";
 		wawa.url = "github:amatgil/wawa";
 	};

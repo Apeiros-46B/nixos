@@ -5,6 +5,7 @@
 		./auth.nix
 		./fs.nix
 		./pipewire.nix
+		./syncthing.nix
 		./warp.nix
 	];
 

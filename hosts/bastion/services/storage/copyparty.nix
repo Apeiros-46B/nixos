@@ -1,10 +1,9 @@
-{ pkgs, config, inputs, ... }:
+{ pkgs, config, inputs, globals, ... }:
 
 let
 	port = 4000;
-	domain = "box.apeiros.xyz";
-	lanRange = "10.0.0.0/8";
-	tailscaleRange = "100.64.0.0/10";
+	domain = "box.${globals.net.pubDomain}";
+	tsDomain = "box.${globals.net.tsDomain}";
 	copypartyPython = pkgs.python313.withPackages (pypkgs: with pypkgs; [
 		mutagen  # audio tagging
 		pyvips   # image processing
@@ -22,12 +21,28 @@ in {
 		};
 		groups.nas.members = [ "root" "copyparty" ];
 	};
-	# TODO: remove copyparty from system pkgs when done configuring and don't need to look at --help
+
 	environment.systemPackages = with pkgs; [ copyparty ];
+	systemd.services.copyparty = {
+		path = [ pkgs.ffmpeg-headless ];
+		environment.PYTHONPATH = "${copypartyPython}/${copypartyPython.sitePackages}";
+	};
 
 	networking.firewall.allowedTCPPorts = [ port ];
 	services.cloudflared.tunnels."72d0b7dc-fc9b-460e-9d70-c873c5e97fb8".ingress = {
-		${domain} = "http://localhost:${toString port}";
+		${domain} = "http://127.0.0.1:${toString port}";
+	};
+	services.nginx.virtualHosts.${tsDomain} = {
+		useACMEHost = globals.net.tsDomain;
+		forceSSL = true;
+		locations."/" = {
+			proxyPass = "http://127.0.0.1:${toString port}";
+			proxyWebsockets = true;
+			extraConfig = ''
+				proxy_buffering off;
+				client_max_body_size 0;
+			'';
+		};
 	};
 
 	sops.secrets.copyparty-inbox-password = {
@@ -54,13 +69,15 @@ in {
 			i = "0.0.0.0";
 			p = [ port ];
 			rproxy = -1; # for cf tunnel
+			http-only = true; # accessed through rproxy, they provide https
+			site = "https://${domain}/";
 
 			# security
 			no-readme = true;
 			no-logues = true; # TODO: figure out how to enable this only for inbox volume
 			no-robots = true;
 			usernames = true;
-			ipr = "${lanRange},${tailscaleRange}=admin";
+			ipr = "${globals.net.lanRange},${globals.net.tsRange}=admin";
 			nih = true;
 			xdev = true;
 			xvol = true;
@@ -69,14 +86,20 @@ in {
 			# no-clone = true; # TODO: figure out if we need this for syncthing compat?
 			re-maxage = 60; # syncthing compat
 			no-mtag-ff = true;
+			shr = "/share";
+			chmod-f = "660";
+			chmod-d = "770";
 
 			# LAN access
 			z = true;
-			z-on = [ lanRange tailscaleRange ];
-			# TODO: set it up over nginx so i can access `bastion.local` directly on 80/443
+			z-on = [
+				globals.net.lanRange
+				globals.net.tsRange
+			];
 			# TODO: hooks to notify of uploads/downloads of large files over discord webhook
 
 			# appearance
+			og = true;
 			og-ua = "(Discord|Twitter|Slack)bot";
 			og-site = domain;
 			theme = 3;
@@ -89,7 +112,7 @@ in {
 			"/inbox" = {
 				path = "/nas/inbox";
 				access = {
-					wG = [ "inbox" ];
+					wg = [ "inbox" ];
 					A = [ "admin" ];
 				};
 				flags = {
@@ -97,16 +120,21 @@ in {
 					d2t = true;
 					dthumb = true;
 					nohtml = true;
+					nodupe = true;
 				};
 			};
-			"/public" = {
-				path = "/nas/public";
+			"/music" = {
+				path = "/nas/music";
 				access = {
-					r = "*";
+					g = [ "*" ];
 					A = [ "admin" ];
 				};
 				flags = {
-					og = true;
+					# TODO: switch to dks/dky (? idk which one). also integrate with syncthing
+					dk = 16;
+					fk = 16;
+					e2ts = true;
+					e2dsa = true;
 				};
 			};
 			"/private" = {
@@ -115,15 +143,17 @@ in {
 					A = [ "admin" ];
 				};
 				flags = {
-					e2dsa = true;
 					e2ts = true;
+					e2dsa = true;
+				};
+			};
+			"/public" = {
+				path = "/nas/public";
+				access = {
+					r = "*";
+					A = [ "admin" ];
 				};
 			};
 		};
-	};
-
-	systemd.services.copyparty = {
-		path = [ pkgs.ffmpeg-headless ];
-		environment.PYTHONPATH = "${copypartyPython}/${copypartyPython.sitePackages}";
 	};
 }

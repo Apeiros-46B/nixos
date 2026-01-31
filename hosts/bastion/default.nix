@@ -1,3 +1,4 @@
+# this is not technically a bastion host but who cares it sounds cool
 { lib, globals, ... }:
 
 {

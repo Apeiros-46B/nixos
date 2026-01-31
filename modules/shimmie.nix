@@ -23,6 +23,9 @@ in
 		nginx.virtualHost = mkOption {
 			type = str;
 		};
+		nginx.acmeHost = mkOption {
+			type = str;
+		};
 	};
 
 	config = lib.mkIf cfg.enable {
@@ -57,7 +60,7 @@ in
 
 		services.nginx.virtualHosts."${cfg.nginx.virtualHost}" = {
 			forceSSL = true;
-			enableACME = true;
+			useACMEHost = cfg.nginx.acmeHost;
 			root = cfg.dataDir;
 
 			# serve static assets from disk
