@@ -37,5 +37,6 @@ rec {
 		sans = "IBM Plex Sans";
 		mono = "Iosevka Custom";
 		mono_fallback = "Iosevka Nerd Font Mono";
+		emoji = "Twitter Color Emoji";
 	};
 }

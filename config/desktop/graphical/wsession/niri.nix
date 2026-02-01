@@ -37,31 +37,31 @@
 		};
 		switch-events.lid-close.action.spawn = "swaylock";
 		binds = with config.hm.lib.niri.actions; let
-			fuzzel = args: [ "fuzzel" "-p" "" ] ++ args;
 			sh = spawn "sh" "-c";
+			vici = spawn "vicinae";
 			no-repeat = action: { repeat = false; inherit action; };
 			allow-when-locked = action: { allow-when-locked = true; inherit action; };
 		in {
 			"Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
-			"Mod+Shift+B".action = show-hotkey-overlay;
 			"Mod+Tab".action = toggle-overview;
+			"Mod+Shift+B".action = show-hotkey-overlay;
+			"Mod+Shift+Q".action = spawn "swaylock";
 			"Ctrl+Alt+Delete".action = quit;
 			"Ctrl+Shift+Delete".action = power-off-monitors;
 			"Ctrl+Shift+Escape" = no-repeat (spawn "foot" "-e" "btop");
+			"Mod+Return" = no-repeat (spawn "foot");
+
+			"Mod+Space" = no-repeat (vici "open");
+			"Mod+Shift+E" = no-repeat (vici "vicinae://extensions/vicinae/core/search-emojis");
 
 			"Mod+E" = no-repeat (spawn "emacsclient" "-a" "" "-c");
-			"Mod+Return" = no-repeat (spawn "foot");
 			"Mod+Shift+S" = no-repeat (sh ''grim -g "$(slurp)" - | wl-copy'');
 			"Mod+Ctrl+Shift+S" = no-repeat (sh ''
 				file="$(${pkgs.coreutils}/bin/mktemp)"
 				grim -g "$(slurp)" "$file" && imv "$file"; rm "$file"
 			'');
-			"Mod+Space" = no-repeat (spawn (fuzzel []));
-			"Mod+Shift+Space" = no-repeat (spawn (fuzzel ["--list-executables-in-path"]));
-			"Mod+Shift+Q".action = spawn "swaylock";
 			"Mod+0" = allow-when-locked (
-				sh ''notify-send "$(date '+%Y/%m/%d:%u -> %H:%M:%S')" \
-				                 "$(acpi | grep 'Battery 0')"''
+				sh ''notify-send "$(date '+%Y/%m/%d:%u -> %H:%M:%S')" "$(acpi | grep 'Battery 0')"''
 			);
 
 			"XF86AudioRaiseVolume" = allow-when-locked (

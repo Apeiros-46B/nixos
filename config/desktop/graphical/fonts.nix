@@ -33,7 +33,7 @@
 				serif     = [ theme.font.serif      ];
 				sansSerif = [ theme.font.sans       ];
 				monospace = [ theme.font.mono       ];
-				emoji     = [ "Twitter Color Emoji" ];
+				emoji     = [ theme.font.emoji      ];
 			};
 			localConf = ''
 				<?xml version="1.0"?>
@@ -57,4 +57,6 @@
 			'';
 		};
 	};
+
+	environment.variables.EMOJI_FONT = theme.font.emoji;
 }
