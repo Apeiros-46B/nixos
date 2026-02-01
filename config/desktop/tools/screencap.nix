@@ -14,6 +14,7 @@
 			obs-pipewire-audio-capture
 		];
 	};
+	programs.wshowkeys.enable = true;
 
 	hm.home.packages = with pkgs; [ grim slurp ];
 

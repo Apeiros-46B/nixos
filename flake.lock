@@ -636,26 +636,6 @@
         "type": "github"
       }
     },
-    "quickshell": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1768985439,
-        "narHash": "sha256-qkU4r+l+UPz4dutMMRZSin64HuVZkEv9iFpu9yMWVY0=",
-        "owner": "quickshell-mirror",
-        "repo": "quickshell",
-        "rev": "191085a8821b35680bba16ce5411fc9dbe912237",
-        "type": "github"
-      },
-      "original": {
-        "owner": "quickshell-mirror",
-        "repo": "quickshell",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "copyparty": "copyparty",
@@ -666,7 +646,6 @@
         "nixpkgs": "nixpkgs_6",
         "nixvirt": "nixvirt",
         "nvim": "nvim",
-        "quickshell": "quickshell",
         "sidechain": "sidechain",
         "sops-nix": "sops-nix",
         "st": "st",

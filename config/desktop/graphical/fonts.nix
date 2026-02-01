@@ -13,13 +13,13 @@
 			nerd-fonts.dejavu-sans-mono
 
 			uiua386
+			departure-mono
 
-			(pkgs.iosevka.override {
+			(iosevka.override {
 				privateBuildPlan = builtins.readFile ./iosevka.toml;
 				set = "Custom";
 			})
-
-			(pkgs.iosevka.override {
+			(iosevka.override {
 				privateBuildPlan = builtins.readFile ./iosevka.toml;
 				set = "CustomManuscript";
 			})
@@ -35,6 +35,26 @@
 				monospace = [ theme.font.mono       ];
 				emoji     = [ "Twitter Color Emoji" ];
 			};
+			localConf = ''
+				<?xml version="1.0"?>
+				<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+				<fontconfig>
+					<match target="font">
+						<test name="family" compare="eq">
+							<string>Departure Mono</string>
+						</test>
+						<edit name="hinting" mode="assign">
+							<bool>true</bool>
+						</edit>
+						<edit name="autohint" mode="assign">
+							<bool>false</bool>
+						</edit>
+						<edit name="antialias" mode="assign">
+							<bool>false</bool>
+						</edit>
+					</match>
+				</fontconfig>
+			'';
 		};
 	};
 }

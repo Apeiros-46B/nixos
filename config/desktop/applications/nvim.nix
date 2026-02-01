@@ -18,6 +18,10 @@ functions.linkImpure "nvim" {
 		nil # make nix language server available system-wide
 		gcc
 		gnumake
+
+		# qalc.nvim
+		libqalculate
+		qalculate-gtk
 	];
 
 	environment.variables = {

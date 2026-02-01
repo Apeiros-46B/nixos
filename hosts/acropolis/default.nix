@@ -64,7 +64,7 @@
 			};
 		};
 	};
-	hm.programs.niri.settings.outputs.HDMI-A-1 = {
+	hm.programs.niri.settings.outputs.DP-1 = {
 		position = {
 			x = 0;
 			y = 0;
@@ -72,6 +72,7 @@
 		mode = {
 			width = 2560;
 			height = 1440;
+			refresh = 180.002;
 		};
 		scale = 4.0 / 3.0;
 	};

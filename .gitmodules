@@ -7,3 +7,6 @@
 [submodule "impure/nvim"]
 	path = impure/nvim
 	url = https://github.com/Apeiros-46B/nvim
+[submodule "impure/quickshell"]
+	path = impure/quickshell
+	url = https://github.com/Apeiros-46B/diatom

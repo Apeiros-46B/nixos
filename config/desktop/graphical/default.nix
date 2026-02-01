@@ -4,10 +4,10 @@
 	imports = [
 		./fonts.nix
 		./input.nix
+		./login.nix
 		./theme.nix
-		./xdg.nix
-		./wsession.nix
-		./xserver.nix
-		./xsession.nix
+
+		./wsession
+		./xsession
 	];
 }

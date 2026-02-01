@@ -1,104 +1,9 @@
-{ inputs, config, pkgs, globals, system, theme, ... }:
+{ inputs, pkgs, config, theme, ... }:
 
 {
 	imports = [
 		inputs.niri.nixosModules.niri
 	];
-
-	hm.home.packages = with pkgs; [
-		xwayland-satellite
-		wl-clipboard
-		swaylock
-		swww
-	];
-
-	# for quickshell
-	qt.enable = true;
-	environment.systemPackages = [
-		inputs.quickshell.packages.${system}.default
-	];
-
-	programs.ydotool.enable = true;
-	users.users.${globals.user}.extraGroups = [ config.programs.ydotool.group ];
-
-	xdg.portal = {
-		enable = true;
-		wlr.enable = true;
-		config.common.default = [ "gtk" ];
-		extraPortals = with pkgs; [
-			xdg-desktop-portal-wlr
-			xdg-desktop-portal-gtk
-		];
-	};
-
-	# use a GTK agent (easier to theme) instead of the KDE agent provided by niri-flake
-	systemd.user.services.niri-flake-polkit.enable = false;
-	systemd.user.services.polkit-gnome-authentication-agent-1 = {
-		description = "GNOME Polkit authentication agent";
-		wantedBy = [ "graphical-session.target" ];
-		wants = [ "graphical-session.target" ];
-		after = [ "graphical-session.target" ];
-		serviceConfig = {
-			Type = "simple";
-			ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-			Restart = "on-failure";
-			RestartSec = 1;
-			TimeoutStopSec = 10;
-		};
-	};
-
-	programs.wshowkeys.enable = true;
-
-	hm.programs.fuzzel = {
-		enable = true;
-		settings = {
-			main = {
-				font = "${theme.font.sans}:size=13";
-				terminal = "${pkgs.foot}/bin/foot";
-
-				use-bold = true;
-				show-actions = true;
-				icons-enabled = false;
-
-				width = 60;
-				lines = 25;
-				tabs = 2;
-				horizontal-pad = 40;
-				vertical-pad = 40;
-			};
-			border = {
-				width = 0;
-				radius = 0;
-			};
-			colors = with builtins.mapAttrs (k: v: "${v}ff") theme.colors; {
-				background = bg1;
-				text = fg0;
-				prompt = orange;
-				placeholder = fg3;
-				input = fg0;
-				match = blue;
-				selection = bgBlue;
-				selection-text = fg0;
-				selection-match = blue;
-			};
-		};
-	};
-
-	hm.services.mako = {
-		enable = true;
-		settings = with theme.colorsHash; {
-			default-timeout = 5000;
-			border-size = 0;
-			border-radius = 0;
-			padding = "16";
-			margin = "24";
-			max-icon-size = 48;
-			width = 400;
-			text-color = fg0;
-			progress-color = green;
-			background-color = bg1;
-		};
-	};
 
 	programs.niri = {
 		enable = true;
@@ -328,15 +233,7 @@
 		animations.slowdown = 0.75;
 		prefer-no-csd = true;
 		spawn-at-startup = [
-			{ command = [ "swww-daemon" ]; }
 			{ command = [ "xwayland-satellite" ]; }
 		];
 	};
-
-	# hm.home.pointerCursor = {
-	# 	name = "phinger-cursors-light";
-	# 	package = pkgs.phinger-cursors;
-	# 	size = 32;
-	# 	gtk.enable = true;
-	# };
 }

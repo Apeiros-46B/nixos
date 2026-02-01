@@ -14,7 +14,10 @@
 		"application/vnd.rar"          = "xarchiver.desktop";
 	};
 
-	hm.home.packages = [ pkgs.xarchiver ];
+	hm.home.packages = with pkgs; [
+		xarchiver
+		dragon-drop
+	];
 	programs.thunar = {
 		enable = true;
 		plugins = with pkgs; [
