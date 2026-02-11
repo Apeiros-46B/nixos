@@ -35,8 +35,7 @@
 				monospace = [ theme.font.mono       ];
 				emoji     = [ theme.font.emoji      ];
 			};
-			localConf = ''
-				<?xml version="1.0"?>
+			localConf = ''<?xml version="1.0"?>
 				<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 				<fontconfig>
 					<match target="font">

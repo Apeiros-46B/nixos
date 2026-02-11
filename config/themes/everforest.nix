@@ -14,7 +14,8 @@ rec {
 		bgRed    = "4e3e43";
 		bgGreen  = "404d44";
 		bgAqua   = "455956";
-		bgBlue   = "394f5a";
+		# bgBlue   = "394f5a"; # standard everforest
+		bgBlue   = "3c4e51"; # nonstandard
 		bgYellow = "4a4940";
 
 		fg0 = "d3c6aa";

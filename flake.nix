@@ -1,3 +1,4 @@
+# TODO: when to use inputs.*.follows?
 {
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -17,6 +18,16 @@
 		niri.url = "github:sodiboo/niri-flake";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
 		st.url = "github:Apeiros-46B/st";
+
+		quickshell = {
+			url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+		qml-niri = {
+			url = "github:imiric/qml-niri/main";
+			inputs.nixpkgs.follows = "nixpkgs";
+			inputs.quickshell.follows = "quickshell";
+		};
 
 		sidechain.url = "github:Apeiros-46B/sidechain";
 		copyparty.url = "github:9001/copyparty";

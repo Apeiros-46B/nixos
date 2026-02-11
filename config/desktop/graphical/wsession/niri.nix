@@ -5,6 +5,16 @@
 		inputs.niri.nixosModules.niri
 	];
 
+	hm.systemd.user.targets.niri-session = {
+		Unit = {
+			Description = "Niri Compositor Session";
+			Documentation = [ "man:systemd.special(7)" ];
+			BindsTo = [ "graphical-session.target" ];
+			Wants = [ "graphical-session-pre.target" ];
+			After = [ "graphical-session-pre.target" ];
+		};
+	};
+
 	programs.niri = {
 		enable = true;
 		package = pkgs.niri-unstable;
@@ -232,8 +242,21 @@
 		gestures.hot-corners.enable = false;
 		animations.slowdown = 0.75;
 		prefer-no-csd = true;
+		xwayland-satellite = {
+			enable = true;
+			path = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
+		};
 		spawn-at-startup = [
-			{ command = [ "xwayland-satellite" ]; }
+			# bootstrap systemd stuff
+			{
+				command = [
+					"sh"
+					"-c"
+					"${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && \
+					${pkgs.systemd}/bin/systemctl --user reset-failed \
+					${pkgs.systemd}/bin/systemctl --user restart swww quickshell"
+				]; # HACK: ^^^ restart the services surgically. in the future, we need to somehow re-trigger graphical-session with WAYLAND_DISPLAY without killing niri, so that swww, qs, etc restart automatically
+			}
 		];
 	};
 }
