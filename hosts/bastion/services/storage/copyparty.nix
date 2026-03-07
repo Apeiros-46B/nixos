@@ -29,21 +29,25 @@ in {
 	};
 
 	networking.firewall.allowedTCPPorts = [ port ];
-	services.cloudflared.tunnels."72d0b7dc-fc9b-460e-9d70-c873c5e97fb8".ingress = {
-		${domain} = "http://127.0.0.1:${toString port}";
+	my.services.rproxy = {
+		domains.${domain} = port;
+		tsDomains.${tsDomain} = port;
 	};
-	services.nginx.virtualHosts.${tsDomain} = {
-		useACMEHost = globals.net.tsDomain;
-		forceSSL = true;
-		locations."/" = {
-			proxyPass = "http://127.0.0.1:${toString port}";
-			proxyWebsockets = true;
-			extraConfig = ''
-				proxy_buffering off;
-				client_max_body_size 0;
-			'';
-		};
-	};
+	# services.cloudflared.tunnels."72d0b7dc-fc9b-460e-9d70-c873c5e97fb8".ingress = {
+	# 	${domain} = "http://127.0.0.1:${toString port}";
+	# };
+	# services.nginx.virtualHosts.${tsDomain} = {
+	# 	useACMEHost = globals.net.tsDomain;
+	# 	forceSSL = true;
+	# 	locations."/" = {
+	# 		proxyPass = "http://127.0.0.1:${toString port}";
+	# 		proxyWebsockets = true;
+	# 		extraConfig = ''
+	# 			proxy_buffering off;
+	# 			client_max_body_size 0;
+	# 		'';
+	# 	};
+	# };
 
 	sops.secrets.copyparty-inbox-password = {
 		sopsFile = ./Secrets.yaml;

@@ -25,6 +25,8 @@
 			General = {
 				disabledTrayIcon = true;
 				showStartupLaunchMessage = false;
+				disabledGrimWarning = true;
+				useGrimAdapter = true;
 			};
 		};
 	};

@@ -26,16 +26,5 @@ in {
 		# guiAddress = "0.0.0.0:8384";
 	};
 
-	services.nginx.virtualHosts.${tsDomain} = {
-		useACMEHost = globals.net.tsDomain;
-		forceSSL = true;
-		locations."/" = {
-			proxyPass = "http://${config.services.syncthing.guiAddress}";
-			proxyWebsockets = true;
-			extraConfig = ''
-				proxy_buffering off;
-				client_max_body_size 0;
-			'';
-		};
-	};
+	my.services.rproxy.tsDomains.${tsDomain} = 8384;
 }
