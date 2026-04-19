@@ -59,7 +59,10 @@ in functions.linkImpure "quickshell" {
 			ConditionEnvironment = "NIRI_SOCKET";
 		};
 		Service = {
-			Environment = "QML_IMPORT_PATH=${quickshellSrcDir}";
+			Environment = [
+				"QML_IMPORT_PATH=${quickshellSrcDir}"
+				"QML_XHR_ALLOW_FILE_READ=1"
+			];
 			ExecStart = "${quickshellPkg}/bin/quickshell";
 			Restart = "on-failure";
 			RestartSec = 1;
