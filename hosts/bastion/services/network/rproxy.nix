@@ -102,7 +102,7 @@ in {
 			enable = true;
 			role = "client";
 			settings = {
-				serverAddr = "YOUR_VULTR_IP";
+				serverAddr = "216.128.184.119";
 				serverPort = 7000;
 
 				auth.method = "token";
@@ -123,8 +123,9 @@ in {
 						name = "nginx-https";
 						type = "tcp";
 						localIP = "127.0.0.1";
-						localPort = 443;
+						localPort = frpProxyPort;
 						remotePort = 443;
+						transport.proxyProtocolVersion = "v2";
 					}
 				];
 			};

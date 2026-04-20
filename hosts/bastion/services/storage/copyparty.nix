@@ -33,21 +33,6 @@ in {
 		domains.${domain} = port;
 		tsDomains.${tsDomain} = port;
 	};
-	# services.cloudflared.tunnels."72d0b7dc-fc9b-460e-9d70-c873c5e97fb8".ingress = {
-	# 	${domain} = "http://127.0.0.1:${toString port}";
-	# };
-	# services.nginx.virtualHosts.${tsDomain} = {
-	# 	useACMEHost = globals.net.tsDomain;
-	# 	forceSSL = true;
-	# 	locations."/" = {
-	# 		proxyPass = "http://127.0.0.1:${toString port}";
-	# 		proxyWebsockets = true;
-	# 		extraConfig = ''
-	# 			proxy_buffering off;
-	# 			client_max_body_size 0;
-	# 		'';
-	# 	};
-	# };
 
 	sops.secrets.copyparty-inbox-password = {
 		sopsFile = ./Secrets.yaml;
@@ -72,7 +57,9 @@ in {
 			# connection
 			i = "0.0.0.0";
 			p = [ port ];
-			rproxy = -1; # for cf tunnel
+			rproxy = 1; # frp setup
+			xff-src = "127.0.0.1";
+			xff-hdr = "x-real-ip";
 			http-only = true; # accessed through rproxy, they provide https
 			site = "https://${domain}/";
 

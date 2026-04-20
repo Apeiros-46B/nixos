@@ -29,9 +29,11 @@
 			inputs.quickshell.follows = "quickshell";
 		};
 
-		sidechain.url = "github:Apeiros-46B/sidechain";
 		copyparty.url = "github:9001/copyparty";
 		wawa.url = "github:amatgil/wawa";
+
+		sidechain.url = "github:Apeiros-46B/sidechain";
+		tspmo.url = "github:Apeiros-46B/tspmo";
 	};
 
 	outputs = inputs: (import ./hosts inputs);

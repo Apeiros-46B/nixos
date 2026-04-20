@@ -9,12 +9,22 @@
 	};
 
 	security.acme =
-		let tsDomain = globals.net.tsDomain; in
+		let
+			pubDomain = globals.net.pubDomain;
+			tsDomain = globals.net.tsDomain;
+		in
 	{
 		acceptTerms = true;
 		defaults.email = "apeiros46@gmail.com";
 
-		# tailnet internal domain
+		certs.${pubDomain} = {
+			domain = pubDomain;
+			extraDomainNames = [ "*.${pubDomain}" ];
+			environmentFile = config.sops.secrets.cloudflare-acme-tokens.path;
+			dnsProvider = "cloudflare";
+			group = config.services.nginx.group;
+		};
+
 		certs.${tsDomain} = {
 			domain = tsDomain;
 			extraDomainNames = [ "*.${tsDomain}" ];

@@ -2,7 +2,7 @@
 
 {
 	imports = [
-		./bowen.nix
+		./tspmo.nix
 		./wawa.nix
 	];
 }
