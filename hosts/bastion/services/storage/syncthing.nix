@@ -3,9 +3,7 @@
 let
 	tsDomain = "st.${globals.net.tsDomain}";
 in {
-	# TODO SYNCTHING 01.30
-	# - Issue 1: GUI password prompt either doesn't appear properly or has the wrong password. https://gemini.google.com/u/5/app/56fc94da4b4d99cf?pageId=none
-	# - Issue 2: The dataDir option overrides permissions for /nas; it is mode 700 and owned by syncthing. What would be better is have /nas/sync, and then you point dataDir = /nas/sync, and then inside /nas/sync you have music mirror and a SYMLINK to the lossless music volume
+	my.services.rproxy.tsDomains.${tsDomain} = 8384;
 
 	sops.secrets.syncthing-gui-password = {
 		sopsFile = ./Secrets.yaml;
@@ -15,16 +13,41 @@ in {
 		restartUnits = [ "syncthing.service" ];
 	};
 
+	# make newly created folders have 0770 or 0660 when Ignore Permissions is set
+	systemd.services.syncthing.serviceConfig.UMask = "0007";
+
 	# already enabled in common/services/syncthing.nix
 	services.syncthing = {
 		group = "nas";
-		dataDir = "/nas";
-		settings.gui = {
-			user = "admin";
-			passwordFile = config.sops.secrets.syncthing-gui-password.path;
+		# we don't use the dataDir so don't need to set it
+		guiAddress = "0.0.0.0:8384";
+		guiPasswordFile = config.sops.secrets.syncthing-gui-password.path;
+		overrideDevices = false;
+		overrideFolders = false;
+		settings = {
+			devices = {
+				acropolis.id = "K355HSY-FXG4ENF-UZ2Q3N2-IWBPBJN-4K5EV7W-IZK53QA-C7XXU52-STNEQQJ";
+				phone.id = "M33EP75-6QYMAYN-LHK4VKK-SSVZ4WH-XW7CTLQ-JJH3IN7-WU4XGYR-JWXLIA4";
+			};
+			folders = {
+				music = {
+					id = "53ln6-dw9cy";
+					path = "/nas/music";
+					ignorePatterns = [ ".hist" ];
+					copyOwnershipFromParent = true;
+					devices = [
+						"acropolis"
+					];
+				};
+				music_mirror = {
+					id = "6rnu7-zfrn5";
+					path = "/nas/mirror/music";
+					type = "sendonly";
+					devices = [
+						"phone"
+					];
+				};
+			};
 		};
-		# guiAddress = "0.0.0.0:8384";
 	};
-
-	my.services.rproxy.tsDomains.${tsDomain} = 8384;
 }

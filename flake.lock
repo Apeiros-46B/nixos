@@ -809,11 +809,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1769828423,
-        "narHash": "sha256-3cS/9olpQhgYk0BY9/PrEO+iogCMSFYzsJi4qW3pZtI=",
+        "lastModified": 1777130399,
+        "narHash": "sha256-sn8IyTY/uaOZig6P4hhNYGqE1J0j8maBzOHN3+/rFY4=",
         "owner": "Apeiros-46B",
         "repo": "sidechain",
-        "rev": "bd26c3e6dc88ce1621a3c23c51d0053bb5e1be87",
+        "rev": "247a7f6d82e2dc9328a430113b3e54e3a6ba5536",
         "type": "github"
       },
       "original": {

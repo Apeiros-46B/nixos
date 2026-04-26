@@ -2,19 +2,18 @@
 
 {
 	imports = [
-		./cgit.nix
 		./copyparty.nix
+		./mirror.nix
+		./radicle.nix
 		./shimmie.nix
 		./syncthing.nix
-
-		inputs.sidechain.nixosModules.default
 	];
 
 	systemd.tmpfiles.settings."10-nas" = {
 		"/nas".d = {
 			user = "root";
 			group = "nas";
-			mode = "0770";
+			mode = "2770"; # SGID bit for syncthing
 		};
 		"/nas/inbox".d = {
 			user = "root";
@@ -36,20 +35,5 @@
 			group = "nas";
 			mode = "0770";
 		};
-		"/nas/music_mirror".d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
-		};
-	};
-
-	services.sidechain = {
-		enable = true;
-		group = "nas";
-		sourceDir = "/nas/music";
-		destinationDir = "/nas/music_mirror";
-		ignoredExtensions = [ "txt" "md" "zip" ];
-		bitrate = 192;
-		nice = 10;
 	};
 }

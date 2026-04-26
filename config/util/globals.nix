@@ -20,6 +20,7 @@ rec {
 		tsDomain = "ts.apeiros.xyz";
 		tsRange = "100.64.0.0/10";
 		lanRange = "10.0.0.0/8";
+		frpVpsIp = "216.128.184.119";
 	};
 
 	dir = rec {

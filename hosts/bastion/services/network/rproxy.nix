@@ -102,7 +102,7 @@ in {
 			enable = true;
 			role = "client";
 			settings = {
-				serverAddr = "216.128.184.119";
+				serverAddr = globals.net.frpVpsIp;
 				serverPort = 7000;
 
 				auth.method = "token";
