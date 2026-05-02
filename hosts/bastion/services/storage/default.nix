@@ -3,7 +3,7 @@
 {
 	imports = [
 		./copyparty.nix
-		./mirror.nix
+		./navidrome.nix
 		./radicle.nix
 		./shimmie.nix
 		./syncthing.nix
@@ -31,6 +31,11 @@
 			mode = "0770";
 		};
 		"/nas/music".d = {
+			user = "root";
+			group = "nas";
+			mode = "0770";
+		};
+		"/nas/joplin".d = {
 			user = "root";
 			group = "nas";
 			mode = "0770";

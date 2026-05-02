@@ -40,7 +40,19 @@ in {
 		group = "nas";
 		mode = "0400";
 	};
+	sops.secrets.copyparty-music-password = {
+		sopsFile = ./Secrets.yaml;
+		owner = "copyparty";
+		group = "nas";
+		mode = "0400";
+	};
 	sops.secrets.copyparty-admin-password = {
+		sopsFile = ./Secrets.yaml;
+		owner = "copyparty";
+		group = "nas";
+		mode = "0400";
+	};
+	sops.secrets.copyparty-joplin-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
 		group = "nas";
@@ -97,7 +109,9 @@ in {
 		};
 		accounts = {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
+			music.passwordFile = "${config.sops.secrets.copyparty-music-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
+			joplin.passwordFile = "${config.sops.secrets.copyparty-joplin-password.path}";
 		};
 		volumes = {
 			"/inbox" = {
@@ -112,20 +126,6 @@ in {
 					dthumb = true;
 					nohtml = true;
 					nodupe = true;
-				};
-			};
-			"/music" = {
-				path = "/nas/music";
-				access = {
-					g = [ "*" ];
-					A = [ "admin" ];
-				};
-				flags = {
-					# TODO: switch to dks/dky (? idk which one). also integrate with syncthing
-					dk = 16;
-					fk = 16;
-					e2ts = true;
-					e2dsa = true;
 				};
 			};
 			"/private" = {
@@ -143,6 +143,27 @@ in {
 				access = {
 					r = "*";
 					A = [ "admin" ];
+				};
+			};
+			"/music" = {
+				path = "/nas/music";
+				access = {
+					g = [ "*" ];
+					r = [ "music" ];
+					A = [ "admin" ];
+				};
+				flags = {
+					# TODO: switch to dks/dky (? idk which one)
+					dk = 16;
+					fk = 16;
+					e2ts = true;
+					e2dsa = true;
+				};
+			};
+			"/joplin" = {
+				path = "/nas/joplin";
+				access = {
+					A = [ "admin" "joplin" ];
 				};
 			};
 		};

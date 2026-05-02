@@ -22,30 +22,23 @@ in {
 		# we don't use the dataDir so don't need to set it
 		guiAddress = "0.0.0.0:8384";
 		guiPasswordFile = config.sops.secrets.syncthing-gui-password.path;
-		overrideDevices = false;
-		overrideFolders = false;
 		settings = {
 			devices = {
 				acropolis.id = "K355HSY-FXG4ENF-UZ2Q3N2-IWBPBJN-4K5EV7W-IZK53QA-C7XXU52-STNEQQJ";
+				atlas.id = "XG3HCKD-YP3UNY6-FRU7PW4-YWY52E7-RMGMASW-HE4FZ56-2BIVX57-MGTI5AY";
 				phone.id = "M33EP75-6QYMAYN-LHK4VKK-SSVZ4WH-XW7CTLQ-JJH3IN7-WU4XGYR-JWXLIA4";
 			};
 			folders = {
 				music = {
 					id = "53ln6-dw9cy";
 					path = "/nas/music";
-					ignorePatterns = [ ".hist" ];
-					copyOwnershipFromParent = true;
+					type = "receiveonly";
 					devices = [
 						"acropolis"
+						"atlas"
 					];
-				};
-				music_mirror = {
-					id = "6rnu7-zfrn5";
-					path = "/nas/mirror/music";
-					type = "sendonly";
-					devices = [
-						"phone"
-					];
+					ignorePatterns = [ ".hist" ]; # copyparty files
+					ignorePerms = true;
 				};
 			};
 		};
