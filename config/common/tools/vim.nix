@@ -52,10 +52,11 @@ in {
 				let g:nix_recommended_style = 0
 				let g:rust_recommended_style = 0
 				set backspace=indent,eol,start
-				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab smartindent
+				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab autoindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 				command -nargs=+ Grep exe 'silent! grep <args>' | redraw! | copen
 				command -nargs=* Make exe 'silent! make <args>' | redraw! | copen
+				command -nargs=1 Find call setqflist([], ' ', {'title': ':fd ' . <q-args>, 'lines': system('fd -0 -H -E .git ' . shellescape(<q-args>))->split("\x01"), 'efm': '%f'}) | copen
 
 				" UI
 				" {{{ statusline
@@ -163,6 +164,43 @@ in {
 				set quickfixtextfunc=QfFormat
 				" }}}
 
+				" {{{ minimal syntax override
+				augroup MinimalSyntax
+					autocmd!
+					autocmd ColorScheme * call s:ApplyMinimalSyntax()
+				augroup END
+
+				function! s:ApplyMinimalSyntax()
+					hi! link Identifier Normal
+					hi! link Function Normal
+					hi! link Statement Normal
+					hi! link Conditional Normal
+					hi! link Repeat Normal
+					hi! link Label Normal
+					hi! link Operator Normal
+					hi! link Keyword Normal
+					hi! link Exception Normal
+					hi! link PreProc Normal
+					hi! link Include Normal
+					hi! link Define Normal
+					hi! link Macro Normal
+					hi! link PreCondit Normal
+					hi! link Type Normal
+					hi! link StorageClass Normal
+					hi! link Structure Normal
+					hi! link Typedef Normal
+					hi! link Special Normal
+					hi! link SpecialChar Normal
+					hi! link Tag Normal
+					hi! link SpecialComment Normal
+					hi! link Debug Normal
+					hi! link Delimiter FgDim
+
+					" String, Character, Boolean, Number, Integer, Float, Comment
+					" left unmodified intentionally
+				endfunction
+				" }}}
+
 				set nu rnu
 				set cursorline cursorlineopt=both
 				set list listchars=tab:\.\ " space
@@ -195,6 +233,9 @@ in {
 				vmap <leader>y <Plug>OSCYankVisual
 				nmap <leader>y <Plug>OSCYankOperator
 				nmap <leader>yy <leader>y_
+				nmap <leader>fw :Grep 
+				nmap <leader>ff :Find 
+				nmap <leader>m :Make 
 				nmap cc <Cmd>silent! nohl<CR>
 				tmap <C-w><C-n> <C-\><C-n>
 
@@ -209,6 +250,8 @@ in {
 				au InsertEnter * set nornu
 				au InsertLeave * set rnu
 				au TerminalOpen * setlocal nonu nornu nocursorline nobuflisted
+
+				syntax on
 			'';
 		})
 	];

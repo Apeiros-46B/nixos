@@ -3,6 +3,7 @@
 {
 	imports = [
 		./copyparty.nix
+		./immich.nix
 		./navidrome.nix
 		./radicle.nix
 		./shimmie.nix

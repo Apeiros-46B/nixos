@@ -48,13 +48,13 @@ in {
 			Address = "0.0.0.0";
 			BaseUrl = "https://${domain}";
 			ShareURL = "https://${domain}";
-			Agents = "deezer,listenbrainz";
+			Agents = "";
 			MusicFolder = musicDir;
 			EnableArtworkUpload = false;
+			EnableExternalServices = false;
 			EnableUserRegistration = false;
 			EnableUserEditing = false;
 			FFmpegPath = "${pkgs.ffmpeg}/bin/ffmpeg";
-			LastFM.ScrobbleFirstArtistOnly = true;
 			Scanner.ArtistJoiner = ", ";
 			Subsonic.ArtistParticipations = true;
 		};
