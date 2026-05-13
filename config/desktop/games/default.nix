@@ -8,5 +8,8 @@
 		./waydroid.nix
 	];
 
-	hm.home.packages = [ pkgs.mindustry-wayland ];
+	hm.home.packages = with pkgs; [
+		mindustry-wayland
+		vintagestory
+	];
 }
