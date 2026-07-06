@@ -32,6 +32,7 @@
 		copyparty.url = "github:9001/copyparty";
 		wawa.url = "github:amatgil/wawa";
 
+		shimmie2.url = "git+file:///root/shimmie2";
 		sidechain.url = "github:Apeiros-46B/sidechain";
 		tspmo.url = "github:Apeiros-46B/tspmo";
 	};

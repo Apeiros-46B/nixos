@@ -9,6 +9,10 @@
 	];
 
 	# TODO/TEMPORARY: minecraft and vintage story servers
+	networking.firewall = {
+		allowedTCPPorts = [ 42420 25565 ];
+		allowedUDPPorts = [ 42420 ];
+	};
 	services.frp.settings.proxies = [
 		{
 			name = "minecraft";
