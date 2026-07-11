@@ -3,6 +3,9 @@
 let
 	buildPlugin = pkgs.vimUtils.buildVimPlugin;
 	useTruecolor = theme.name == "elysium" && globals.hostType != "server";
+	extraHighlights = if theme.name == "everforest"
+		then "hi! link Keyword Red" # TODO: this override does not work on the server
+		else "";
 in {
 	environment.variables = {
 		EDITOR = "vim";
@@ -50,13 +53,42 @@ in {
 
 				" editing
 				let g:nix_recommended_style = 0
-				let g:rust_recommended_style = 0
 				set backspace=indent,eol,start
 				set tabstop=2 softtabstop=-1 shiftwidth=0 noexpandtab autoindent
 				set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 				command -nargs=+ Grep exe 'silent! grep <args>' | redraw! | copen
 				command -nargs=* Make exe 'silent! make <args>' | redraw! | copen
-				command -nargs=1 Find call setqflist([], ' ', {'title': ':fd ' . <q-args>, 'lines': system('fd -0 -H -E .git ' . shellescape(<q-args>))->split("\x01"), 'efm': '%f'}) | copen
+				command -nargs=1 Find call setqflist([], ' ', {'title': ':fd ' . <q-args>, 'lines': system('fd -0 -p -H -E .git ' . shellescape(<q-args>))->split("\x01"), 'efm': '%f'}) | copen
+				command -nargs=0 Inspect echo synIDattr(synID(line('.'), col('.'), 1), 'name')
+
+				" {{{ toggle comment
+				function! ToggleComment() range
+					if empty(&commentstring) | return | endif
+
+					let l:cs = split(&commentstring, '%s', 1)
+					let l:left = escape(trim(l:cs[0]), '\/.*$^~[]')
+					let l:right = escape(trim(get(l:cs, 1, "")), '\/.*$^~[]')
+
+					for l:i in range(a:firstline, a:lastline)
+						let l:line = getline(l:i)
+
+						if l:line =~ '^\s*$' | continue | endif
+
+						if l:line =~ '^\s*' . l:left
+							let l:line = substitute(l:line, '^\s*\zs' . l:left . '\s\?', "", "")
+							if l:right != ""
+								let l:line = substitute(l:line, '\s\?' . l:right . '\s*$', "", "")
+							endif
+						else
+							let l:indent = matchstr(l:line, '^\s*')
+							let l:text = matchstr(l:line, '^\s*\zs.*')
+							let l:line = l:indent . substitute(&commentstring, '%s', escape(l:text, '\&~'), "")
+						endif
+
+						call setline(l:i, l:line)
+					endfor
+				endfunction
+				" }}}
 
 				" UI
 				" {{{ statusline
@@ -167,37 +199,55 @@ in {
 				" {{{ minimal syntax override
 				augroup MinimalSyntax
 					autocmd!
-					autocmd ColorScheme * call s:ApplyMinimalSyntax()
+					autocmd ColorScheme * call s:ApplySyntaxOverrides()
+					autocmd FileType * call s:ApplySyntaxOverrides()
+					autocmd Syntax * call s:ApplySyntaxOverrides()
 				augroup END
 
-				function! s:ApplyMinimalSyntax()
+				function! s:ApplySyntaxOverrides()
+					${extraHighlights}
+
+					hi! link Delimiter FgDim
+					hi! link Operator FgDim
 					hi! link Identifier Normal
 					hi! link Function Normal
-					hi! link Statement Normal
-					hi! link Conditional Normal
-					hi! link Repeat Normal
 					hi! link Label Normal
-					hi! link Operator Normal
-					hi! link Keyword Normal
-					hi! link Exception Normal
-					hi! link PreProc Normal
-					hi! link Include Normal
-					hi! link Define Normal
+					hi! link Type Normal
 					hi! link Macro Normal
 					hi! link PreCondit Normal
-					hi! link Type Normal
-					hi! link StorageClass Normal
-					hi! link Structure Normal
-					hi! link Typedef Normal
 					hi! link Special Normal
 					hi! link SpecialChar Normal
 					hi! link Tag Normal
-					hi! link SpecialComment Normal
-					hi! link Debug Normal
-					hi! link Delimiter FgDim
+					hi! link Conditional Keyword
+					hi! link Define Keyword
+					hi! link Exception Keyword
+					hi! link Include Keyword
+					hi! link PreProc Keyword
+					hi! link Repeat Keyword
+					hi! link Statement Keyword
+					hi! link Structure Keyword
+					hi! link Typedef Keyword
+					hi! link SpecialComment Comment
 
-					" String, Character, Boolean, Number, Integer, Float, Comment
-					" left unmodified intentionally
+					hi! link cDefine Define
+					hi! link luaTable Delimiter
+					hi! link luaFunction Keyword
+					hi! link luaMetaMethod StorageClass
+					hi! link nixPath Normal
+					hi! link pythonExceptions Normal
+					hi! link rustAttribute Normal
+					hi! link rustConstant Normal
+					hi! link rustDerive Normal
+					hi! link rustLifetime StorageClass
+					hi! link rustModPath Normal
+					hi! link rustSelf Normal
+					hi! link shShellVariables Normal
+					hi! link vimCommentTitle Comment
+					hi! link vimCommentString Comment
+					hi! link vimOption Normal
+					hi! link vimSetSep Delimiter
+					hi! link zigExecution Keyword
+					hi! link zigVarDecl Keyword
 				endfunction
 				" }}}
 
@@ -238,6 +288,8 @@ in {
 				nmap <leader>m :Make 
 				nmap cc <Cmd>silent! nohl<CR>
 				tmap <C-w><C-n> <C-\><C-n>
+				nmap <silent> <C-c> <Cmd>call ToggleComment()<CR>
+				xmap <silent> <C-c> :call ToggleComment()<CR>
 
 				set background=dark
 				set ${if useTruecolor then "termguicolors" else "notermguicolors"}
@@ -250,6 +302,7 @@ in {
 				au InsertEnter * set nornu
 				au InsertLeave * set rnu
 				au TerminalOpen * setlocal nonu nornu nocursorline nobuflisted
+				au SwapExists * redraw!
 
 				syntax on
 			'';
