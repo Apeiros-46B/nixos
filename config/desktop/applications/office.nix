@@ -80,7 +80,7 @@
 			vertical_move_amount = toString (dpi 0.53);
 
 			ui_font          = theme.font.mono;
-			startup_commands = "toggle_custom_color";
+			startup_commands = [ "toggle_custom_color" ];
 			# }}}
 
 			# {{{ colors

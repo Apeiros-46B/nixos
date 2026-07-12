@@ -14,6 +14,7 @@
 		userDirs = {
 			enable = true;
 			createDirectories = false;
+			setSessionVariables = true;
 
 			desktop     = globals.dir.desk;
 			documents   = globals.dir.doc;

@@ -11,8 +11,8 @@
 		useDHCP = lib.mkDefault true;
 		networkmanager = {
 			enable = true;
-			unmanaged = [ "eth0" ];
 			wifi = {
+				backend = "iwd";
 				scanRandMacAddress = false;
 				powersave = true;
 			};
@@ -29,19 +29,6 @@
 	environment = {
 		systemPackages = [ pkgs.networkmanagerapplet ];
 		shellAliases.nmt = "TERM=xterm-old nmtui";
-	};
-
-	# power off eth0 on boot
-	systemd.services.link-down-eth0 = {
-		description = "Set network interface 'eth0' as DOWN";
-		wantedBy = [ "multi-user.target" ];
-		wants = [ "network-online.target" ];
-		after = [ "network-online.target" ];
-
-		serviceConfig = {
-			Type = "oneshot";
-			ExecStart = "${pkgs.iproute2}/bin/ip link set eth0 down";
-		};
 	};
 
 	security.pki.certificates = [

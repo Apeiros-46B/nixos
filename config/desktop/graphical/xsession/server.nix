@@ -13,6 +13,6 @@
 	];
 
 	hm.xsession.profileExtra = ''
-		${pkgs.xorg.xset}/bin/xset r rate 350 75
+		${pkgs.xset}/bin/xset r rate 350 75
 	'';
 }

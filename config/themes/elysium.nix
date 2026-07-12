@@ -12,10 +12,10 @@ rec {
 
 		bgPurple = "e4dce8";
 		bgRed    = "e9dbdf";
-		bgGreen  = "d9e3d7";
-		bgAqua   = "cfe3dd";
+		bgGreen  = "dce2da";
+		bgAqua   = "d5e2e5";
 		bgBlue   = "dddfeb";
-		bgYellow = "f0e6d8";
+		bgYellow = "f0e6d9";
 
 		fg0 = "333333";
 		fg1 = "202020";
@@ -24,10 +24,10 @@ rec {
 		fg4 = "555555";
 
 		red    = "904961";
-		orange = "934c3d";
-		yellow = "b5803e";
-		green  = "427138";
-		aqua   = "117555";
+		orange = "90502a";
+		yellow = "b38143";
+		green  = "546b4f";
+		aqua   = "406b75";
 		blue   = "535d9c";
 		purple = "79508a";
 	};

@@ -27,7 +27,7 @@ in {
 
 	# TODO: this doesn't build, causes wrapGApps renamed thing
 	# i think we need to fork the nixmox repo and fix it there?
-	# environment.systemPackages = [ pkgs.oomoxFull ];
+	environment.systemPackages = [ pkgs.oomoxFull ];
 
 	hm.home.sessionVariables.GTK_THEME = gtkThemeName;
 	hm.dconf.settings = {
@@ -37,7 +37,7 @@ in {
   };
 
 	hm.gtk = let
-		oomox = pkgs.oomoxPlugins;
+		oomox = pkgs.oomoxFull;
 		darkBool = if theme.dark then "True" else "False";
 		themeDef = with theme.colors; pkgs.writeText "${theme.name}.theme" ''
 			ACCENT_BG=${bgBlue}

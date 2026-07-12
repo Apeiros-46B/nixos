@@ -112,18 +112,6 @@ in {
 		# }}}
 
 		profiles.apeiros = {
-			containers = {
-				Personal = {
-					id = 0;
-					icon = "circle";
-					color = "blue";
-				};
-				School = {
-					id = 1;
-					icon = "circle";
-					color = "green";
-				};
-			};
 			# {{{ custom theme
 			userChrome = with theme.colorsHash; ''
 			'';
