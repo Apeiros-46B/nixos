@@ -48,7 +48,7 @@ in functions.linkImpure "quickshell" {
 		qmllsWrappedPkg
 		quickshellPkg
 		swaylock
-		swww
+		awww
 	];
 
 	hm.systemd.user.services.quickshell = {
@@ -70,7 +70,7 @@ in functions.linkImpure "quickshell" {
 		Install.WantedBy = [ "graphical-session.target" ];
 	};
 
-	hm.services.swww.enable = true;
+	hm.services.awww.enable = true;
 
 	hm.services.mako = {
 		enable = true;

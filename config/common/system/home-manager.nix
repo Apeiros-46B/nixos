@@ -16,7 +16,7 @@
 	hm = {
 		news = {
 			display = "silent";
-			json = lib.mkForce {};
+			json = lib.mkForce { output = {}; };
 			entries = lib.mkForce [];
 		};
 		home = {

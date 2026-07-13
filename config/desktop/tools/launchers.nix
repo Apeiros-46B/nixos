@@ -1,6 +1,30 @@
-{ pkgs, theme, ... }:
+{ pkgs, theme, globals, ... }:
 
 {
+	# NEW MACHINE: need to add this to "imports": [] in the main vicinae settings manually
+	hm.home.file."${globals.dir.cfg}/vicinae/settings-extra.json".text = ''
+		{
+			"$schema": "https://vicinae.com/schemas/config.json",
+			"font": {
+				"normal": {
+					"family": "${theme.font.sans}"
+				}
+			},
+			"theme": {
+				"dark": {
+					"name": "system",
+					"icon_theme": "Default"
+				}
+			},
+			"launcher_window": {
+				"client_side_decorations": {
+					"enabled": false
+				},
+				"material": "none"
+			}
+		}
+	'';
+
 	hm.programs.vicinae = {
 		enable = true;
 		systemd.enable = true;
@@ -14,12 +38,15 @@
 
 			colors = with theme.colorsHash; {
 				core = {
+					accent = blue;
+					accent_foreground = bg0;
 					background = bg1;
 					foreground = fg0;
 					secondary_background = bg2;
-					border = "transparent";
-					accent = bgBlue;
+					border = bg1;
 				};
+				main_window.border = bg1;
+				settings_window.border = bg1;
 				accents = {
 					red = red;
 					orange = orange;
@@ -30,11 +57,12 @@
 					purple = purple;
 					magenta = purple;
 				};
+				shortcut.border = bg1;
 				text = {
 					default = fg0;
 					muted = fg3;
-					danger = fg2;
-					success = fg2;
+					danger = red;
+					success = green;
 					placeholder = fg3;
 					selection = {
 						foreground = fg0;
@@ -44,6 +72,11 @@
 						default = aqua;
 						visited = purple;
 					};
+				};
+				input = {
+					border = bg1;
+					border_focus = bg1;
+					border_error = bg1;
 				};
 				button.primary = {
 					background = bg2;
@@ -63,8 +96,8 @@
 				};
 				grid.item = {
 					background = bg2;
-					hover.outline.opacity = 0.0;
-					selection.outline.opacity = 0.0;
+					hover.outline = bg1;
+					selection.outline = bg1;
 				};
 				scrollbars.background = bg3;
 				loading = {

@@ -8,7 +8,7 @@ functions.linkImpure "emacs" {
 		package = pkgs.emacs-pgtk;
 	};
 	hm.home.packages = [
-		pkgs.texlive.combined.scheme-full
+		pkgs.texliveSmall
 	];
 
 	# define org mime type

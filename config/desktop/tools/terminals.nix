@@ -11,7 +11,7 @@
 			};
 			scrollback.indicator-position = "none";
 			cursor.unfocused-style = "hollow";
-			colors = with theme.colors; {
+			colors-dark = with theme.colors; {
 				background = bg0;
 				foreground = fg0;
 				regular0   = bg0;

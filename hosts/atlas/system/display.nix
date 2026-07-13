@@ -41,7 +41,7 @@
 		};
 	};
 
-	hm.home.packages = let xrandr = "${pkgs.xorg.xrandr}/bin/xrandr"; in [
+	hm.home.packages = let xrandr = "${pkgs.xrandr}/bin/xrandr"; in [
 		(pkgs.writeShellScriptBin "screenlayout" ''
 			function SET() {
 				# the default resize filter on this machine is actually ok (cmp. to bilinear)

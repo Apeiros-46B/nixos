@@ -190,7 +190,7 @@
 		];
 		layer-rules = [
 			{
-				matches = [{ namespace = "^swww-daemon$"; }];
+				matches = [{ namespace = "^awww-daemon$"; }];
 				place-within-backdrop = true;
 			}
 		];
@@ -254,8 +254,8 @@
 					"-c"
 					"${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP DISPLAY && \
 					${pkgs.systemd}/bin/systemctl --user reset-failed \
-					${pkgs.systemd}/bin/systemctl --user restart swww quickshell"
-				]; # HACK: ^^^ restart the services surgically. in the future, we need to somehow re-trigger graphical-session with WAYLAND_DISPLAY without killing niri, so that swww, qs, etc restart automatically
+					${pkgs.systemd}/bin/systemctl --user restart awww quickshell"
+				]; # HACK: ^^^ restart the services surgically. in the future, we need to somehow re-trigger graphical-session with WAYLAND_DISPLAY without killing niri, so that awww, qs, etc restart automatically
 			}
 		];
 	};

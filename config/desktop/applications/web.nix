@@ -1,4 +1,4 @@
-{ pkgs, theme, ... }:
+{ pkgs, globals, ... }:
 
 let
 	setDefault = Value: {
@@ -9,21 +9,17 @@ let
 		inherit Value;
 		Status = "locked";
 	};
-	extsToAttrs = exts: builtins.listToAttrs (map
-		(id: {
-			name = id;
-			value = {
-				install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-				installation_mode = "normal_installed";
-			};
-		})
-		exts);
-	installExts = exts: { "*".installation_mode = "allowed"; } // extsToAttrs exts;
+	# extsToAttrs = exts: builtins.listToAttrs (map
+	# 	(id: {
+	# 		name = id;
+	# 		value = {
+	# 			install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
+	# 			installation_mode = "normal_installed";
+	# 		};
+	# 	})
+	# 	exts);
+	# installExts = exts: { "*".installation_mode = "allowed"; } // extsToAttrs exts;
 in {
-	hm.home.packages = with pkgs; [
-		zoom-us
-	];
-
 	hm.programs.brave.enable = true;
 
 	# for taking exams
@@ -38,6 +34,7 @@ in {
 		package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override {
 			pipewireSupport = true;
 		}) {};
+		configPath = "${globals.dir.cfg}/mozilla/firefox";
 
 		nativeMessagingHosts = with pkgs; [
 			# "bind --mode=browser <C-,> composite !s ydotool key 64:1 64:0; !s ydotool key 64:1 64:0; escapehatch"
@@ -68,24 +65,24 @@ in {
 			DisplayMenuBar = "never";
 			SearchBar = "unified";
 
-			# this is so incredibly overengineered
-			ExtensionSettings = installExts [
-				"{446900e4-71c2-419f-a6a7-df9c091e268b}" # bitwarden
-				"{74145f27-f039-47ce-a470-a662b129930a}" # clearurls
-				"jid1-MnnxcxisBPnSXQ@jetpack"            # privacy badger
-				"uBlock0@raymondhill.net"
-
-				"{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" # violentmonkey
-				"{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" # stylus
-				"{3c078156-979c-498b-8990-85f7987dd929}" # sidebery
-				"tridactyl.vim@cmcaine.co.uk"
-
-				"{92e6fe1c-6e1d-44e1-8bc6-d309e59406af}"         # hover zoom+ (the open source one)
-				"{762f9885-5a13-4abd-9c77-433dcd38b8fd}"         # return youtube dislikes
-				"enhancerforyoutube@maximerf.addons.mozilla.org" # enhancer for youtube
-				"sponsorBlocker@ajay.app"                        # sponsorblock
-				"ff2mpv@yossarian.net"                           # ff2mpv
-			];
+			# TODO: document this somewhere, declarative install is kinda bikeshed
+			# ExtensionSettings = installExts [
+			# 	"{446900e4-71c2-419f-a6a7-df9c091e268b}" # bitwarden
+			# 	"{74145f27-f039-47ce-a470-a662b129930a}" # clearurls
+			# 	"jid1-MnnxcxisBPnSXQ@jetpack"            # privacy badger
+			# 	"uBlock0@raymondhill.net"
+			#
+			# 	"{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" # violentmonkey
+			# 	"{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" # stylus
+			# 	"{3c078156-979c-498b-8990-85f7987dd929}" # sidebery
+			# 	"tridactyl.vim@cmcaine.co.uk"
+			#
+			# 	"{92e6fe1c-6e1d-44e1-8bc6-d309e59406af}"         # hover zoom+ (the open source one)
+			# 	"{762f9885-5a13-4abd-9c77-433dcd38b8fd}"         # return youtube dislikes
+			# 	"enhancerforyoutube@maximerf.addons.mozilla.org" # enhancer for youtube
+			# 	"sponsorBlocker@ajay.app"                        # sponsorblock
+			# 	"ff2mpv@yossarian.net"                           # ff2mpv
+			# ];
 			Preferences = {
 				"extensions.pocket.enabled" = setDefault false;
 				"extensions.screenshots.disabled" = setDefault true;
@@ -110,12 +107,5 @@ in {
 			};
 		};
 		# }}}
-
-		profiles.apeiros = {
-			# {{{ custom theme
-			userChrome = with theme.colorsHash; ''
-			'';
-			# }}}
-		};
 	};
 }

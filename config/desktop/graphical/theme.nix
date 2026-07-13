@@ -25,10 +25,6 @@ in {
 		"*.color15"     = fg0;
 	};
 
-	# TODO: this doesn't build, causes wrapGApps renamed thing
-	# i think we need to fork the nixmox repo and fix it there?
-	environment.systemPackages = [ pkgs.oomoxFull ];
-
 	hm.home.sessionVariables.GTK_THEME = gtkThemeName;
 	hm.dconf.settings = {
     "org/gnome/desktop/interface" = {
@@ -121,19 +117,42 @@ in {
 			name = theme.font.sans;
 			size = 11;
 		};
-		iconTheme = rec {
-			name = "${theme.name}-icons";
-			package = (oomox.icons-papirus.generate {
-				src = themeDef;
-				inherit name;
-			});
+		iconTheme = {
+			name = if theme.dark then "Papirus-Dark" else "Papirus-Light";
+			package = pkgs.papirus-icon-theme;
 		};
-		theme = rec {
+		theme = {
 			name = gtkThemeName;
-			package = (oomox.theme-materia.generate {
-				src = themeDef;
-				inherit name;
-			});
+			package = pkgs.stdenv.mkDerivation {
+				name = gtkThemeName;
+				src = pkgs.fetchFromGitHub {
+					owner = "nana-4";
+					repo = "materia-theme";
+					rev = "d7f59a37ef51f893c28b55dc344146e04b2cd52c";
+					sha256 = "sha256-PnpFAmKEpfg3wBwShLYviZybWQQltcw7fpsQkTUZtww=";
+				};
+
+				nativeBuildInputs = with pkgs; [
+					bc
+					inkscape
+					resvg
+					meson
+					ninja
+					dart-sass
+				];
+				dontUseMesonConfigure = true;
+				buildPhase = ''
+					export HOME="$PWD/tmp-home"
+					find . -type f -name '*.sh' -print0 | while IFS= read -r -d "" file; do
+						patchShebangs "$file"
+					done
+					./change_color.sh -o ${gtkThemeName} ${themeDef}
+				'';
+				installPhase = ''
+					mkdir -p $out/share/themes
+					cp -r tmp-home/.themes/${gtkThemeName} $out/share/themes/
+				'';
+			};
 		};
 		gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = if theme.dark then 1 else 0;
@@ -457,13 +476,15 @@ in {
 	};
 
 	hm.home.pointerCursor = {
-		name = "phinger-cursors-light";
-		package = pkgs.phinger-cursors;
-		size = 24;
+		enable = true;
 		gtk.enable = true;
 		x11 = {
 			enable = true;
 			defaultCursor = "left_ptr";
 		};
+
+		name = "phinger-cursors-light";
+		package = pkgs.phinger-cursors;
+		size = 24;
 	};
 }
