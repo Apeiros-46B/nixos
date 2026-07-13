@@ -3,15 +3,11 @@
 {
 	xdg.portal = {
 		enable = true;
-		extraPortals = with pkgs; [
-			xdg-desktop-portal-gtk
-			xdg-desktop-portal-gnome
-		];
+		extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 		config = {
-			# prioritize gnome (for screenshare)
-      niri.default = [ "gnome" "gtk" ];
-      awesome.default = [ "gtk" ];
-      common.default = [ "gtk" ];
-    };
+			niri.default = [ "gtk" ];
+			awesome.default = [ "gtk" ];
+			common.default = [ "gtk" ];
+		};
 	};
 }
