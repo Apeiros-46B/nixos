@@ -3,9 +3,6 @@
 let
 	buildPlugin = pkgs.vimUtils.buildVimPlugin;
 	useTruecolor = theme.name == "elysium" && globals.hostType != "server";
-	extraHighlights = if theme.name == "everforest"
-		then "hi! link Keyword Red" # TODO: this override does not work on the server
-		else "";
 in {
 	environment.variables = {
 		EDITOR = "vim";
@@ -37,8 +34,8 @@ in {
 					src = pkgs.fetchFromGitHub {
 						owner = "Apeiros-46B";
 						repo = "elysium";
-						rev = "8a378de33c8358d6002eb6c87cd49b6eb61daef8";
-						sha256 = "Iz6HhxQKbhdZXeQuIm9HE2VoJ7+hDPk5xJGD0ilWCs4=";
+						rev = "205d0fb604ef4fb3d650002a517426ae8315db31";
+						sha256 = "am7ViiCiekkc9XfyqOUoFSoUvpk14DTWyza7ab/xMw8=";
 					};
 					sourceRoot = "source/ports/vim";
 				})
@@ -205,8 +202,6 @@ in {
 				augroup END
 
 				function! s:ApplySyntaxOverrides()
-					${extraHighlights}
-
 					hi! link Delimiter FgDim
 					hi! link Operator FgDim
 					hi! link Identifier Normal
