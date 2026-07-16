@@ -14,15 +14,7 @@ in {
 		inputs.copyparty.nixosModules.default
 	];
 
-	users = {
-		users.copyparty = {
-			isSystemUser = true;
-			group = "nas";
-		};
-		groups.nas.members = [ "root" "copyparty" ];
-	};
-
-	environment.systemPackages = with pkgs; [ copyparty ];
+	environment.systemPackages = [ pkgs.copyparty ];
 	systemd.services.copyparty = {
 		path = [ pkgs.ffmpeg-headless ];
 		environment.PYTHONPATH = "${copypartyPython}/${copypartyPython.sitePackages}";
@@ -37,32 +29,26 @@ in {
 	sops.secrets.copyparty-inbox-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
-		group = "nas";
+		group = "copyparty";
 		mode = "0400";
 	};
 	sops.secrets.copyparty-music-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
-		group = "nas";
+		group = "copyparty";
 		mode = "0400";
 	};
 	sops.secrets.copyparty-admin-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
-		group = "nas";
-		mode = "0400";
-	};
-	sops.secrets.copyparty-joplin-password = {
-		sopsFile = ./Secrets.yaml;
-		owner = "copyparty";
-		group = "nas";
+		group = "copyparty";
 		mode = "0400";
 	};
 
 	services.copyparty = {
 		enable = true;
 		user = "copyparty";
-		group = "nas";
+		group = "copyparty";
 		settings = {
 			no-reload = true;
 
@@ -90,8 +76,8 @@ in {
 			re-maxage = 60; # syncthing compat
 			no-mtag-ff = true;
 			shr = "/share";
-			chmod-f = "660";
-			chmod-d = "770";
+			chmod-f = "640";
+			chmod-d = "750";
 
 			# LAN access
 			z = true;
@@ -111,7 +97,6 @@ in {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
 			music.passwordFile = "${config.sops.secrets.copyparty-music-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
-			joplin.passwordFile = "${config.sops.secrets.copyparty-joplin-password.path}";
 		};
 		volumes = {
 			"/inbox" = {
@@ -158,12 +143,6 @@ in {
 					fk = 16;
 					e2ts = true;
 					e2dsa = true;
-				};
-			};
-			"/joplin" = {
-				path = "/nas/joplin";
-				access = {
-					A = [ "admin" "joplin" ];
 				};
 			};
 		};

@@ -3,22 +3,21 @@
 let
 	tsDomain = "st.${globals.net.tsDomain}";
 in {
+	# make newly created folders/files 0750/0640 when Ignore Permissions is set
+	systemd.services.syncthing.serviceConfig.UMask = "0027";
+
 	my.services.rproxy.tsDomains.${tsDomain} = 8384;
 
 	sops.secrets.syncthing-gui-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "syncthing";
-		group = "nas";
+		group = "syncthing";
 		mode = "0400";
 		restartUnits = [ "syncthing.service" ];
 	};
 
-	# make newly created folders have 0770 or 0660 when Ignore Permissions is set
-	systemd.services.syncthing.serviceConfig.UMask = "0007";
-
-	# already enabled in common/services/syncthing.nix
 	services.syncthing = {
-		group = "nas";
+		enable = true;
 		# we don't use the dataDir so don't need to set it
 		guiAddress = "0.0.0.0:8384";
 		guiPasswordFile = config.sops.secrets.syncthing-gui-password.path;

@@ -13,7 +13,7 @@
 		allowedTCPPorts = [ 42420 25565 ];
 		allowedUDPPorts = [ 42420 ];
 	};
-	services.frp.settings.proxies = [
+	services.frp.instances.rproxy.settings.proxies = [
 		{
 			name = "minecraft";
 			type = "tcp";

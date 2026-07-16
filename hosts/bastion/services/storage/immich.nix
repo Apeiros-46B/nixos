@@ -7,18 +7,11 @@ let
 	tsDomain = "pic.${globals.net.tsDomain}";
 	immichDir = "/nas/pictures";
 in {
-	systemd.tmpfiles.settings =  {
-		"10-nas-immich".${immichDir}.d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
-		};
-		immich.${immichDir}.e.mode = lib.mkForce "0750";
+	systemd.tmpfiles.settings."10-nas-immich".${immichDir}.d = {
+		user = "immich";
+		group = "immich";
+		mode = "0700"; # immich resets it to 0700 anyways
 	};
-
-	# force new files created by the immich processes to retain group read permissions
-	systemd.services.immich-server.serviceConfig.UMask = lib.mkForce "0027";
-	systemd.services.immich-machine-learning.serviceConfig.UMask = lib.mkForce "0027";
 
 	my.services.rproxy = {
 		domains.${pubDomain} = pubPort;
@@ -28,13 +21,12 @@ in {
 	sops.secrets.immich-env = {
 		sopsFile = ./Secrets.yaml;
 		owner = "immich";
-		group = "nas";
+		group = "immich";
 		mode = "0400";
 	};
 
 	services.immich = {
 		enable = true;
-		group = "nas";
 		host = "0.0.0.0";
 		port = privPort;
 		openFirewall = true;

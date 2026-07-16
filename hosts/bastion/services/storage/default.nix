@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ ... }:
 
 {
 	imports = [
@@ -9,36 +9,46 @@
 		./syncthing.nix
 	];
 
+	# restic can see everything, no need to add it here
+	users.groups = {
+		nas.members = [
+			"root"
+			"syncthing"
+			"copyparty"
+			"sidechain"
+			"immich"
+			"shimmie"
+		];
+		copyparty.members = [ "immich" ]; # external libraries
+		syncthing.members = [ "copyparty" "sidechain" ];
+	};
+
+	# other dirs owned by specific services
 	systemd.tmpfiles.settings."10-nas" = {
 		"/nas".d = {
 			user = "root";
 			group = "nas";
-			mode = "2770"; # SGID bit for syncthing
+			mode = "0750";
 		};
 		"/nas/inbox".d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
+			user = "copyparty";
+			group = "copyparty";
+			mode = "0750";
 		};
 		"/nas/public".d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
+			user = "copyparty";
+			group = "copyparty";
+			mode = "0750";
 		};
 		"/nas/private".d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
+			user = "copyparty";
+			group = "copyparty";
+			mode = "0750";
 		};
 		"/nas/music".d = {
-			user = "root";
+			user = "syncthing";
 			group = "nas";
-			mode = "0770";
-		};
-		"/nas/joplin".d = {
-			user = "root";
-			group = "nas";
-			mode = "0770";
+			mode = "2750";
 		};
 	};
 }

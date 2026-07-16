@@ -6,13 +6,12 @@
 	sops.secrets.shimmie-env = {
 		sopsFile = ./Secrets.yaml;
 		owner = "shimmie";
-		group = "nas";
+		group = "shimmie";
 		mode = "0400";
 	};
 
 	services.shimmie = {
 		enable = true;
-		group = "nas";
 		stateDir = "/var/lib/shimmie2";
 		dataDir = "/nas/shimmie2";
 		dbPath = "/nas/shimmie2/shimmie.db";

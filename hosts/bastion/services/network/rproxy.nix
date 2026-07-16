@@ -91,14 +91,14 @@ in {
 			owner = "root";
 			group = "root";
 			mode = "0400";
-			restartUnits = [ "frp.service" ];
+			restartUnits = [ "frp-rproxy.service" ];
 		};
 
-		systemd.services.frp.serviceConfig.LoadCredential = [
+		systemd.services.frp-rproxy.serviceConfig.LoadCredential = [
 			"frp-token:${config.sops.secrets.frp-token.path}"
 		];
 
-		services.frp = {
+		services.frp.instances.rproxy = {
 			enable = true;
 			role = "client";
 			settings = {
@@ -108,7 +108,7 @@ in {
 				auth.method = "token";
 				auth.tokenSource = {
 					type = "file";
-					file.path = "/run/credentials/frp.service/frp-token";
+					file.path = "/run/credentials/frp-rproxy.service/frp-token";
 				};
 
 				proxies = [
