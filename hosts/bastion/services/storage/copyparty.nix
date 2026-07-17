@@ -32,7 +32,7 @@ in {
 		group = "copyparty";
 		mode = "0400";
 	};
-	sops.secrets.copyparty-music-password = {
+	sops.secrets.copyparty-media-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
 		group = "copyparty";
@@ -63,7 +63,6 @@ in {
 
 			# security
 			no-readme = true;
-			no-logues = true; # TODO: figure out how to enable this only for inbox volume
 			no-robots = true;
 			usernames = true;
 			ipr = "${globals.net.lanRange},${globals.net.tsRange}=admin";
@@ -72,8 +71,6 @@ in {
 			xvol = true;
 
 			# fs
-			# no-clone = true; # TODO: figure out if we need this for syncthing compat?
-			re-maxage = 60; # syncthing compat
 			no-mtag-ff = true;
 			shr = "/share";
 			chmod-f = "640";
@@ -95,7 +92,7 @@ in {
 		};
 		accounts = {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
-			music.passwordFile = "${config.sops.secrets.copyparty-music-password.path}";
+			media.passwordFile = "${config.sops.secrets.copyparty-media-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 		};
 		volumes = {
@@ -111,6 +108,7 @@ in {
 					dthumb = true;
 					nohtml = true;
 					nodupe = true;
+					no_logues = true;
 				};
 			};
 			"/private" = {
@@ -121,7 +119,6 @@ in {
 				flags = {
 					e2ts = true;
 					e2dsa = true;
-					opds = true;
 				};
 			};
 			"/public" = {
@@ -131,19 +128,29 @@ in {
 					A = [ "admin" ];
 				};
 			};
-			"/music" = {
-				path = "/nas/music";
+			"/media" = {
+				path = "/nas/media";
 				access = {
-					g = [ "*" ];
-					r = [ "music" ];
+					r = [ "media" ];
 					A = [ "admin" ];
 				};
 				flags = {
-					# TODO: switch to dks/dky (? idk which one)
-					dk = 16;
-					fk = 16;
 					e2ts = true;
 					e2dsa = true;
+					opds = true;
+					opds_exts = [ "cbz" "cbr" "epub" "mobi" "pdf" ];
+					scan = 300; # TODO: suwayomi
+				};
+			};
+			"/music" = {
+				path = "/nas/music";
+				access = {
+					A = [ "admin" ];
+				};
+				flags = {
+					e2ts = true;
+					e2dsa = true;
+					scan = 300; # syncthing
 				};
 			};
 		};

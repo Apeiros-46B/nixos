@@ -12,13 +12,10 @@ in {
 
 	my.services.rproxy.tsDomains."search.${globals.net.tsDomain}" = port;
 
-	# TODO: services.searx.openFirewall does not exist yet on my nixpkgs version
-	networking.firewall.allowedTCPPorts = [ port ];
-
 	# internal use only, no need for ratelimiting or uwsgi
 	services.searx = {
 		enable = true;
-		# openFirewall = true;
+		openFirewall = true;
 		environmentFile = config.sops.secrets.searxng-env-file.path;
 		settings = {
 			server = {

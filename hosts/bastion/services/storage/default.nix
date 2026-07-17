@@ -24,7 +24,7 @@
 		syncthing.members = [ "copyparty" "sidechain" ];
 	};
 
-	# other dirs owned by specific services
+	# dirs not listed here are owned by specific service modules
 	systemd.tmpfiles.settings."10-nas" = {
 		"/nas".d = {
 			user = "root";
@@ -42,6 +42,11 @@
 			mode = "0750";
 		};
 		"/nas/private".d = {
+			user = "copyparty";
+			group = "copyparty";
+			mode = "0750";
+		};
+		"/nas/media".d = { # TODO: suwayomi needs write
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
