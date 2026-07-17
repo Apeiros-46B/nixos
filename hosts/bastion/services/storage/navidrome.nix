@@ -22,6 +22,7 @@ in {
 		destinationDir = musicDir;
 		ignoredExtensions = [ "txt" "md" "zip" ];
 		ignoreDotfiles = true;
+		copy = true;
 		bitrate = 192;
 		nice = 10;
 	};

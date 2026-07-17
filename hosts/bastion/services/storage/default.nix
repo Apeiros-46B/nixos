@@ -13,11 +13,12 @@
 	users.groups = {
 		nas.members = [
 			"root"
-			"syncthing"
 			"copyparty"
-			"sidechain"
 			"immich"
+			"navidrome"
+			"sidechain"
 			"shimmie"
+			"syncthing"
 		];
 		copyparty.members = [ "immich" ]; # external libraries
 		syncthing.members = [ "copyparty" "sidechain" ];

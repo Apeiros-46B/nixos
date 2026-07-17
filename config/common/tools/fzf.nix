@@ -1,17 +1,17 @@
 { pkgs, theme, ... }:
 
 let
-	wrappedFzf = pkgs.writeShellScriptBin "fzf" (with theme.colors; ''
+	wrappedFzf = pkgs.writeShellScriptBin "fzf" ''
 		${pkgs.fzf}/bin/fzf \
 			--height=60% --border --margin=1,0 --layout=reverse \
 			--no-unicode --tabstop=4 --scroll-off=2 \
 			--header="" --ellipsis='...' --pointer='+' --marker='*' --prompt='? ' \
-			--color='hl+:#${purple}:bold,hl:#${purple}:bold,header:#${fg0}:bold' \
-			--color='pointer:#${fg0},marker:#${purple},prompt:#${orange},spinner:#${purple}' \
-			--color='bg+:#${bgPurple},bg:#${bg1},gutter:#${bg1},border:#${bg1},separator:#${bg1}' \
-			--color='fg+:#${fg0}:bold,fg:#${fg3},info:#${fg4}' \
+			--color='hl+:5:bold,hl:5:bold,header:-1:bold' \
+			--color='pointer:-1,marker:5,prompt:243,spinner:5' \
+			--color='bg+:250,bg:233,gutter:233,border:233,separator:233' \
+			--color='fg+:-1:bold,fg:7,info:7' \
 			"$@"
-	'');
+	'';
 in {
 	environment.systemPackages = with pkgs; [
 		fd

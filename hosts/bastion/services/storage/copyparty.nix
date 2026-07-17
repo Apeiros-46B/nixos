@@ -121,6 +121,7 @@ in {
 				flags = {
 					e2ts = true;
 					e2dsa = true;
+					opds = true;
 				};
 			};
 			"/public" = {
