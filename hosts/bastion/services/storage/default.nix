@@ -2,7 +2,6 @@
 
 {
 	# TODO: samba at toplevel
-	# TODO: copyparty at toplevel (separate volumes per thing)
 	imports = [
 		./copyparty.nix
 		./syncthing.nix
@@ -13,14 +12,13 @@
 	# restic can see everything, no need to add it here
 	users.groups = {
 		nas.members = [
-			# TODO: move shimmie, sidechain and navidrome to media
 			"root"
 			"copyparty"
 			"immich"
 			"shimmie"
 		];
 		media.members = [
-			# TODO: slskd, suwayomi, kavita, jellyfin
+			# TODO: suwayomi, kavita, jellyfin
 			"root"
 			"copyparty"
 			"syncthing"

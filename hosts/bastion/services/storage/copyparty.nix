@@ -115,7 +115,7 @@ in {
 					e2dsa = true;
 					opds = true;
 					opds_exts = [ "cbz" "cbr" "epub" "mobi" "pdf" ];
-					scan = 300; # syncthing, slskd, suwayomi, etc
+					scan = 300; # syncthing, suwayomi, etc
 				};
 			};
 			"/inbox" = {

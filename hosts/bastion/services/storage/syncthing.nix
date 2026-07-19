@@ -27,19 +27,6 @@ in {
 				atlas.id = "XG3HCKD-YP3UNY6-FRU7PW4-YWY52E7-RMGMASW-HE4FZ56-2BIVX57-MGTI5AY";
 				phone.id = "M33EP75-6QYMAYN-LHK4VKK-SSVZ4WH-XW7CTLQ-JJH3IN7-WU4XGYR-JWXLIA4";
 			};
-			folders = {
-				music = {
-					id = "53ln6-dw9cy";
-					path = "/mnt/media/music";
-					type = "receiveonly";
-					devices = [
-						"acropolis"
-						"atlas"
-					];
-					ignorePatterns = [ ".hist" ]; # copyparty files
-					ignorePerms = true;
-				};
-			};
 		};
 	};
 }

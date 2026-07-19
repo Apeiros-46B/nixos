@@ -1,5 +1,7 @@
 { ... }:
 
 {
-
+	imports = [
+		./navidrome.nix
+	];
 }

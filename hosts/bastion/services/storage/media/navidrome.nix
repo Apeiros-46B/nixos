@@ -3,13 +3,26 @@
 let
 	port = 4533;
 	domain = "mus.${globals.net.pubDomain}";
-	musicDir = "/var/lib/navidrome-mirror";
+	losslessDir = "/mnt/media/music";
+	lossyDir = "/var/lib/navidrome-mirror";
 in {
 	imports = [
 		inputs.sidechain.nixosModules.default
 	];
 
-	systemd.tmpfiles.settings."10-nas-navidrome".${musicDir}.d = {
+	services.syncthing.settings.folders.music = {
+		id = "53ln6-dw9cy";
+		path = losslessDir;
+		type = "receiveonly";
+		devices = [
+			"acropolis"
+			"atlas"
+		];
+		ignorePatterns = [ ".hist" ]; # copyparty files
+		ignorePerms = true;
+	};
+
+	systemd.tmpfiles.settings."10-nas-navidrome".${lossyDir}.d = {
 		user = "sidechain";
 		group = "navidrome";
 		mode = "2750";
@@ -18,8 +31,8 @@ in {
 	# mirror flacs to 192k opus
 	services.sidechain = {
 		enable = true;
-		sourceDir = "/mnt/nas/music";
-		destinationDir = musicDir;
+		sourceDir = losslessDir;
+		destinationDir = lossyDir;
 		ignoredExtensions = [ "txt" "md" "zip" ];
 		ignoreDotfiles = true;
 		copy = true;
@@ -47,7 +60,7 @@ in {
 			BaseUrl = "https://${domain}";
 			ShareURL = "https://${domain}";
 			Agents = "";
-			MusicFolder = musicDir;
+			MusicFolder = lossyDir;
 			EnableArtworkUpload = false;
 			EnableExternalServices = false;
 			EnableUserRegistration = false;
