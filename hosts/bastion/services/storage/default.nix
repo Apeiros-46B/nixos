@@ -26,32 +26,32 @@
 
 	# dirs not listed here are owned by specific service modules
 	systemd.tmpfiles.settings."10-nas" = {
-		"/nas".d = {
+		"/mnt/nas".d = {
 			user = "root";
 			group = "nas";
 			mode = "0750";
 		};
-		"/nas/inbox".d = {
+		"/mnt/nas/inbox".d = {
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
 		};
-		"/nas/public".d = {
+		"/mnt/nas/public".d = {
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
 		};
-		"/nas/private".d = {
+		"/mnt/nas/private".d = {
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
 		};
-		"/nas/media".d = { # TODO: suwayomi needs write
+		"/mnt/nas/media".d = { # TODO: suwayomi needs write
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
 		};
-		"/nas/music".d = {
+		"/mnt/nas/music".d = {
 			user = "syncthing";
 			group = "nas";
 			mode = "2750";

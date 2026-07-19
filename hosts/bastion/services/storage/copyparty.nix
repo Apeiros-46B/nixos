@@ -49,6 +49,13 @@ in {
 		enable = true;
 		user = "copyparty";
 		group = "copyparty";
+
+		# lan or tailscale connections get "local" pseudo-user
+		globalExtraConfig = ''
+			ipu: ${globals.net.lanRange}=local
+			ipu: ${globals.net.tsRange}=local
+		'';
+
 		settings = {
 			no-reload = true;
 
@@ -58,7 +65,7 @@ in {
 			rproxy = 1; # frp setup
 			xff-src = "127.0.0.1";
 			xff-hdr = "x-real-ip";
-			http-only = true; # accessed through rproxy, they provide https
+			http-only = true; # accessed through rproxy, it provides https
 			site = "https://${domain}/";
 
 			# security
@@ -94,10 +101,11 @@ in {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
 			media.passwordFile = "${config.sops.secrets.copyparty-media-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
+			local.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 		};
 		volumes = {
 			"/inbox" = {
-				path = "/nas/inbox";
+				path = "/mnt/nas/inbox";
 				access = {
 					wg = [ "inbox" ];
 					A = [ "admin" ];
@@ -112,7 +120,7 @@ in {
 				};
 			};
 			"/private" = {
-				path = "/nas/private";
+				path = "/mnt/nas/private";
 				access = {
 					A = [ "admin" ];
 				};
@@ -122,16 +130,16 @@ in {
 				};
 			};
 			"/public" = {
-				path = "/nas/public";
+				path = "/mnt/nas/public";
 				access = {
 					r = "*";
 					A = [ "admin" ];
 				};
 			};
 			"/media" = {
-				path = "/nas/media";
+				path = "/mnt/nas/media";
 				access = {
-					r = [ "media" ];
+					r = [ "local" "media" ];
 					A = [ "admin" ];
 				};
 				flags = {
@@ -143,8 +151,9 @@ in {
 				};
 			};
 			"/music" = {
-				path = "/nas/music";
+				path = "/mnt/nas/music";
 				access = {
+					r = [ "local" "media" ];
 					A = [ "admin" ];
 				};
 				flags = {

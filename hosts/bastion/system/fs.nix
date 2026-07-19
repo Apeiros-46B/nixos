@@ -18,17 +18,20 @@
 
 	virtualisation.docker = {
 		storageDriver = "zfs";
-		daemon.settings.data-root = "/docker";
+		daemon.settings.data-root = "/mnt/docker";
 	};
 
+	# TODO: somehow share dir pathnames between this and the actual config modules
+	# TODO: declarative zfs config with disko-zfs
 	fileSystems = {
-		"/"       = { device = "nixos/root";    fsType = "zfs"; };
-		"/nix"    = { device = "nixos/nix";     fsType = "zfs"; };
-		"/srv"    = { device = "nixos/srv";     fsType = "zfs"; };
-		"/var"    = { device = "nixos/var";     fsType = "zfs"; };
-		"/nas"    = { device = "nixos/nas";     fsType = "zfs"; };
-		"/home"   = { device = "nixos/home";    fsType = "zfs"; };
-		"/docker" = { device = "nixos/docker";  fsType = "zfs"; };
+		"/"     = { device = "nixos/root"; fsType = "zfs"; };
+		"/nix"  = { device = "nixos/nix";  fsType = "zfs"; };
+		"/srv"  = { device = "nixos/srv";  fsType = "zfs"; };
+		"/var"  = { device = "nixos/var";  fsType = "zfs"; };
+		"/home" = { device = "nixos/home"; fsType = "zfs"; };
+
+		"/mnt/nas"    = { device = "nixos/nas";    fsType = "zfs"; };
+		"/mnt/docker" = { device = "nixos/docker"; fsType = "zfs"; };
 
 		"/boot" = {
 			device = "/dev/disk/by-uuid/DAFE-74C0";

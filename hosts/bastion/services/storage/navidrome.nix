@@ -18,7 +18,7 @@ in {
 	# mirror flacs to 192k opus
 	services.sidechain = {
 		enable = true;
-		sourceDir = "/nas/music";
+		sourceDir = "/mnt/nas/music";
 		destinationDir = musicDir;
 		ignoredExtensions = [ "txt" "md" "zip" ];
 		ignoreDotfiles = true;

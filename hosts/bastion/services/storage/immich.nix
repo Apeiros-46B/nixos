@@ -5,7 +5,7 @@ let
 	privPort = 2283;
 	pubDomain = "pic.${globals.net.pubDomain}";
 	tsDomain = "pic.${globals.net.tsDomain}";
-	immichDir = "/nas/pictures";
+	immichDir = "/mnt/nas/pictures";
 in {
 	systemd.tmpfiles.settings."10-nas-immich".${immichDir}.d = {
 		user = "immich";

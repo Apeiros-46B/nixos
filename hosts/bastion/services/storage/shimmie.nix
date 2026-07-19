@@ -13,8 +13,8 @@
 	services.shimmie = {
 		enable = true;
 		stateDir = "/var/lib/shimmie2";
-		dataDir = "/nas/shimmie2";
-		dbPath = "/nas/shimmie2/shimmie.db";
+		dataDir = "/mnt/nas/shimmie2";
+		dbPath = "/mnt/nas/shimmie2/shimmie.db";
 		envFile = config.sops.secrets.shimmie-env.path;
 		port = 9000;
 
