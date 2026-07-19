@@ -30,7 +30,7 @@ in {
 			folders = {
 				music = {
 					id = "53ln6-dw9cy";
-					path = "/mnt/nas/music";
+					path = "/mnt/media/music";
 					type = "receiveonly";
 					devices = [
 						"acropolis"

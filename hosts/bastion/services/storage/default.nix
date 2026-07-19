@@ -1,31 +1,49 @@
 { ... }:
 
 {
+	# TODO: samba at toplevel
+	# TODO: copyparty at toplevel (separate volumes per thing)
 	imports = [
 		./copyparty.nix
-		./immich.nix
-		./navidrome.nix
-		./shimmie.nix
 		./syncthing.nix
+		./nas
+		./media
 	];
 
 	# restic can see everything, no need to add it here
 	users.groups = {
 		nas.members = [
+			# TODO: move shimmie, sidechain and navidrome to media
 			"root"
 			"copyparty"
 			"immich"
-			"navidrome"
-			"sidechain"
 			"shimmie"
+		];
+		media.members = [
+			# TODO: slskd, suwayomi, kavita, jellyfin
+			"root"
+			"copyparty"
 			"syncthing"
+			"sidechain"
+			"navidrome"
 		];
 		copyparty.members = [ "immich" ]; # external libraries
 		syncthing.members = [ "copyparty" "sidechain" ];
 	};
 
 	# dirs not listed here are owned by specific service modules
-	systemd.tmpfiles.settings."10-nas" = {
+	systemd.tmpfiles.settings."10-storage" = {
+		"/mnt/media".d = {
+			user = "root";
+			group = "media";
+			mode = "0750";
+		};
+		"/mnt/media/music".d = {
+			user = "syncthing";
+			group = "media";
+			mode = "2750";
+		};
+
 		"/mnt/nas".d = {
 			user = "root";
 			group = "nas";
@@ -45,16 +63,6 @@
 			user = "copyparty";
 			group = "copyparty";
 			mode = "0750";
-		};
-		"/mnt/nas/media".d = { # TODO: suwayomi needs write
-			user = "copyparty";
-			group = "copyparty";
-			mode = "0750";
-		};
-		"/mnt/nas/music".d = {
-			user = "syncthing";
-			group = "nas";
-			mode = "2750";
 		};
 	};
 }

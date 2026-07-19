@@ -104,6 +104,20 @@ in {
 			local.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 		};
 		volumes = {
+			"/media" = {
+				path = "/mnt/media";
+				access = {
+					r = [ "local" "media" ];
+					A = [ "admin" ];
+				};
+				flags = {
+					e2ts = true;
+					e2dsa = true;
+					opds = true;
+					opds_exts = [ "cbz" "cbr" "epub" "mobi" "pdf" ];
+					scan = 300; # syncthing, slskd, suwayomi, etc
+				};
+			};
 			"/inbox" = {
 				path = "/mnt/nas/inbox";
 				access = {
@@ -134,32 +148,6 @@ in {
 				access = {
 					r = "*";
 					A = [ "admin" ];
-				};
-			};
-			"/media" = {
-				path = "/mnt/nas/media";
-				access = {
-					r = [ "local" "media" ];
-					A = [ "admin" ];
-				};
-				flags = {
-					e2ts = true;
-					e2dsa = true;
-					opds = true;
-					opds_exts = [ "cbz" "cbr" "epub" "mobi" "pdf" ];
-					scan = 300; # TODO: suwayomi
-				};
-			};
-			"/music" = {
-				path = "/mnt/nas/music";
-				access = {
-					r = [ "local" "media" ];
-					A = [ "admin" ];
-				};
-				flags = {
-					e2ts = true;
-					e2dsa = true;
-					scan = 300; # syncthing
 				};
 			};
 		};

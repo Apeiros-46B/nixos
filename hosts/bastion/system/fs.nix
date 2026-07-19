@@ -30,8 +30,9 @@
 		"/var"  = { device = "nixos/var";  fsType = "zfs"; };
 		"/home" = { device = "nixos/home"; fsType = "zfs"; };
 
-		"/mnt/nas"    = { device = "nixos/nas";    fsType = "zfs"; };
 		"/mnt/docker" = { device = "nixos/docker"; fsType = "zfs"; };
+		"/mnt/media"  = { device = "nixos/media";  fsType = "zfs"; };
+		"/mnt/nas"    = { device = "nixos/nas";    fsType = "zfs"; };
 
 		"/boot" = {
 			device = "/dev/disk/by-uuid/DAFE-74C0";
