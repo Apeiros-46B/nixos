@@ -2,7 +2,7 @@
 
 {
 	imports = [
-		./n8n.nix
+		./monitoring.nix
 		./plausible.nix
 		./postgres.nix
 		./searxng.nix

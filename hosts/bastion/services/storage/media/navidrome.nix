@@ -48,6 +48,7 @@ in {
 		owner = "navidrome";
 		group = "navidrome";
 		mode = "0400";
+		restartUnits = [ "navidrome.service" ];
 	};
 
 	services.navidrome = {
@@ -55,6 +56,7 @@ in {
 		openFirewall = true;
 		environmentFile = config.sops.secrets.navidrome-env.path;
 		settings = {
+			# password encryption key set by env file
 			Port = port;
 			Address = "0.0.0.0";
 			BaseUrl = "https://${domain}";
@@ -68,6 +70,32 @@ in {
 			FFmpegPath = "${pkgs.ffmpeg}/bin/ffmpeg";
 			Scanner.ArtistJoiner = ", ";
 			Subsonic.ArtistParticipations = true;
+			Prometheus = {
+				Enabled = true;
+				MetricsPath = "/metrics";
+				# password set by env file
+			};
 		};
 	};
+
+	sops.secrets.navidrome-metrics-password = {
+		sopsFile = ./Secrets.yaml;
+		owner = "prometheus";
+		group = "prometheus";
+		mode = "0400";
+		restartUnits = [ "prometheus.service" ];
+	};
+
+	services.prometheus.scrapeConfigs = [
+		{
+			job_name = "navidrome";
+			basic_auth = {
+				username = "navidrome";
+				password_file = config.sops.secrets.navidrome-metrics-password.path;
+			};
+			static_configs = [{
+				targets = [ "localhost:${toString port}" ];
+			}];
+		}
+	];
 }

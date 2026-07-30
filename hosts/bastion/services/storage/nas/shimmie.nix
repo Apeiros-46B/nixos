@@ -3,15 +3,15 @@
 {
 	imports = [ inputs.shimmie2.nixosModules.default ];
 
-	sops.secrets.shimmie-env = {
-		sopsFile = ./Secrets.yaml;
-		owner = "shimmie";
-		group = "shimmie";
-		mode = "0400";
-	};
+	# sops.secrets.shimmie-env = {
+	# 	sopsFile = ./Secrets.yaml;
+	# 	owner = "shimmie";
+	# 	group = "shimmie";
+	# 	mode = "0400";
+	# };
 
 	services.shimmie = {
-		enable = true;
+		enable = false;
 		stateDir = "/var/lib/shimmie2";
 		dataDir = "/mnt/nas/shimmie2";
 		dbPath = "/mnt/nas/shimmie2/shimmie.db";

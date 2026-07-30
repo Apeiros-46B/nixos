@@ -4,11 +4,10 @@ let
 	# {{{ Discord webhook
 	hook = "${(pkgs.writeShellScriptBin "ssh-discord" ''
 		WEBHOOK_URL="$(cat '${config.sops.secrets.ssh-discord-webhook-url.path}')"
-		MENTION='<@${globals.discordUid}>'
 
 		case "$PAM_TYPE" in
 			open_session)
-				PAYLOAD=" { \"content\": \"⚠️ $MENTION \`$PAM_USER@$HOSTNAME\` login from **$PAM_RHOST**\" }"
+				PAYLOAD=" { \"content\": \"⚠️ <@${globals.discord.uid}> \`$PAM_USER@$HOSTNAME\` login from **$PAM_RHOST**\" }"
 				;;
 			close_session)
 				PAYLOAD=" { \"content\": \"⚠️ \`$PAM_USER@$HOSTNAME\` logout from **$PAM_RHOST**\" }"

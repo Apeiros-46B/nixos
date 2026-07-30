@@ -1,10 +1,12 @@
 { config, inputs, globals, ... }:
 
 let
-	port = 3000;
+	port = 9001;
 	domain = "tspmo.${globals.net.pubDomain}";
 in {
 	imports = [ inputs.tspmo.nixosModules.default ];
+
+	my.services.rproxy.domains.${domain} = port;
 
 	sops.secrets.tspmo-secrets-json = {
 		sopsFile = ./Secrets.yaml;
@@ -16,6 +18,7 @@ in {
 
 	services.tspmo = {
 		enable = true;
+		secretsFile = config.sops.secrets.tspmo-secrets-json.path;
 		settings = {
 			boardPort = port;
 			boardHost = "http://localhost";
@@ -33,8 +36,8 @@ in {
 
 			dataPath = "/var/lib/tspmo";
 
-			rootUsername = "apei.ros";
-			rootDiscordId = "443604304264429578";
+			rootUsername = globals.discord.name;
+			rootDiscordId = globals.discord.uid;
 			homeGuildId = "1447278647168729100";
 			adminRoleIds = [ "1478921450772496566" ];
 			modRoleIds = [ "1478921421832060960" ];
@@ -44,28 +47,5 @@ in {
 				"1480695854225555477" # (tar)
 			];
 		};
-		secretsFile = config.sops.secrets.tspmo-secrets-json.path;
 	};
-
-	my.services.rproxy.domains.${domain} = port;
-
-	# services.nginx.virtualHosts."tspmo.apeiros.xyz" = {
-	# 	useACMEHost = globals.net.pubDomain;
-	# 	forceSSL = true;
-	# 	listen = [
-	# 		{ addr = "0.0.0.0"; port = 443; ssl = true; }
-	# 		{ addr = "127.0.0.1"; port = 4443; ssl = true; extraParameters = [ "proxy_protocol" ]; }
-	# 	];
-	# 	locations."/" = {
-	# 		proxyPass = "http://10.0.0.21:3000";
-	# 
-	# 		proxyWebsockets = true;
-	# 		extraConfig = ''
-	# 			proxy_buffering off;
-	# 			client_max_body_size 0;
-	# 			proxy_set_header X-Real-IP $remote_addr;
-	# 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	# 		'';
-	# 	};
-	# };
 }

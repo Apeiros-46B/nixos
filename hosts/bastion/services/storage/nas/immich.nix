@@ -3,6 +3,8 @@
 let
 	pubPort = 2282;
 	privPort = 2283;
+	apiMetricsPort = 2284;
+	usrvMetricsPort = 2285;
 	pubDomain = "pic.${globals.net.pubDomain}";
 	tsDomain = "pic.${globals.net.tsDomain}";
 	immichDir = "/mnt/nas/pictures";
@@ -35,7 +37,27 @@ in {
 			server.externalDomain = "https://${pubDomain}"; # public proxy
 			newVersionCheck.enabled = false;
 		};
+		environment = {
+			IMMICH_TELEMETRY_INCLUDE = "all";
+			IMMICH_API_METRICS_PORT = toString apiMetricsPort;
+			IMMICH_MICROSERVICES_METRICS_PORT = toString usrvMetricsPort;
+		};
 	};
+
+	services.prometheus.scrapeConfigs = [
+		{
+			job_name = "immich_api";
+			static_configs = [{
+				targets = [ "localhost:${toString apiMetricsPort}" ];
+			}];
+		}
+		{
+			job_name = "immich_usrv";
+			static_configs = [{
+				targets = [ "localhost:${toString usrvMetricsPort}" ];
+			}];
+		}
+	];
 
 	services.immich-public-proxy = {
 		enable = true;

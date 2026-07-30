@@ -14,6 +14,7 @@
 		nas.members = [
 			"root"
 			"copyparty"
+			"syncthing"
 			"immich"
 			"shimmie"
 		];
@@ -34,7 +35,7 @@
 		"/mnt/media".d = {
 			user = "root";
 			group = "media";
-			mode = "0750";
+			mode = "0770";
 		};
 		"/mnt/media/music".d = {
 			user = "syncthing";
@@ -42,10 +43,16 @@
 			mode = "2750";
 		};
 
+		# TODO: probably somehow pass these dir names to lower-level modules
 		"/mnt/nas".d = {
 			user = "root";
 			group = "nas";
-			mode = "0750";
+			mode = "0770";
+		};
+		"/mnt/nas/sync".d = {
+			user = "syncthing";
+			group = "syncthing";
+			mode = "2770";
 		};
 		"/mnt/nas/inbox".d = {
 			user = "copyparty";

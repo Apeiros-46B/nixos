@@ -8,7 +8,10 @@
 		overrideDevices = false;
 		overrideFolders = false;
 		openDefaultPorts = true;
-		settings.options.urAccepted = -1;
+		settings.options = {
+			relaysEnabled = false;
+			urAccepted = -1;
+		};
 	};
 
 	systemd.services.syncthing = {

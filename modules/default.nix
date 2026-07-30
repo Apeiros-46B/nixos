@@ -6,6 +6,7 @@
 	imports = [
 		./dufs.nix
 		./playit.nix
+		./rproxy.nix
 		./shimmie.nix
 		./tbots.nix
 		./wawa.nix

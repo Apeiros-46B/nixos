@@ -2,8 +2,8 @@
 
 let
 	port = 8001;
-	pubDomain = "plausible.${globals.net.pubDomain}";
-	tsDomain = "plausible.${globals.net.tsDomain}";
+	pubDomain = "stats.${globals.net.pubDomain}";
+	tsDomain = "stats.${globals.net.tsDomain}";
 in {
 	my.services.rproxy = {
 		domains.${pubDomain} = port;
@@ -19,7 +19,7 @@ in {
 	};
 
 	services.plausible = {
-		enable = true;
+		enable = false; # TODO: this thing uses way too much CPU
 		server = {
 			port = port;
 			listenAddress = "127.0.0.1";

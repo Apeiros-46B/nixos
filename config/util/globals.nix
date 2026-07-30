@@ -13,7 +13,10 @@ rec {
 	gitName = "Apeiros-46B";
 	gitEmail = "Apeiros-46B@users.noreply.github.com";
 
-	discordUid = "443604304264429578";
+	discord = {
+		name = "apei.ros";
+		uid = "443604304264429578";
+	};
 
 	net = {
 		pubDomain = "apeiros.xyz";

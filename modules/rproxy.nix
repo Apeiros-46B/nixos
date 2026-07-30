@@ -15,6 +15,11 @@ let
 	frpProxyPort = 4443;
 in {
 	options.my.services.rproxy = with lib; {
+		enable = mkEnableOption "rproxy";
+		tokenPath = mkOption {
+			type = types.str;
+			description = "Path to a secret file containing the FRP client token.";
+		};
 		domains = mkOption {
 			type = types.attrsOf types.port;
 			default = {};
@@ -25,9 +30,22 @@ in {
 			default = {};
 			description = "Map of Tailscale domains to their backend ports";
 		};
+		extraProxies = mkOption {
+			type = types.attrsOf (types.submodule ({ name, config, ... }: {
+				options = {
+					name = lib.mkOption { type = types.str; default = name; };
+					type = lib.mkOption { type = types.enum [ "tcp" "udp" ]; };
+					localIP = lib.mkOption { type = types.str; default = "127.0.0.1"; };
+					localPort = lib.mkOption { type = types.port; };
+					remotePort = lib.mkOption { type = types.port; default = config.localPort; };
+				};
+			}));
+			default = {};
+			description = "Extra FRP proxies";
+		};
 	};
 
-	config = {
+	config = lib.mkIf cfg.enable {
 		networking.firewall.allowedTCPPorts = [ 80 443 ];
 
 		# see https://nixos.wiki/wiki/Nginx#Hardened_setup_with_TLS_and_HSTS_preloading
@@ -86,16 +104,8 @@ in {
 				locations."/" = mkLocation port;
 			}) cfg.tsDomains);
 
-		sops.secrets.frp-token = {
-			sopsFile = ./Secrets.yaml;
-			owner = "root";
-			group = "root";
-			mode = "0400";
-			restartUnits = [ "frp-rproxy.service" ];
-		};
-
 		systemd.services.frp-rproxy.serviceConfig.LoadCredential = [
-			"frp-token:${config.sops.secrets.frp-token.path}"
+			"frp-token:${cfg.tokenPath}"
 		];
 
 		services.frp.instances.rproxy = {
@@ -127,7 +137,7 @@ in {
 						remotePort = 443;
 						transport.proxyProtocolVersion = "v2";
 					}
-				];
+				] ++ lib.attrValues cfg.extraProxies;
 			};
 		};
 	};

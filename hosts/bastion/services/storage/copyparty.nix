@@ -31,18 +31,21 @@ in {
 		owner = "copyparty";
 		group = "copyparty";
 		mode = "0400";
+		restartUnits = [ "copyparty.service" ];
 	};
 	sops.secrets.copyparty-media-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
 		group = "copyparty";
 		mode = "0400";
+		restartUnits = [ "copyparty.service" ];
 	};
 	sops.secrets.copyparty-admin-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
 		group = "copyparty";
 		mode = "0400";
+		restartUnits = [ "copyparty.service" ];
 	};
 
 	services.copyparty = {
@@ -50,10 +53,12 @@ in {
 		user = "copyparty";
 		group = "copyparty";
 
-		# lan or tailscale connections get "local" pseudo-user
+		# lan or tailscale connections get lan pseudo-user,
+		# localhost connections get lo pseudo-user
 		globalExtraConfig = ''
-			ipu: ${globals.net.lanRange}=local
-			ipu: ${globals.net.tsRange}=local
+			ipu: ${globals.net.lanRange}=lan
+			ipu: ${globals.net.tsRange}=lan
+			ipu: 127.0.0.1/32=lo
 		'';
 
 		settings = {
@@ -91,6 +96,11 @@ in {
 			];
 			# TODO: hooks to notify of uploads/downloads of large files over discord webhook
 
+			# prometheus
+			stats = true;
+			e2dsa = true;
+			nos-dup = true;
+
 			# appearance
 			og = true;
 			og-ua = "(Discord|Twitter|Slack)bot";
@@ -101,21 +111,35 @@ in {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
 			media.passwordFile = "${config.sops.secrets.copyparty-media-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
-			local.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
+			lan.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
+			lo.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 		};
 		volumes = {
 			"/media" = {
 				path = "/mnt/media";
 				access = {
-					r = [ "local" "media" ];
+					r = [ "lan" "media" ];
 					A = [ "admin" ];
+					a = [ "lo" ];
 				};
 				flags = {
 					e2ts = true;
-					e2dsa = true;
 					opds = true;
-					opds_exts = [ "cbz" "cbr" "epub" "mobi" "pdf" ];
+					opds_exts = [];
 					scan = 300; # syncthing, suwayomi, etc
+				};
+			};
+			"/sync" = {
+				path = "/mnt/nas/sync";
+				access = {
+					A = [ "admin" ];
+					a = [ "lo" ];
+				};
+				flags = {
+					e2ts = true;
+					scan = 300;
+					chmod_f = "0660";
+					chmod_d = "0770";
 				};
 			};
 			"/inbox" = {
@@ -123,6 +147,7 @@ in {
 				access = {
 					wg = [ "inbox" ];
 					A = [ "admin" ];
+					a = [ "lo" ];
 				};
 				flags = {
 					fk = 16;
@@ -137,10 +162,10 @@ in {
 				path = "/mnt/nas/private";
 				access = {
 					A = [ "admin" ];
+					a = [ "lo" ];
 				};
 				flags = {
 					e2ts = true;
-					e2dsa = true;
 				};
 			};
 			"/public" = {
@@ -148,8 +173,19 @@ in {
 				access = {
 					r = "*";
 					A = [ "admin" ];
+					a = [ "lo" ];
 				};
 			};
 		};
 	};
+
+	services.prometheus.scrapeConfigs = [
+		{
+			job_name = "copyparty";
+			metrics_path = "/.cpr/metrics";
+			static_configs = [{
+				targets = [ "localhost:${toString port}" ];
+			}];
+		}
+	];
 }

@@ -213,6 +213,7 @@ in {
 					hi! link Special Normal
 					hi! link SpecialChar Normal
 					hi! link Tag Normal
+					hi! link Integer Number
 					hi! link Conditional Keyword
 					hi! link Define Keyword
 					hi! link Exception Keyword
