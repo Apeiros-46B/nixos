@@ -3,7 +3,7 @@
 {
 	services.xserver = {
 		enable = true;
-		dpi = 96;
+		dpi = 128;
 		exportConfiguration = true;
 	};
 
