@@ -3,6 +3,7 @@
 {
 	imports = [
 		./auth.nix
+		./distrobox.nix
 		./fs.nix
 		./pipewire.nix
 		./syncthing.nix

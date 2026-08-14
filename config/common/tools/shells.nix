@@ -23,10 +23,11 @@ let
 	'';
 	rprompt_script = "${pkgs.writeShellScriptBin "zsh-rprompt" ''
 		branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
-		[ -z "$SSH_TTY" ] && [ -z "$branch" ] && exit 0
+		[ -z "$CONTAINER_ID" ] && [ -z "$SSH_TTY" ] && [ -z "$branch" ] && exit 0
 		echo -n "%K{8} "
 		[ "$branch" ] && echo -n "#$branch "
 		[ "$SSH_TTY" ] && echo -n "@%m "
+		[ "$CONTAINER_ID" ] && echo -n ".$CONTAINER_ID "
 		echo -n "%F{0}%K{2} %k%f"
 	''}/bin/zsh-rprompt";
 in {
@@ -261,6 +262,7 @@ in {
 	hm.programs.zsh = {
 		enable = true;
 		defaultKeymap = "viins";
+		completionInit = "autoload -U compinit && compinit -u";
 		history.path = "${config.hm.xdg.dataHome}/zsh/zsh_history";
 
 		localVariables = {
@@ -288,6 +290,11 @@ in {
 			}
 			bindkey -s '^f' '^[Ifork ^M'
 			bindkey -s '^g' '^[Ilaunch ^M'
+
+			# disable direnv inside containers
+			if [ -n "$CONTAINER_ID" ]; then
+				_direnv_hook() { :; }
+			fi
 		'';
 	};
 	# }}}
