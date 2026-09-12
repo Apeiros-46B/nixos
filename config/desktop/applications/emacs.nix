@@ -7,8 +7,10 @@ functions.linkImpure "emacs" {
 		enable = true;
 		package = pkgs.emacs-pgtk;
 	};
-	hm.home.packages = [
-		pkgs.texliveSmall
+	hm.home.packages = with pkgs; [
+		texliveFull
+		git-crypt
+		git-annex
 	];
 
 	# define org mime type

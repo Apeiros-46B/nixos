@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, globals, ... }:
+{ inputs, lib, pkgs, globals, ... }:
 
 {
 	imports = [ inputs.chaotic.nixosModules.default ];
@@ -19,7 +19,6 @@
 
 	boot.extraModulePackages = [];
 	boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
-	boot.initrd.kernelModules = [];
 	boot.kernelModules = [ "kvm-intel" ];
 	boot.kernelParams = [ "nowatchdog" "split_lock_detect=off" ];
 	boot.kernel.sysctl = {
@@ -51,6 +50,11 @@
 
 	# TODO move out to separate module (maybe factor out to common desktop config)
 	# users.users.${globals.user}.extraGroups = [ "video" "render" ];
+	nixpkgs.config.rocmSupport = true;
+
+	boot.initrd.kernelModules = [ "amdgpu" ];
+	services.xserver.videoDrivers = [ "amdgpu" ];
+
 	hardware = {
 		graphics = {
 			enable = true;
@@ -59,7 +63,18 @@
 				rocmPackages.clr.icd
 			];
 		};
+		amdgpu.opencl.enable = true;
 	};
+
+	environment.systemPackages = with pkgs; [
+		rocmPackages.rocminfo
+		rocmPackages.clr.icd
+		clinfo
+	];
+	systemd.tmpfiles.rules = [
+		"L+    /opt/rocm   -    -    -     -    ${pkgs.rocmPackages.clr}"
+	];
+
 	hm.programs.niri.settings.outputs.DP-1 = {
 		position = {
 			x = 0;

@@ -9,5 +9,6 @@
 		./shimmie.nix
 		./tbots.nix
 		./wawa.nix
+		./widevine.nix
 	];
 }

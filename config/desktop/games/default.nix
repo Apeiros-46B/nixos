@@ -11,5 +11,6 @@
 	hm.home.packages = with pkgs; [
 		#mindustry-wayland
 		vintagestory
+		osu-lazer-bin
 	];
 }

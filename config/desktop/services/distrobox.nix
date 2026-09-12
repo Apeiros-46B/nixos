@@ -8,7 +8,7 @@
 
 	environment.systemPackages = [ pkgs.distrobox ];
 	environment.etc."distrobox/distrobox.conf".text = ''
-		container_additional_volumes="/nix:/nix:ro /etc/profiles:/etc/profiles:ro /etc/static/profiles:/etc/static/profiles:ro /etc/zshrc:/etc/zshrc:ro /etc/zshenv:/etc/zshenv:ro /etc/zprofile:/etc/zprofile:ro /etc/zinputrc:/etc/zinputrc:ro"
+		container_additional_volumes="/nix:/nix:ro /etc/profiles:/etc/profiles:ro /etc/static/profiles:/etc/static/profiles:ro /etc/zshrc:/etc/zshrc:ro /etc/zshenv:/etc/zshenv:ro /etc/zprofile:/etc/zprofile:ro /etc/zinputrc:/etc/zinputrc:ro /etc/gitconfig:/etc/gitconfig"
 	'';
 
 	# inject Nix-installed tools from host into guest
@@ -20,6 +20,7 @@
 				exit 1
 			'')
 			uv
+			pyrefly
 		];
 	};
 

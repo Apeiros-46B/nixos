@@ -7,8 +7,6 @@
 		gimp3
 		davinci-resolve
 		godot
-		(blender.override {
-			# cudaSupport = true;
-		})
+		blender
 	];
 }

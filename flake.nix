@@ -14,6 +14,8 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
+		treesitter.url = "github:tree-sitter/tree-sitter";
+		helium.url = "github:oxcl/nix-flake-helium-browser";
 		nvim.url = "github:nix-community/neovim-nightly-overlay";
 		niri.url = "github:sodiboo/niri-flake";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";

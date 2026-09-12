@@ -1,4 +1,4 @@
-{ lib, pkgs, functions, ... }:
+{ inputs, lib, pkgs, system, functions, ... }:
 
 functions.linkImpure "nvim" {
 	xdg.mime.defaultApplications = {
@@ -12,9 +12,12 @@ functions.linkImpure "nvim" {
 		enable = true;
 		defaultEditor = true;
 		vimAlias = false;
+		package = pkgs.neovim;
 	};
 
 	hm.home.packages = with pkgs; [
+		inputs.treesitter.packages.${system}.cli
+
 		nil # make nix language server available system-wide
 		gcc
 		gnumake

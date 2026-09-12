@@ -1,6 +1,7 @@
 inputs:
 
 [
+	inputs.helium.overlays.default
 	inputs.nvim.overlays.default
 	inputs.niri.overlays.niri
 	inputs.f2k.overlays.compositors

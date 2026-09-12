@@ -9,26 +9,12 @@ let
 		inherit Value;
 		Status = "locked";
 	};
-	# extsToAttrs = exts: builtins.listToAttrs (map
-	# 	(id: {
-	# 		name = id;
-	# 		value = {
-	# 			install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-	# 			installation_mode = "normal_installed";
-	# 		};
-	# 	})
-	# 	exts);
-	# installExts = exts: { "*".installation_mode = "allowed"; } // extsToAttrs exts;
 in {
-	hm.programs.brave.enable = true;
-
-	# for taking exams
-	hm.programs.chromium = {
+	programs.widevine-cdm = {
 		enable = true;
-		package = pkgs.ungoogled-chromium;
+		browsers = with pkgs; [ ungoogled-chromium helium ];
 	};
 
-	# main browser
 	hm.programs.firefox = {
 		enable = true;
 		package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override {
