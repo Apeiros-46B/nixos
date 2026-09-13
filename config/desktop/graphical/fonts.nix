@@ -30,10 +30,10 @@
 			allowBitmaps = true;
 			useEmbeddedBitmaps = true;
 			defaultFonts = {
-				serif     = [ theme.font.serif      ];
-				sansSerif = [ theme.font.sans       ];
-				monospace = [ theme.font.mono       ];
-				emoji     = [ theme.font.emoji      ];
+				serif     = [ theme.font.serif ];
+				sansSerif = [ theme.font.sans  ];
+				monospace = [ theme.font.mono  ];
+				emoji     = [ theme.font.emoji ];
 			};
 			localConf = ''<?xml version="1.0"?>
 				<!DOCTYPE fontconfig SYSTEM "fonts.dtd">

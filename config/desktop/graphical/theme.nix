@@ -154,6 +154,7 @@ in {
 				'';
 			};
 		};
+		gtk4.theme = null; # TODO
 		gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = if theme.dark then 1 else 0;
     };

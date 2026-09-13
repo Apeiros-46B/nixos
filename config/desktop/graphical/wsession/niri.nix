@@ -101,6 +101,7 @@
 
 			"Mod+C" = no-repeat (close-window);
 			"Mod+F".action = fullscreen-window;
+			"Mod+Ctrl+F".action = toggle-windowed-fullscreen;
 			"Mod+Shift+F".action = toggle-window-floating;
 			"Alt+Tab".action = switch-focus-between-floating-and-tiling;
 
@@ -161,6 +162,14 @@
 			"Mod+Ctrl+Shift+L".action = move-column-to-monitor-right;
 		};
 		window-rules = [
+			{
+				matches = [
+					{ app-id = "^Xephyr$"; }
+					{ app-id = "Xwayland$"; }
+					{ app-id = "^gamescope$"; }
+				];
+				open-fullscreen = true;
+			}
 			{
 				matches = [
 					{ app-id = "^brave-browser$"; }

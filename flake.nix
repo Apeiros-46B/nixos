@@ -2,6 +2,7 @@
 {
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+		chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 		home-manager = {
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +14,8 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
+		treesitter.url = "github:tree-sitter/tree-sitter";
+		helium.url = "github:oxcl/nix-flake-helium-browser";
 		nvim.url = "github:nix-community/neovim-nightly-overlay";
 		niri.url = "github:sodiboo/niri-flake";
 		f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
@@ -29,6 +32,7 @@
 		};
 
 		copyparty.url = "github:9001/copyparty";
+		septabee.url = "github:Ap6661/septabee-flake";
 		wawa.url = "github:amatgil/wawa";
 
 		shimmie2.url = "github:Apeiros-46B/shimmie2";

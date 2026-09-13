@@ -7,15 +7,22 @@ let
 	};
 in functions.linkImpure "awesome" {
 	hm.home.packages = with pkgs; [
-		picom
+		picom-git
 		i3lock-color
 	];
 
-	services.xserver.windowManager.awesome = awesomeOpts;
+	services.xserver = {
+		displayManager.startx.enable = true;
+		windowManager.awesome = awesomeOpts;
+	};
 
 	# this one starts home-manager user services
 	hm.xsession = {
 		enable = true;
 		windowManager.awesome = awesomeOpts;
 	};
+
+	hm.home.file.".xinitrc".text = ''
+		source ~/.xsession
+	'';
 }

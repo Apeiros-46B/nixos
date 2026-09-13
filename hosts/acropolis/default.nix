@@ -1,7 +1,9 @@
-{ config, lib, pkgs, globals, ... }:
+{ inputs, lib, pkgs, globals, ... }:
 
 {
-	boot.kernelPackages = pkgs.linuxPackages_zen;
+	imports = [ inputs.chaotic.nixosModules.default ];
+
+	boot.kernelPackages = pkgs.linuxPackages_cachyos;
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
 
@@ -15,10 +17,15 @@
 		];
 	};
 
-	boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
-	boot.initrd.kernelModules = [];
-	boot.kernelModules = [ "kvm-intel" ];
 	boot.extraModulePackages = [];
+	boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
+	boot.kernelModules = [ "kvm-intel" ];
+	boot.kernelParams = [ "nowatchdog" "split_lock_detect=off" ];
+	boot.kernel.sysctl = {
+		"vm.swappiness" = 10;
+		"vm.max_map_count" = 2147483642;
+	};
+	powerManagement.cpuFreqGovernor = "performance";
 
 	fileSystems."/" = {
 		device = "/dev/disk/by-uuid/be20486b-c030-4da4-8b1b-2acf109c2c03";
@@ -42,8 +49,12 @@
 	hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
 
 	# TODO move out to separate module (maybe factor out to common desktop config)
-	services.xserver.videoDrivers = [ "nvidia" ];
 	# users.users.${globals.user}.extraGroups = [ "video" "render" ];
+	nixpkgs.config.rocmSupport = true;
+
+	boot.initrd.kernelModules = [ "amdgpu" ];
+	services.xserver.videoDrivers = [ "amdgpu" ];
+
 	hardware = {
 		graphics = {
 			enable = true;
@@ -52,18 +63,18 @@
 				rocmPackages.clr.icd
 			];
 		};
-		nvidia = {
-			open = false;
-			package = config.boot.kernelPackages.nvidiaPackages.production;
-			nvidiaSettings = true;
-
-			modesetting.enable = true;
-			powerManagement = {
-				enable = true;
-				finegrained = false;
-			};
-		};
+		amdgpu.opencl.enable = true;
 	};
+
+	environment.systemPackages = with pkgs; [
+		rocmPackages.rocminfo
+		rocmPackages.clr.icd
+		clinfo
+	];
+	systemd.tmpfiles.rules = [
+		"L+    /opt/rocm   -    -    -     -    ${pkgs.rocmPackages.clr}"
+	];
+
 	hm.programs.niri.settings.outputs.DP-1 = {
 		position = {
 			x = 0;

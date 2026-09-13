@@ -9,7 +9,8 @@
 	];
 
 	hm.home.packages = with pkgs; [
-		mindustry-wayland
+		#mindustry-wayland
 		vintagestory
+		osu-lazer-bin
 	];
 }
