@@ -32,6 +32,7 @@
 		};
 
 		copyparty.url = "github:9001/copyparty";
+		septabee.url = "github:Ap6661/septabee-flake";
 		wawa.url = "github:amatgil/wawa";
 
 		shimmie2.url = "github:Apeiros-46B/shimmie2";
