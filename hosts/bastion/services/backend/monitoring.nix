@@ -1,5 +1,5 @@
 # DECO*27 mentioned
-{ lib, config, globals, ... }:
+{ config, lib, pkgs, globals, ... }:
 
 let
 	grafanaPort = 3000;
@@ -24,6 +24,7 @@ in {
 
 	services.grafana = {
 		enable = true;
+		declarativePlugins = with pkgs.grafanaPlugins; [ yesoreyeram-infinity-datasource ];
 		settings = {
 			security.secret_key = "$__file{${config.sops.secrets.grafana-secret-key.path}}";
 			auth = {
@@ -43,10 +44,12 @@ in {
 		};
 		provision = {
 			enable = true;
+			datasources.settings.deleteDatasources = [{ orgId = 1; name = "Infinity"; }];
 			datasources.settings.datasources = [
 				{
 					name = "Prometheus";
 					type = "prometheus";
+					uid = "PBFA97CFB590B2093"; # TODO: there has to be a way to rename this...
 					url = "http://127.0.0.1:${toString prometheusPort}";
 					isDefault = true;
 					editable = false;
@@ -58,7 +61,7 @@ in {
 	services.prometheus = {
 		enable = true;
 		port = prometheusPort;
-		globalConfig.scrape_interval = "10s";
+		globalConfig.scrape_interval = "60s";
 		scrapeConfigs = [
 			{
 				job_name = "node";
@@ -67,10 +70,6 @@ in {
 			{
 				job_name = "zfs";
 				static_configs = [{ targets = [ "localhost:${toString zfsExporterPort}" ]; }];
-			}
-			{
-				job_name = "smartctl";
-				static_configs = [{ targets = [ "localhost:${toString smartctlExporterPort}" ]; }];
 			}
 		];
 	};
@@ -106,13 +105,6 @@ in {
 	services.prometheus.exporters.zfs = {
 		enable = true;
 		port = zfsExporterPort;
-		listenAddress = "127.0.0.1";
-	};
-
-	# TODO: this doesn't work, fails with permission issue
-	services.prometheus.exporters.smartctl = {
-		enable = false;
-		port = smartctlExporterPort;
 		listenAddress = "127.0.0.1";
 	};
 }

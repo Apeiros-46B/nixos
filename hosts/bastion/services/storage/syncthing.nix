@@ -17,6 +17,18 @@ in {
 		restartUnits = [ "syncthing.service" "prometheus.service" ];
 	};
 
+	# $STGUIAPIKEY
+	sops.secrets.syncthing-api-key-env = {
+		sopsFile = ./Secrets.yaml;
+		owner = "syncthing";
+		group = "grafana";
+		mode = "0440";
+		restartUnits = [ "syncthing.service" "grafana.service" ];
+	};
+	systemd.services.syncthing.serviceConfig.EnvironmentFile = [
+		config.sops.secrets.syncthing-api-key-env.path
+	];
+
 	services.syncthing = {
 		enable = true;
 		# we don't use the dataDir so don't need to set it
@@ -40,16 +52,15 @@ in {
 					addresses = [ "dynamic" "tcp://100.78.187.98:22000" ];
 				};
 			};
+			folders.sync = {
+				id = "ycwnf-d7xrk";
+				path = "/mnt/nas/sync";
+				type = "sendreceive";
+				devices = [ "phone" ];
+				ignorePatterns = [ ".hist" ];
+				ignorePerms = true;
+			};
 		};
-	};
-
-	services.syncthing.settings.folders.sync = {
-		id = "ycwnf-d7xrk";
-		path = "/mnt/nas/sync";
-		type = "sendreceive";
-		devices = [ "phone" ];
-		ignorePatterns = [ ".hist" ];
-		ignorePerms = true;
 	};
 
 	services.prometheus.scrapeConfigs = [

@@ -19,7 +19,7 @@ in {
 	};
 
 	services.plausible = {
-		enable = false; # TODO: this thing uses way too much CPU
+		enable = true; # TODO: this thing uses way too much CPU
 		server = {
 			port = port;
 			listenAddress = "127.0.0.1";
