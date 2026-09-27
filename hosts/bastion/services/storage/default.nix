@@ -4,6 +4,7 @@
 	# TODO: samba at toplevel
 	imports = [
 		./copyparty.nix
+		./restic.nix
 		./syncthing.nix
 		./nas
 		./media
