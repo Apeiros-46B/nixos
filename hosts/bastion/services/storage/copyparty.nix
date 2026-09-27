@@ -40,6 +40,13 @@ in {
 		mode = "0400";
 		restartUnits = [ "copyparty.service" ];
 	};
+	sops.secrets.copyparty-annex-password = {
+		sopsFile = ./Secrets.yaml;
+		owner = "copyparty";
+		group = "copyparty";
+		mode = "0400";
+		restartUnits = [ "copyparty.service" ];
+	};
 	sops.secrets.copyparty-admin-password = {
 		sopsFile = ./Secrets.yaml;
 		owner = "copyparty";
@@ -110,11 +117,13 @@ in {
 		accounts = {
 			inbox.passwordFile = "${config.sops.secrets.copyparty-inbox-password.path}";
 			media.passwordFile = "${config.sops.secrets.copyparty-media-password.path}";
+			annex.passwordFile = "${config.sops.secrets.copyparty-annex-password.path}";
 			admin.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 			lan.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 			lo.passwordFile = "${config.sops.secrets.copyparty-admin-password.path}";
 		};
 		volumes = {
+			# lo user needs lowercase a on all volumes to see metrics
 			"/media" = {
 				path = "/mnt/media";
 				access = {
@@ -127,6 +136,14 @@ in {
 					opds = true;
 					opds_exts = [];
 					scan = 300; # syncthing, suwayomi, etc
+				};
+			};
+			"/annex" = {
+				path = "/mnt/nas/annex";
+				access = {
+					"ra." = [ "admin" ];
+					A     = [ "annex" ];
+					a     = [ "lo" ];
 				};
 			};
 			"/sync" = {

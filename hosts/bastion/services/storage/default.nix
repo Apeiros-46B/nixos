@@ -54,6 +54,11 @@
 			group = "syncthing";
 			mode = "2770";
 		};
+		"/mnt/nas/annex".d = {
+			user = "copyparty";
+			group = "copyparty";
+			mode = "0750";
+		};
 		"/mnt/nas/inbox".d = {
 			user = "copyparty";
 			group = "copyparty";

@@ -7,7 +7,6 @@
 	};
 
 	hm.home.packages = with pkgs; [
-		joplin-desktop
 		libreoffice-still
 		hunspell
 		hunspellDicts.en_CA-large
