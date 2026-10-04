@@ -9,10 +9,7 @@
 		};
 
 		sops-nix.url = "github:Mic92/sops-nix";
-		nixvirt = {
-			url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+		nixarr.url = "github:nix-media-server/nixarr";
 
 		treesitter.url = "github:tree-sitter/tree-sitter";
 		helium.url = "github:oxcl/nix-flake-helium-browser";
