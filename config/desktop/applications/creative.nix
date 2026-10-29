@@ -6,10 +6,13 @@
 	];
 
 	hm.home.packages = with pkgs; [
-		aseprite
 		darktable
+
 		gimp3
 		davinci-resolve
+
+		aseprite
+		krita
 		godot
 		blender
 	];
